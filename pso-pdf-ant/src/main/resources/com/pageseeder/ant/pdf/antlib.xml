@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Task definitions for this library.
+-->
+<antlib>
+  <taskdef name="pdf-to-images"      classname="org.pageseeder.pdf.ant.ToImagesTask"/>
+  <taskdef name="pdfviewer-process"  classname="org.pageseeder.pdf.ant.ProcessTask"/>
+  <taskdef name="export-pdf"         classname="org.pageseeder.pdf.ant.ExportTask"/>
+</antlib>
