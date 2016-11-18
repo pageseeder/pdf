@@ -1,0 +1,26 @@
+plugins {
+  id "com.jfrog.bintray" version "1.7"
+}
+
+description = "Core PDF API"
+
+apply plugin: 'maven-publish'
+apply from: "$rootDir/gradle/publishing.gradle"
+
+dependencies {
+
+  // List public coordinates of runtime dependencies of internal projects (ps-ant-pdf)
+  runtime (
+    'commons-io:commons-io:1.4',
+    'org.apache.pdfbox:pdfbox:1.7.1',
+    'org.apache.pdfbox:fontbox:1.7.1',
+    'org.apache.xmlgraphics:fop:2.1',
+    'net.sf.saxon:Saxon-HE:9.7.0-2'
+  )
+
+  testCompile (
+    'xmlunit:xmlunit:1.6',
+    'junit:junit:4+'
+  )
+
+}
