@@ -906,6 +906,6 @@
  -->
  	
 	<!-- Ignore metadata elements in PageSeeder document -->
-	<xsl:template match="documentinfo | fragmentinfo | locator"/>
+	<xsl:template match="documentinfo | fragmentinfo | locator | metadata"/>
 
 </xsl:stylesheet>
