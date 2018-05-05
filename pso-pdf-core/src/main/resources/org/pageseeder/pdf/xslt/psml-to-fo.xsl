@@ -307,11 +307,8 @@
 -->  
   <xsl:template match="toc">
     <xsl:variable name="toc" select="." />
-    <!-- only include the headings that are in this document (for tocs of sub-documents) -->
-    <xsl:variable name="my-headings" select="concat('|', string-join(parent::document//*[starts-with(@id, 'toc-')]/@id, '|'), '|')" />
-    <xsl:variable name="levels" select="tocref[@idref][contains($my-headings, concat('|', @idref, '|'))]" />
-    <xsl:variable name="hide" select="psf:load-style-properties(., 'toc')[@name = 'ps-hideIfNotFirst']/@value"/>
-    <xsl:if test="$levels and (empty(ancestor::document/ancestor::document) or $hide = 'false')">
+    <!-- only first TOC is displayed -->
+    <xsl:if test="empty(ancestor::document/ancestor::document)">
       <fo:block id="toc-{parent::document/@id}">
         <xsl:sequence select="psf:style-properties(., 'toc')"/>
         <fo:block>
@@ -319,17 +316,15 @@
           <xsl:text>Contents</xsl:text>
         </fo:block>
         <fo:block>
-          <xsl:variable name="max-level" select="number(@maxLevel)" />
-          <xsl:for-each select="$levels">
+          <xsl:for-each select=".//toc-part[@idref]">
             <xsl:variable name="level" select="number(@level)"/>
             <xsl:variable name="hide" select="psf:load-style-properties($toc, concat('toc-level', @level))[@name = 'ps-hide']/@value"/>
-            <xsl:if test="(not($max-level) or $level le $max-level) and not($hide = 'true') and $level gt 0">
+            <xsl:if test="not($hide = 'true') and $level gt 0">
               <fo:block>
                 <xsl:sequence select="psf:style-properties($toc, concat('toc-level', @level))"/>
                 <fo:basic-link>
                   <xsl:attribute name="internal-destination"><xsl:value-of select="@idref"/></xsl:attribute>
-                  <xsl:value-of select="@prefix" />
-                  <xsl:apply-templates/>
+                  <xsl:value-of select="concat(@prefix,' ',@title)" />
                 </fo:basic-link>
                 <!-- Add a minimum leader length to make sure it start a new line when appropriate -->
                 <fo:leader leader-length.minimum="0.5cm" leader-pattern="dots"/>

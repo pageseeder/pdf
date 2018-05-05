@@ -20,8 +20,6 @@
         special properties on some elements:
             ps-hide (allowed on inlineLabel, inlineLabelName, inlineLabel-custom, paraLabel-custom, and all toc-level elements)
                     If set to true, the element will be skipped (default is false)
-            ps-hideIfNotFirst (allowed on toc element)
-                    If set to false, the TOC is displayed if this is a sub-document (default to true)
         
         attributes allowed in header and footer
             odd-or-even (values allowed are 'odd' and 'even')
@@ -469,6 +467,21 @@
 
   <element name="toc-level6">
     <property name="margin-left"        value="120px"/>
+    <property name="text-align-last"    value="justify"/>
+  </element>
+
+  <element name="toc-level7">
+    <property name="margin-left"        value="140px"/>
+    <property name="text-align-last"    value="justify"/>
+  </element>
+
+  <element name="toc-level8">
+    <property name="margin-left"        value="160px"/>
+    <property name="text-align-last"    value="justify"/>
+  </element>
+
+  <element name="toc-level9">
+    <property name="margin-left"        value="180px"/>
     <property name="text-align-last"    value="justify"/>
   </element>
 
