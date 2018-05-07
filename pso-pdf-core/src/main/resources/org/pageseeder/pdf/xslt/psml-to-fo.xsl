@@ -375,6 +375,7 @@
       <xsl:sequence select="psf:style-properties(., concat('heading', @level))"/>
       <xsl:if test="@numbered = 'true' and @prefix">
         <xsl:value-of select="@prefix"/>
+        <xsl:text> </xsl:text>
 	  	</xsl:if>
       <xsl:apply-templates/>
     </fo:block>
