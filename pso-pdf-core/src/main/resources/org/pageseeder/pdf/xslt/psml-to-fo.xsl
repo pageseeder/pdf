@@ -308,7 +308,7 @@
   <xsl:template match="toc">
     <xsl:variable name="toc" select="." />
     <!-- only first TOC is displayed -->
-    <xsl:if test="not(preceding::toc)">
+    <xsl:if test="not(preceding::toc) and toc-tree">
       <fo:block id="toc-{parent::document/@id}">
         <xsl:sequence select="psf:style-properties(., 'toc')"/>
         <fo:block>
