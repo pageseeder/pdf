@@ -904,4 +904,9 @@
 	<!-- Ignore metadata elements in PageSeeder document -->
 	<xsl:template match="documentinfo | fragmentinfo | locator | metadata"/>
 
+  <!-- Section title is processed as part of fragment -->
+  <xsl:template match="section">
+    <xsl:apply-templates select="*[not(self::title)]" />
+  </xsl:template>
+
 </xsl:stylesheet>
