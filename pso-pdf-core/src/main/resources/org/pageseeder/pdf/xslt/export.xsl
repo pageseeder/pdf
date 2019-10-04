@@ -19,6 +19,8 @@
   <xsl:include href="psml-to-fo.xsl" />
   <xsl:include href="utilities.xsl" />
 
+  <xsl:output name="xml" media-type="application/xml" indent="yes" />
+
   <!-- URL for the FO config file -->
   <xsl:param name="foconfigfileurl" select="''" />
   <!-- Base for relative paths  -->

@@ -4,10 +4,12 @@
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
                               xmlns:psf="http://www.pageseeder.com/function"
                               exclude-result-prefixes="psf">
-  
+
+  <xsl:param name="source-filename" />
+
   <xsl:variable name="foconfigs"    select="document($foconfigfileurl)" />
   <xsl:variable name="mainconfig"   select="/document/@type" />
-  <xsl:variable name="uriusertitle" select="/document/documentinfo/uri/displayname"/>
+  <xsl:variable name="uriusertitle" select="if (/document/documentinfo/uri/displayname) then /document/documentinfo/uri/displayname else $source-filename"/>
   
   <!--
     Find the config that defines a margin zone.
@@ -272,6 +274,14 @@
             </xsl:when>
             <xsl:when test="$type = 'page' or $type = 'body'">
               <xsl:sequence select=".//*[name() = $type][string(@role) = $role]/*[name() = $property-tag]" />
+            </xsl:when>
+            <!-- heading/para prefix: heading-prefix-2 ==> <element name="heading-prefix" level="2"> -->
+            <xsl:when test="($type = 'heading' or $type = 'para') and $odd-or-even = 'prefix' and .//element[string(@name) = concat($type, '-prefix') and @level = $position]">
+              <xsl:sequence select=".//element[string(@name) = concat($type, '-prefix') and @level = $position][string(@role) = $role]/*[name() = $property-tag]" />
+            </xsl:when>
+            <!-- heading/para: heading-2 ==> <element name="heading" level="2"> -->
+            <xsl:when test="($type = 'heading' or $type = 'para') and .//element[string(@name) = $type and @level = $odd-or-even]">
+              <xsl:sequence select=".//element[string(@name) = $type and @level = $odd-or-even][string(@role) = $role]/*[name() = $property-tag]" />
             </xsl:when>
             <xsl:otherwise>
               <xsl:sequence select=".//element[string(@name) = $element-name][string(@role) = $role]/*[name() = $property-tag]" />

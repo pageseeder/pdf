@@ -3,19 +3,17 @@
  */
 package org.pageseeder.pdf.ant;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.util.ImageIOUtil;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 
 /**
@@ -148,17 +146,15 @@ public final class ToImagesTask extends Task {
         throw new BuildException("The PDF document is encrypted");
       }
 
-      // Iterate over the pages
-      PDDocumentCatalog catalog = document.getDocumentCatalog();
+      int nbPages = document.getNumberOfPages();
+      log("Found "+nbPages+" pages");
+      PDFRenderer pdfRenderer = new PDFRenderer(document);
 
-      List<PDPage> pages = catalog.getAllPages();
-      log("Found "+pages.size()+" pages");
-
-      for (int i = 0; i < pages.size(); ++i) {
-        PDPage page = pages.get(i);
-        BufferedImage image = page.convertToImage(BufferedImage.TYPE_INT_RGB, this._resolution);
+      for (int i = 0; i < nbPages; ++i) {
+        BufferedImage bim = pdfRenderer.renderImageWithDPI(i, this._resolution, ImageType.RGB);
         String fileName = prefix + (i + 1);
-        boolean ok = ImageIOUtil.writeImage(image, this._format, fileName, BufferedImage.TYPE_INT_RGB, this._resolution);
+        boolean ok = ImageIOUtil.writeImage(bim, fileName + "." + this._format, this._resolution);
+//        boolean ok = ImageIOUtil.writeImage(image, this._format, fileName, BufferedImage.TYPE_INT_RGB, this._resolution);
         if (!ok) {
           log("Unable to write page #"+(i+1), Project.MSG_WARN);
         }

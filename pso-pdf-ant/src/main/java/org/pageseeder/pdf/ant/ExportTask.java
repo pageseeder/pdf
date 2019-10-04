@@ -3,46 +3,23 @@
  */
 package org.pageseeder.pdf.ant;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.io.IOUtils;
-import org.apache.fop.apps.FOPException;
-import org.apache.fop.apps.FOUserAgent;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.FopFactoryBuilder;
-import org.apache.fop.apps.MimeConstants;
+import org.apache.fop.apps.*;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.pageseeder.pdf.util.XSLT;
+
+import javax.xml.transform.*;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * An ANT task to export a PageSeeder PSML document to a PDF document using FOP.
@@ -63,7 +40,7 @@ public final class ExportTask extends Task {
   /**
    * UTF 8 charset
    */
-  private static final Charset UTF8 = Charset.forName("utf-8");
+  private static final Charset UTF8 = StandardCharsets.UTF_8;
 
   /**
    * If debug mode.
@@ -93,12 +70,7 @@ public final class ExportTask extends Task {
   /**
    * The FOConfig files to use.
    */
-  private List<FOConfig> _FOConfigs = new ArrayList<FOConfig>();
-
-  /**
-   * The FOConfig folders to use.
-   */
-  private List<FOConfigs> _FOConfigFolders = new ArrayList<FOConfigs>();
+  private List<FOConfig> _FOConfigs = new ArrayList<>();
 
   // Set properties
   // ----------------------------------------------------------------------------------------------
@@ -160,16 +132,6 @@ public final class ExportTask extends Task {
   }
 
   /**
-   * Create a config folder object and stores it in the list To be used by Ant
-   * Task to get all nested element of <configs ../>
-   */
-  public FOConfigs createConfigs() {
-    FOConfigs cfg = new FOConfigs();
-    this._FOConfigFolders.add(cfg);
-    return cfg;
-  }
-
-  /**
    * Set the image resolution in DPI (optional).
    * 
    * @param resolution the image resolution in DPI
@@ -218,6 +180,7 @@ public final class ExportTask extends Task {
     Map<String, String> parameters = new HashMap<String, String>();
     parameters.put("foconfigfileurl", foConfig.toURI().toString());
     parameters.put("base", this._source.getParentFile().toURI().toString());
+    parameters.put("source-filename", this._source.getName());
 
     FileInputStream in = null;
     FileOutputStream out = null;
@@ -243,7 +206,7 @@ public final class ExportTask extends Task {
         // write FO to working folder
         ByteArrayOutputStream fo_out = new ByteArrayOutputStream();
         XSLT.transform(source, new StreamResult(fo_out), templates, parameters);
-        String fo = new StringBuffer(new String(fo_out.toByteArray(), "utf-8")).toString();
+        String fo = new String(fo_out.toByteArray(), UTF8);
         OutputStream fout;
         try {
           fout = new FileOutputStream(new File(_working, "fo.xml"));
@@ -259,7 +222,7 @@ public final class ExportTask extends Task {
         // generate PDF
         TransformerFactory tfactory = TransformerFactory.newInstance();
         Transformer transformer = tfactory.newTransformer(); // identity transformer
-        Source src = new StreamSource(new ByteArrayInputStream(fo.getBytes("utf-8")));
+        Source src = new StreamSource(new ByteArrayInputStream(fo.getBytes(UTF8)));
         transformer.transform(src, result);
       } else {
         XSLT.transform(source, result, templates, parameters);
@@ -269,15 +232,7 @@ public final class ExportTask extends Task {
       log("PDF generation failed:", Project.MSG_ERR);
       log(ex, Project.MSG_ERR);
       throw new BuildException("Failed to build PDF file: "+ex.getMessage());
-    } catch (IOException ex) {
-      log("PDF generation failed:", Project.MSG_ERR);
-      log(ex, Project.MSG_ERR);
-      throw new BuildException("Failed to build PDF file: "+ex.getMessage());
-    } catch (TransformerConfigurationException ex) {
-      log("PDF generation failed:", Project.MSG_ERR);
-      log(ex, Project.MSG_ERR);
-      throw new BuildException("Failed to build PDF file: "+ex.getMessage());
-    } catch (TransformerException ex) {
+    } catch (IOException | TransformerException ex) {
       log("PDF generation failed:", Project.MSG_ERR);
       log(ex, Project.MSG_ERR);
       throw new BuildException("Failed to build PDF file: "+ex.getMessage());
@@ -288,9 +243,6 @@ public final class ExportTask extends Task {
       } catch (IOException ex) {
         log("Failed to close stream: {}", ex, Project.MSG_ERR);
       }
-      // free memory?
-      userAgent = null;
-      fop = null;
     }
   }
 
@@ -301,48 +253,29 @@ public final class ExportTask extends Task {
    * Build the complete config file
    * 
    * @param config the file to write to
-   * @throws IOException 
+   *
+   * @throws IOException if writing to the file failed
    */
   private void buildFOConfig(File config) throws IOException {
     // start with root
     FileWriter writer = new FileWriter(config);
     writer.write("<foconfigs>\n");
-    // write all styles
+    // find highest priority
+    int highestPriority = this._FOConfigs.stream().mapToInt(FOConfig::getPriority).sum();
+    // write the first one found with the highest priority
     for (FOConfig conf : this._FOConfigs) {
-      if (conf._config == null) {
-        log("Ignoring config "+conf._name+" which does not exist", Project.MSG_WARN);
-      } else {
+      if (conf._config != null && conf._priority == highestPriority) {
         writer.write("<foconfig config=\""+escapeAttValue(conf._name)+"\" priority=\""+conf._priority+"\">");
         writeStream(writer, new FileInputStream(conf._config));
         writer.write("</foconfig>\n");
-      }
-    }
-    // write all styles
-    for (FOConfigs conf : this._FOConfigFolders) {
-      if (conf._folder != null) {
-        File[] folders = conf._folder.listFiles();
-        if (folders != null) {
-          for (File folder : folders) {
-            File foconfig = new File(folder, "pdf-export-config.xml");
-            if (foconfig.exists() && foconfig.isFile()) {
-              writer.write("<foconfig config=\""+escapeAttValue(folder.getName())+"\" priority=\""+conf._priority+"\">");
-              writeStream(writer, new FileInputStream(foconfig));
-              writer.write("</foconfig>\n");
-            } else {
-              log("Ignoring configs folder "+folder.getName()+" as no valid FO config file was found (it should be named pdf-export-config.xml)", Project.MSG_WARN);
-            }
-          }
-        } else {
-          log("Ignoring configs folder "+conf._folder.getName(), Project.MSG_WARN);
-        }
-      } else {
-        log("Ignoring configs folder which does not exist", Project.MSG_WARN);
+        break;
       }
     }
     // write default styles, with lowest priority
     writer.write("<foconfig config=\"default\" priority=\"0\">");
     ClassLoader loader = ExportTask.class.getClassLoader();
-    writeStream(writer, loader.getResourceAsStream("org/pageseeder/pdf/resource/defaultFOConfig.xml"));
+    InputStream defaultFO = loader.getResourceAsStream("org/pageseeder/pdf/resource/defaultFOConfig.xml");
+    if (defaultFO != null) writeStream(writer, defaultFO);
     writer.write("</foconfig>\n");
     // close root
     writer.write("</foconfigs>");
@@ -411,7 +344,7 @@ public final class ExportTask extends Task {
    * @param value the attribute value to escape
    * @return the corresponding escaped text
    */
-  public static String escapeAttValue(String value) {
+  private static String escapeAttValue(String value) {
     // bypass null and empty strings
     if (value == null || "".equals(value)) return "";
     // do not process valid strings
@@ -481,36 +414,10 @@ public final class ExportTask extends Task {
     public void setPriority(int priority) {
       this._priority = priority;
     }
-  }
-
-  // FOConfigs object
-  /**
-   * Holder for FO configs definition.
-   */
-  public static final class FOConfigs {
-    /** The priority */
-    private int _priority = 1;
-    /** The folder containing the config files */
-    private File _folder;
 
     /**
-     * Set the FO configuration file.
-     *
-     * @param file The configuration file.
+     * @return the priority
      */
-    public void setFolder(File folder) {
-      if (folder.exists() && folder.isDirectory()) {
-        this._folder = folder;
-      }  
-    }
-
-    /**
-     * Set the priority
-     * 
-     * @param priority The priority
-     */
-    public void setPriority(int priority) {
-      this._priority = priority;
-    }
+    public int getPriority() { return _priority; }
   }
 }

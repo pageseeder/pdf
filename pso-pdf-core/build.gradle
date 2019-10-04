@@ -12,9 +12,10 @@ dependencies {
   // List public coordinates of runtime dependencies of internal projects (ps-ant-pdf)
   runtime (
     'commons-io:commons-io:1.4',
-    'org.apache.pdfbox:pdfbox:1.7.1',
-    'org.apache.pdfbox:fontbox:1.7.1',
-    'org.apache.xmlgraphics:fop:2.1',
+    'org.apache.pdfbox:pdfbox:2.0.17',
+    'org.apache.pdfbox:fontbox:2.0.17',
+    'org.apache.pdfbox:pdfbox-tools:2.0.17',
+    'org.apache.xmlgraphics:fop:2.3',
     'net.sf.saxon:Saxon-HE:9.7.0-2'
   )
 

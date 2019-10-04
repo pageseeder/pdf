@@ -17,6 +17,7 @@ dependencies {
   )
 
   testCompile (
+    'org.apache.ant:ant:1.8.1',
     'xmlunit:xmlunit:1.6',
     'junit:junit:4+'
   )

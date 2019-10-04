@@ -66,14 +66,13 @@
                     <xsl:variable name="crole-props"  select="psf:load-style-properties-more($config, 'table-col', 'property', string(@role))" />
                     <xsl:variable name="col-props"    select="psf:load-style-properties($config, 'table-col')" />
                     <xsl:sequence select="psf:style-properties-overwrite($crole-props, $col-props)"/>
-                    <xsl:if test="@width">
-                      <xsl:choose>
-                        <!-- % or px, if nothing then default to px -->
-                        <xsl:when test="ends-with(@width, '%')"><xsl:attribute name="column-width" select="concat('proportional-column-width(',replace(@width, '\D', ''),')')" /></xsl:when>
-                        <xsl:when test="ends-with(@width, 'px')"><xsl:attribute name="column-width" select="@width" /></xsl:when>
-                        <xsl:otherwise><xsl:attribute name="column-width" select="concat(replace(@width, '\D', ''), 'px')"/></xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:if>
+                    <xsl:choose>
+                      <!-- % or px, if nothing then default to px -->
+                      <xsl:when test="ends-with(@width, '%')"><xsl:attribute name="column-width" select="concat('proportional-column-width(',replace(@width, '\D', ''),')')" /></xsl:when>
+                      <xsl:when test="ends-with(@width, 'px')"><xsl:attribute name="column-width" select="@width" /></xsl:when>
+                      <xsl:when test="@width"><xsl:attribute name="column-width" select="concat(replace(@width, '\D', ''), 'px')"/></xsl:when>
+                      <xsl:otherwise><xsl:attribute name="column-width">proportional-column-width(1)</xsl:attribute></xsl:otherwise>
+                    </xsl:choose>
                     <xsl:if test="@span">
                       <xsl:attribute name="number-columns-repeated" select="@span"/>
                     </xsl:if>
@@ -312,10 +311,6 @@
       <fo:block id="toc-{parent::document/@id}">
         <xsl:sequence select="psf:style-properties(., 'toc')"/>
         <fo:block>
-          <xsl:sequence select="psf:style-properties(., 'toc-title')"/>
-          <xsl:text>Contents</xsl:text>
-        </fo:block>
-        <fo:block>
           <xsl:for-each select=".//toc-part[@idref]">
             <xsl:variable name="level" select="number(@level)"/>
             <xsl:variable name="hide" select="psf:load-style-properties($toc, concat('toc-level', @level))[@name = 'ps-hide']/@value"/>
@@ -369,14 +364,62 @@
    |   1. ...
    | </fo:block>
 
---> 
-  <xsl:template match="heading">
-    <fo:block id="{@id}">
-      <xsl:sequence select="psf:style-properties(., concat('heading', @level))"/>
-      <xsl:if test="@numbered = 'true' and @prefix">
+-->
+  <!-- with prefix -->
+  <xsl:template match="heading[string(@prefix) != '']">
+    <xsl:variable name="prefix-properties"  select="psf:load-style-properties(., concat('heading-prefix-', @level))[string(@value) != '']" />
+    <xsl:variable name="heading-properties" select="psf:load-style-properties(., concat('heading-',        @level))[string(@value) != '']" />
+    <xsl:variable name="start-indent" select="$prefix-properties[@name = 'start-indent']/@value" />
+    <xsl:variable name="text-indent"  select="$prefix-properties[@name = 'text-indent']/@value" />
+    <xsl:choose>
+      <xsl:when test="$start-indent and $text-indent">
+        <fo:table border-style="none" table-layout="fixed" width="100%" start-indent="{$start-indent}">
+          <fo:table-column column-width="{$text-indent}"/>
+          <fo:table-column column-width="proportional-column-width(1)" />
+          <fo:table-body start-indent="0">
+            <fo:table-row>
+              <fo:table-cell text-align="right" padding-right="5px">
+                <fo:block>
+                  <!-- add heading prefix style properties -->
+                  <xsl:for-each select="$prefix-properties[@name != 'start-indent' and @name != 'text-indent']">
+                    <xsl:attribute name="{@name}" select="@value" />
+                  </xsl:for-each>
+                  <!-- inherit format properties from heading -->
+                  <xsl:for-each select="$heading-properties[@name != 'start-indent' and @name != 'text-indent']">
+                    <xsl:if test="empty($prefix-properties[@name = current()/@name])">
+                      <xsl:attribute name="{@name}" select="@value" />
+                    </xsl:if>
+                  </xsl:for-each>
+                  <xsl:value-of select="@prefix" />
+                </fo:block>
+              </fo:table-cell>
+              <fo:table-cell>
+                <fo:block>
+                  <xsl:if test="@id"><xsl:attribute name="id" select="@id" /></xsl:if>
+                  <xsl:for-each select="$heading-properties"><xsl:attribute name="{@name}" select="@value" /></xsl:for-each>
+                  <xsl:apply-templates/>
+                </fo:block>
+              </fo:table-cell>
+            </fo:table-row>
+          </fo:table-body>
+        </fo:table>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="heading-noprefix" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- without prefix -->
+  <xsl:template match="heading[string(@prefix) = '']" name="heading-noprefix">
+    <fo:block>
+      <xsl:if test="@id"><xsl:attribute name="id" select="@id" /></xsl:if>
+      <xsl:sequence select="psf:style-properties(., concat('heading-', @level))"/>
+      <!-- if no start-indent/text-indent defined -->
+      <xsl:if test="@prefix">
         <xsl:value-of select="@prefix"/>
         <xsl:text> </xsl:text>
-	  	</xsl:if>
+      </xsl:if>
       <xsl:apply-templates/>
     </fo:block>
   </xsl:template>
@@ -392,45 +435,70 @@
    | </fo:block>
 
 -->
-  <!-- normal para -->
-  <xsl:template match="para">
-    <xsl:variable name="properties" select="psf:load-style-properties(., local-name(.))" />
-    <xsl:choose>
-      <xsl:when test="@indent and @prefix">
+  <!-- with prefix -->
+  <xsl:template match="para[string(@prefix) != '' and string(@indent) != '']">
+    <xsl:variable name="prefix-properties"  select="psf:load-style-properties(., concat('para-prefix-', @indent))[string(@value) != '']" />
+    <xsl:variable name="indent-properties"  select="psf:load-style-properties(., concat('para-',        @indent))[string(@value) != '']" />
+    <xsl:variable name="para-properties"    select="psf:load-style-properties(., 'para'                         )[string(@value) != '']" />
+    <xsl:variable name="start-indent" select="$prefix-properties[@name = 'start-indent']/@value" />
+    <xsl:variable name="text-indent"  select="$prefix-properties[@name = 'text-indent']/@value" />
+    <xsl:variable name="ps-indent-px" select="$para-properties[@name = 'ps-indent-px']/@value" />
+    <fo:table border-style="none" table-layout="fixed" width="100%">
+      <xsl:if test="$start-indent"><xsl:attribute name="start-indent" select="$start-indent" /></xsl:if>
+      <fo:table-column column-width="{if ($text-indent) then $text-indent else concat(number(@indent) * number($ps-indent-px), 'px')}"/>
+      <fo:table-column column-width="proportional-column-width(1)" />
+      <fo:table-body start-indent="0">
+        <fo:table-row>
+          <fo:table-cell text-align="right" padding-right="5px">
+            <fo:block>
+              <!-- add para prefix style properties -->
+              <xsl:for-each select="$prefix-properties[@name != 'start-indent' and @name != 'text-indent']">
+                <xsl:attribute name="{@name}" select="@value" />
+              </xsl:for-each>
+              <!-- inherit properties from para indented -->
+              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent']">
+                <xsl:if test="empty($prefix-properties[@name = current()/@name])">
+                  <xsl:attribute name="{@name}" select="@value" />
+                </xsl:if>
+              </xsl:for-each>
+              <!-- inherit properties from para -->
+              <xsl:for-each select="$para-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
+                <xsl:if test="empty($prefix-properties[@name = current()/@name] | $indent-properties[@name = current()/@name])">
+                  <xsl:attribute name="{@name}" select="@value" />
+                </xsl:if>
+              </xsl:for-each>
+              <xsl:value-of select="@prefix" />
+            </fo:block>
+          </fo:table-cell>
+          <fo:table-cell>
+            <fo:block>
+              <xsl:for-each select="$indent-properties"><xsl:attribute name="{@name}" select="@value" /></xsl:for-each>
+              <xsl:for-each select="$para-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
+                <xsl:if test="empty($indent-properties[@name = current()/@name])">
+                  <xsl:attribute name="{@name}" select="@value" />
+                </xsl:if>
+              </xsl:for-each>
+              <xsl:apply-templates select="* | text()" />
+            </fo:block>
+          </fo:table-cell>
+        </fo:table-row>
+      </fo:table-body>
+    </fo:table>
+  </xsl:template>
+
+  <!-- without prefix -->
+  <xsl:template match="para[string(@prefix) = '']" name="para-noprefix">
+    <xsl:variable name="properties" select="psf:load-style-properties(., 'para')" />
+    <fo:block>
+      <xsl:if test="@indent">
         <xsl:variable name="ps-indent-px" select="$properties[@name = 'ps-indent-px']/@value" />
-        <fo:table table-layout="fixed" border-style="none">
-          <fo:table-column column-width="{number(@indent) * number($ps-indent-px)}px"/>
-          <fo:table-column />
-          <fo:table-body>
-            <fo:table-row>
-              <fo:table-cell text-align="right" padding-right="5px">
-                <fo:block><xsl:value-of select="@prefix" /></fo:block>
-              </fo:table-cell>
-              <fo:table-cell>
-                <fo:block>
-                  <xsl:for-each select="$properties[@name != 'ps-indent-px'][@name != 'start-indent']">
-                    <xsl:attribute name="{@name}"><xsl:value-of select="@value" /></xsl:attribute>
-                  </xsl:for-each>
-                  <xsl:apply-templates select="* | text()" />
-                </fo:block>
-              </fo:table-cell>
-            </fo:table-row>
-          </fo:table-body>
-        </fo:table>
-      </xsl:when>
-      <xsl:otherwise>
-        <fo:block>
-          <xsl:if test="@indent">
-            <xsl:variable name="ps-indent-px" select="$properties[@name = 'ps-indent-px']/@value" />
-            <xsl:attribute name="start-indent"><xsl:value-of select="number(@indent) * number($ps-indent-px)" />px</xsl:attribute>
-          </xsl:if>
-          <xsl:for-each select="$properties[@name != 'ps-indent-px'][string(current()/@indent) = '' or @name != 'start-indent']">
-            <xsl:attribute name="{@name}"><xsl:value-of select="@value" /></xsl:attribute>
-          </xsl:for-each>
-          <xsl:apply-templates select="* | text()" />
-        </fo:block>
-      </xsl:otherwise>
-    </xsl:choose>
+        <xsl:attribute name="start-indent"><xsl:value-of select="number(@indent) * number($ps-indent-px)" />px</xsl:attribute>
+      </xsl:if>
+      <xsl:for-each select="$properties[@name != 'ps-indent-px'][string(current()/@indent) = '' or @name != 'start-indent']">
+        <xsl:attribute name="{@name}"><xsl:value-of select="@value" /></xsl:attribute>
+      </xsl:for-each>
+      <xsl:apply-templates select="* | text()" />
+    </fo:block>
   </xsl:template>
 
 <!-- ============================== ParaLabel ================================== -->
@@ -649,7 +717,7 @@
       <xsl:sequence select="psf:style-properties(., 'list-item')"/>
       <xsl:variable name="color-style-property" select="psf:load-style-properties(., 'list-item')[@name='color']" />
       <xsl:variable name="color" select="if ($color-style-property) then $color-style-property/@value else '#1f4f76'" />
-  		<fo:list-item-label end-indent="label-end()">
+  		<fo:list-item-label>
   		  <fo:block>
   		  	<xsl:variable name="level" select="count(ancestor::nlist | ancestor::list)"/>
           <xsl:variable name="pos" select="count(preceding-sibling::item) + 1"/>
@@ -657,7 +725,7 @@
   		  	<xsl:choose>
             <xsl:when test="parent::list">
               <xsl:choose>
-                <xsl:when test="../@type='none'"></xsl:when>
+                <xsl:when test="../@type='none'" />
                 <xsl:when test="../@type='disc'"><fo:inline font-family="Symbol" color="{$color}">&#x2022;</fo:inline></xsl:when>
                 <xsl:when test="../@type='circle'"><fo:inline font-size="7pt" font-family="ZapfDingbats" color="{$color}">&#x274D;</fo:inline></xsl:when>
                 <xsl:when test="../@type='square'">
@@ -812,7 +880,7 @@
   <xsl:template name="xref-link">
     <xsl:choose>
       <xsl:when test="starts-with(@href,'#')">
-        <fo:basic-link internal-destination="{substring-after(@href,'#')}">
+        <fo:basic-link internal-destination="{if (substring-after(@href,'#') = '') then @frag else substring-after(@href,'#')}">
           <xsl:choose>
             <xsl:when test=".=''"><xsl:value-of select="@title" /></xsl:when>
             <xsl:otherwise><xsl:apply-templates /></xsl:otherwise>

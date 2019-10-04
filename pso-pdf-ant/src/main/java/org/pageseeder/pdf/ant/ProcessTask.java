@@ -14,8 +14,10 @@ import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
-import org.apache.pdfbox.util.PDFImageWriter;
-import org.apache.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.pageseeder.pdf.util.ImageScaler;
@@ -91,8 +93,8 @@ public final class ProcessTask extends Task {
     log("Processing file");
     PDDocument document = null;
     try {
-      document = PDDocument.loadNonSeq(this._source, null, null);
-      PDFImageWriter writer = new PDFImageWriter();
+      document = PDDocument.load(this._source);
+      PDFRenderer pdfRenderer = new PDFRenderer(document);
 
       // Grab the name
       String name = this._source.getName();
@@ -102,11 +104,17 @@ public final class ProcessTask extends Task {
       this._destination.mkdirs();
       String prefix = new File(this._destination, name +"-p").getAbsolutePath();
 
-      boolean success = writer.writeImage(document, "png", null, 1, Integer.MAX_VALUE, prefix, 1, 300);
+      // note that the page number parameter is zero based
+      BufferedImage bim = pdfRenderer.renderImageWithDPI(1, 300, ImageType.RGB);
+
+      // suffix in filename will be used as the file format
+      boolean success = ImageIOUtil.writeImage(bim, prefix + ".png", 300);
+
+//      boolean success = writer.writeImage(document, "png", null, 1, Integer.MAX_VALUE, prefix, 1, 300);
 
       // Generate all the sizes
       File[] files = this._destination.listFiles();
-      for (File f : files) {
+      if (files != null) for (File f : files) {
         BufferedImage image = ImageIO.read(f);
         String iname = f.getName().substring(0, f.getName().length() - 4);
         log("Downscaling "+f.getName());
@@ -120,7 +128,7 @@ public final class ProcessTask extends Task {
       }
 
       // Extract the text from each page
-      PDFTextStripper stripper = new PDFTextStripper("utf-8");
+      PDFTextStripper stripper = new PDFTextStripper();
       int pages = document.getNumberOfPages();
       for (int page = 1; page <= pages; page++) {
         log("Extracting text from page "+page);
