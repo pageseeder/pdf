@@ -18,8 +18,9 @@ dependencies {
 
   testCompile (
     'org.apache.ant:ant:1.8.1',
-    'xmlunit:xmlunit:1.6',
-    'junit:junit:4+'
+    'junit:junit:4+',
+    'org.xmlunit:xmlunit-core:2.3.0',
+    'org.xmlunit:xmlunit-matchers:2.3.0',
   )
 
 }

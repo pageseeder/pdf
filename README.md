@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/pageseeder/maven/pdf/images/download.svg) ](https://bintray.com/pageseeder/maven/pdf/_latestVersion)
+
 # Pageseeder PDF Export import API
 
 About this library

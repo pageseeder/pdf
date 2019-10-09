@@ -29,51 +29,48 @@
   <xsl:template match="/">
     <xsl:variable name="configs" select="distinct-values($foconfigs//foconfig/@config)" as="xs:string*"/>
     <!-- find first config used -->
-    <xsl:variable name="mainconfig" select="if (string(document/@type) != '') then document/@type else 'default'" />
     <!-- make sure the first one is computed correctly: it's the first one that defines a margin zone -->
-    <xsl:variable name="first" select="if (exists($foconfigs//foconfig[@config = $mainconfig]//header |
-                                                  $foconfigs//foconfig[@config = $mainconfig]//footer |
-                                                  $foconfigs//foconfig[@config = $mainconfig]//left | 
-                                                  $foconfigs//foconfig[@config = $mainconfig]//right)) then $mainconfig else 'default'" />
+    <xsl:variable name="first" select="psf:config-with-region(document)" />
     <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
       <fo:layout-master-set>
         <xsl:for-each select="$configs">
+          <xsl:variable name="config" select="$foconfigs//foconfig[@config = current()]" />
           <!-- First page, only for main doc -->
           <xsl:if test=". = $first"> 
             <fo:simple-page-master master-name="{.}-first">
-              <xsl:sequence select="psf:style-properties-all(., 'page', 'property', '')"/>
-              <fo:region-body><xsl:sequence select="psf:style-region-properties(., 'body')"/></fo:region-body>
-              <xsl:if test="psf:margin-zone(., 'header', 'true')">
-                <fo:region-before region-name="{.}-odd-before-first"><xsl:sequence select="psf:style-region-properties(., 'header-first')"/></fo:region-before>
+              <xsl:sequence select="psf:general-style-properties(., 'page', '', '')"/>
+              <fo:region-body><xsl:sequence select="psf:general-style-region-properties(., 'body', '')"/></fo:region-body>
+              <xsl:if test="$config//header[@first = 'true']">
+                <fo:region-before region-name="{.}-odd-before-first"><xsl:sequence select="psf:general-style-region-properties(., 'header', 'first')"/></fo:region-before>
               </xsl:if>
-              <xsl:if test="psf:margin-zone(., 'footer', 'true')">
-                <fo:region-after region-name="{.}-odd-after-first"><xsl:sequence select="psf:style-region-properties(., 'footer-first')"/></fo:region-after>
+              <xsl:if test="$config//footer[@first = 'true']">
+                <fo:region-after region-name="{.}-odd-after-first"><xsl:sequence select="psf:general-style-region-properties(., 'footer', 'first')"/></fo:region-after>
               </xsl:if>
-              <xsl:if test="psf:margin-zone(., 'left', 'true')">
-                <fo:region-start region-name="{.}-odd-left-first"><xsl:sequence select="psf:style-region-properties(., 'left-first')"/></fo:region-start>
+              <xsl:if test="$config//left[@first = 'true']">
+                <fo:region-start region-name="{.}-odd-left-first"><xsl:sequence select="psf:general-style-region-properties(., 'left', 'first')"/></fo:region-start>
               </xsl:if>
-              <xsl:if test="psf:margin-zone(., 'right', 'true')">
-                <fo:region-end region-name="{.}-odd-right-first"><xsl:sequence select="psf:style-region-properties(., 'right-first')"/></fo:region-end>
+              <xsl:if test="$config//right[@first = 'true']">
+                <fo:region-end region-name="{.}-odd-right-first"><xsl:sequence select="psf:general-style-region-properties(., 'right', 'first')"/></fo:region-end>
               </xsl:if>
             </fo:simple-page-master>
           </xsl:if>
           <!-- Odd pages -->
           <fo:simple-page-master master-name="{.}-odd">
-            <xsl:sequence select="psf:style-properties-all(., 'page', 'property', '')"/>
-            <fo:region-body><xsl:sequence select="psf:style-region-properties(., 'body')"/></fo:region-body>
-            <fo:region-before region-name="{.}-odd-before"><xsl:sequence select="psf:style-region-properties(., 'header-odd')"/></fo:region-before>
-            <fo:region-after  region-name="{.}-odd-after" ><xsl:sequence select="psf:style-region-properties(., 'footer-odd')"/></fo:region-after>
-            <fo:region-start  region-name="{.}-odd-left"  ><xsl:sequence select="psf:style-region-properties(., 'left-odd')"/></fo:region-start>
-            <fo:region-end    region-name="{.}-odd-right" ><xsl:sequence select="psf:style-region-properties(., 'right-odd')"/></fo:region-end>
+            <xsl:sequence select="psf:general-style-properties(., 'page', '', '')"/>
+            <fo:region-body><xsl:sequence select="psf:general-style-region-properties(., 'body', '')"/></fo:region-body>
+            <fo:region-before region-name="{.}-odd-before"><xsl:sequence select="psf:general-style-region-properties(., 'header', 'odd')"/></fo:region-before>
+            <fo:region-after  region-name="{.}-odd-after" ><xsl:sequence select="psf:general-style-region-properties(., 'footer', 'odd')"/></fo:region-after>
+            <fo:region-start  region-name="{.}-odd-left"  ><xsl:sequence select="psf:general-style-region-properties(., 'left', 'odd')"/></fo:region-start>
+            <fo:region-end    region-name="{.}-odd-right" ><xsl:sequence select="psf:general-style-region-properties(., 'right', 'odd')"/></fo:region-end>
           </fo:simple-page-master>
           <!-- even pages -->
           <fo:simple-page-master master-name="{.}-even">
-            <xsl:sequence select="psf:style-properties-all(., 'page', 'property', '')"/>
-            <fo:region-body><xsl:sequence select="psf:style-region-properties(., 'body')"/></fo:region-body>
-            <fo:region-before region-name="{.}-even-before"><xsl:sequence select="psf:style-region-properties(., 'header-even')"/></fo:region-before>
-            <fo:region-after  region-name="{.}-even-after" ><xsl:sequence select="psf:style-region-properties(., 'footer-even')"/></fo:region-after>
-            <fo:region-start  region-name="{.}-even-left"  ><xsl:sequence select="psf:style-region-properties(., 'left-even')"/></fo:region-start>
-            <fo:region-end    region-name="{.}-even-right" ><xsl:sequence select="psf:style-region-properties(., 'right-even')"/></fo:region-end>
+            <xsl:sequence select="psf:general-style-properties(., 'page', 'property', '')"/>
+            <fo:region-body><xsl:sequence select="psf:general-style-region-properties(., 'body', '')"/></fo:region-body>
+            <fo:region-before region-name="{.}-even-before"><xsl:sequence select="psf:general-style-region-properties(., 'header', 'even')"/></fo:region-before>
+            <fo:region-after  region-name="{.}-even-after" ><xsl:sequence select="psf:general-style-region-properties(., 'footer', 'even')"/></fo:region-after>
+            <fo:region-start  region-name="{.}-even-left"  ><xsl:sequence select="psf:general-style-region-properties(., 'left', 'even')"/></fo:region-start>
+            <fo:region-end    region-name="{.}-even-right" ><xsl:sequence select="psf:general-style-region-properties(., 'right', 'even')"/></fo:region-end>
           </fo:simple-page-master>
         </xsl:for-each>
         <xsl:for-each select="$configs">
@@ -108,13 +105,13 @@
           <xsl:for-each select="$configs">
             <!-- now compute  all unique labels used in headers/footers -->
             <xsl:variable name="all-labels">
-              <xsl:value-of select="string-join(psf:margin-zone(., 'header', '')//label/@name, ',')" />
+              <xsl:value-of select="string-join($foconfigs//foconfig[@config = current()]//header//label/@name, ',')" />
               <xsl:text>,</xsl:text>
-              <xsl:value-of select="string-join(psf:margin-zone(., 'footer', '')//label/@name, ',')" />
+              <xsl:value-of select="string-join($foconfigs//foconfig[@config = current()]//footer//label/@name, ',')" />
               <xsl:text>,</xsl:text>
-              <xsl:value-of select="string-join(psf:margin-zone(., 'right', '')//label/@name, ',')" />
+              <xsl:value-of select="string-join($foconfigs//foconfig[@config = current()]//right//label/@name, ',')" />
               <xsl:text>,</xsl:text>
-              <xsl:value-of select="string-join(psf:margin-zone(., 'left', '')//label/@name, ',')" />
+              <xsl:value-of select="string-join($foconfigs//foconfig[@config = current()]//left//label/@name, ',')" />
             </xsl:variable>
             <config name="{.}">
               <xsl:for-each select="distinct-values(tokenize($all-labels, ',')[. != ''])">
@@ -143,18 +140,18 @@
               <xsl:variable name="this-config"     select="psf:load-config(.)" />
               <!-- check for new config only if not transcluded -->
               <xsl:if test="empty(ancestor::blockxref)">
-                <xsl:variable name="previous-config"   select="psf:config-with-margin-zone(psf:load-config((preceding::*[psf:is-fragment(.)][*])[last()]))" />
-                <xsl:variable name="this-valid-config" select="psf:config-with-margin-zone($this-config)" />
+                <xsl:variable name="previous-config"   select="psf:config-with-region((preceding::*[psf:is-fragment(.)][*])[last()])" />
+                <xsl:variable name="this-valid-config" select="psf:config-with-region(.)" />
                 <!-- if new config that defines new margin zone, then restart flow -->
                 <xsl:if test="string($previous-config) != string($this-valid-config)">
-                  <id cfg="{$this-config}"><xsl:value-of select="@id" /></id>
+                  <id><xsl:value-of select="@id" /></id>
                 </xsl:if>
               </xsl:if>
               <!-- if new label value used -->
               <xsl:for-each select=".//inline[@label]">
                 <xsl:if test="$label-mapping//config[@name = $this-config]/label[@name = current()/@label]">
                   <!-- if new label, restart at the parent root or blockxref -->
-                  <id cfg="{$this-config}"><xsl:value-of select="$this-elem/@id" /></id>
+                  <id><xsl:value-of select="$this-elem/@id" /></id>
                 </xsl:if>
               </xsl:for-each>
             </xsl:for-each>
@@ -168,9 +165,9 @@
         </ids>
       </xsl:variable>
       <!-- ok now loop through all fragment children (and toc if first one) -->
-      <xsl:for-each select="document/section/*[psf:is-fragment(.)][string(@id) != '']
-                            [index-of($fragment-ids//id, @id) != -1] | /document/toc[empty(preceding::*[psf:is-fragment(.)])]">
-        <xsl:variable name="this-config" select="psf:config-with-margin-zone(psf:load-config(.))" />
+      <xsl:for-each select="document/section/*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1] |
+                            document/toc[empty(preceding::*[psf:is-fragment(.)])]">
+        <xsl:variable name="this-config" select="psf:config-with-region(.)" />
         <xsl:variable name="this-elem"   select="." />
         <xsl:variable name="is-first"    select="empty(preceding::*[psf:is-fragment(.)])" />
         <!-- compute all unique labels used in headers/footers -->
@@ -191,16 +188,17 @@
         <fo:page-sequence master-reference="{$this-config}-go{if ($is-first) then '-first' else ''}">
           <!-- the first page if there is any -->
           <xsl:if test="$is-first">
-            <xsl:if test="psf:margin-zone($this-config, 'header', 'true')">
+            <xsl:variable name="config" select="$foconfigs//foconfig[@config = $this-config]" />
+            <xsl:if test="$config//header[@first = 'true']">
               <fo:static-content flow-name="{$this-config}-odd-before-first"><xsl:sequence select="psf:header-footer(., 'header', 'first', $label-map)" /></fo:static-content>
             </xsl:if>
-            <xsl:if test="psf:margin-zone($this-config, 'footer', 'true')">
+            <xsl:if test="$config//footer[@first = 'true']">
               <fo:static-content flow-name="{$this-config}-odd-after-first"><xsl:sequence select="psf:header-footer(., 'footer', 'first', $label-map)" /></fo:static-content>
             </xsl:if>
-            <xsl:if test="psf:margin-zone($this-config, 'left', 'true')">
+            <xsl:if test="$config//left[@first = 'true']">
               <fo:static-content flow-name="{$this-config}-odd-left-first"><xsl:sequence select="psf:left-right(., 'left', 'first', $label-map)" /></fo:static-content>
             </xsl:if>
-            <xsl:if test="psf:margin-zone($this-config, 'right', 'true')">
+            <xsl:if test="$config//right[@first = 'true']">
               <fo:static-content flow-name="{$this-config}-odd-right-first"><xsl:sequence select="psf:left-right(., 'right', 'first', $label-map)" /></fo:static-content>
             </xsl:if>
           </xsl:if>
@@ -214,7 +212,7 @@
           <fo:static-content flow-name="{$this-config}-even-right"> <xsl:sequence select="psf:left-right(., 'right', 'even', $label-map)" /></fo:static-content>
           <fo:flow flow-name="xsl-region-body">
             <fo:block>
-              <xsl:sequence select="psf:style-properties(., 'body')"/>
+              <xsl:sequence select="psf:general-style-properties($this-config, 'body', '', '')"/>
               <!-- first page ID -->
               <xsl:if test="$is-first">
                 <fo:block id="first-page" />
@@ -250,22 +248,27 @@
     <xsl:param name="h-or-f" />
     <xsl:param name="o-or-e" />
     <xsl:param name="labels" />
-    <xsl:variable name="config" select="psf:load-config($context)" />
+
+    <xsl:variable name="config-with-region" select="psf:config-with-region($context)" />
+    <xsl:variable name="margin-zone-first"  select="psf:margin-zone($context, $h-or-f, 'true')" />
+    <xsl:variable name="margin-zone"        select="psf:margin-zone($context, $h-or-f, 'false')" />
+
     <fo:block vertical-align="bottom">
-      <xsl:sequence select="psf:style-properties($context, concat($h-or-f, '-', $o-or-e))"/>
+      <xsl:sequence select="psf:general-style-properties($config-with-region, $h-or-f, $o-or-e, '')"/>
       <fo:table table-layout="fixed" border-collapse="collapse" inline-progression-dimension.optimum="100%">
         <fo:table-column>
           <xsl:attribute name="column-width">
             <xsl:text>proportional-column-width(</xsl:text>
             <xsl:variable name="w">
-            <xsl:choose>
-              <xsl:when test="$o-or-e = 'first'">
-                <xsl:value-of select="replace(psf:margin-zone($config, $h-or-f, 'true')/left/@width, '\D', '')" />
-              </xsl:when>
-              <xsl:when test="psf:margin-zone($config, $h-or-f, 'false')[@odd-or-even = '' or @odd-or-even = $o-or-e]/left/@width">
-                <xsl:value-of select="replace(psf:margin-zone($config, $h-or-f, 'false')[@odd-or-even = '' or @odd-or-even = $o-or-e]/left/@width, '\D', '')" />
-              </xsl:when>
-            </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$o-or-e = 'first'">
+                  <xsl:value-of select="replace($margin-zone-first/left/@width, '\D', '')" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:variable name="wid" select="$margin-zone[@odd-or-even = '' or @odd-or-even = $o-or-e]/left/@width" />
+                  <xsl:if test="$wid"><xsl:value-of select="replace($wid, '\D', '')" /></xsl:if>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:variable>
             <xsl:value-of select="if (string($w) = '') then '1' else $w" />
             <xsl:text>)</xsl:text>
@@ -275,15 +278,15 @@
           <xsl:attribute name="column-width">
             <xsl:text>proportional-column-width(</xsl:text>
             <xsl:variable name="w">
-            <xsl:choose>
-              <xsl:when test="$o-or-e = 'first'">
-                <xsl:value-of select="replace(psf:margin-zone($config, $h-or-f, 'true')/center/@width, '\D', '')" />
-              </xsl:when>
-              <xsl:when test="psf:margin-zone($config, $h-or-f, 'false')[@odd-or-even = '' or @odd-or-even = $o-or-e]/center/@width">
-                <xsl:value-of select="replace(psf:margin-zone($config, $h-or-f, 'false')[@odd-or-even = '' or @odd-or-even = $o-or-e]/center/@width, '\D', '')" />
-              </xsl:when>
-              <xsl:otherwise>1</xsl:otherwise>
-            </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$o-or-e = 'first'">
+                  <xsl:value-of select="replace($margin-zone-first/center/@width, '\D', '')" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:variable name="wid" select="$margin-zone[@odd-or-even = '' or @odd-or-even = $o-or-e]/center/@width" />
+                  <xsl:if test="$wid"><xsl:value-of select="replace($wid, '\D', '')" /></xsl:if>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:variable>
             <xsl:value-of select="if (string($w) = '') then '1' else $w" />
             <xsl:text>)</xsl:text>
@@ -293,15 +296,15 @@
           <xsl:attribute name="column-width">
             <xsl:text>proportional-column-width(</xsl:text>
             <xsl:variable name="w">
-            <xsl:choose>
-              <xsl:when test="$o-or-e = 'first'">
-                <xsl:value-of select="replace(psf:margin-zone($config, $h-or-f, 'true')/right/@width, '\D', '')" />
-              </xsl:when>
-              <xsl:when test="psf:margin-zone($config, $h-or-f, 'false')[@odd-or-even = '' or @odd-or-even = $o-or-e]/right/@width">
-                <xsl:value-of select="replace(psf:margin-zone($config, $h-or-f, 'false')[@odd-or-even = '' or @odd-or-even = $o-or-e]/right/@width, '\D', '')" />
-              </xsl:when>
-              <xsl:otherwise>1</xsl:otherwise>
-            </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="$o-or-e = 'first'">
+                  <xsl:value-of select="replace($margin-zone-first/right/@width, '\D', '')" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:variable name="wid" select="$margin-zone[@odd-or-even = '' or @odd-or-even = $o-or-e]/right/@width" />
+                  <xsl:if test="$wid"><xsl:value-of select="replace($wid, '\D', '')" /></xsl:if>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:variable>
             <xsl:value-of select="if (string($w) = '') then '1' else $w" />
             <xsl:text>)</xsl:text>
@@ -311,19 +314,19 @@
           <fo:table-row>
             <fo:table-cell text-align="left">
               <fo:block>
-                <xsl:sequence select="psf:style-properties($context, concat($h-or-f, '-', $o-or-e, '-left'))"/>
+                <xsl:sequence select="psf:general-style-properties($config-with-region, $h-or-f, $o-or-e, 'left')"/>
                 <xsl:sequence select="psf:margin-zone-styling($context, $h-or-f, $o-or-e, 'left', $labels)" />
               </fo:block>
             </fo:table-cell>
             <fo:table-cell text-align="center">
               <fo:block>
-                <xsl:sequence select="psf:style-properties($context, concat($h-or-f, '-', $o-or-e, '-center'))"/>
-                  <xsl:sequence select="psf:margin-zone-styling($context, $h-or-f, $o-or-e, 'center', $labels)" />
-                </fo:block>
-              </fo:table-cell>
+                <xsl:sequence select="psf:general-style-properties($config-with-region, $h-or-f, $o-or-e, 'center')"/>
+                <xsl:sequence select="psf:margin-zone-styling($context, $h-or-f, $o-or-e, 'center', $labels)" />
+              </fo:block>
+            </fo:table-cell>
             <fo:table-cell text-align="right">
               <fo:block>
-                <xsl:sequence select="psf:style-properties($context, concat($h-or-f, '-', $o-or-e, '-right'))"/>
+                <xsl:sequence select="psf:general-style-properties($config-with-region, $h-or-f, $o-or-e, 'right')"/>
                 <xsl:sequence select="psf:margin-zone-styling($context, $h-or-f, $o-or-e, 'right', $labels)" />
               </fo:block>
             </fo:table-cell>
@@ -354,14 +357,14 @@
               <xsl:choose>
                 <xsl:when test="$odd-or-even = 'first'">
                   <xsl:choose>
-                    <xsl:when test="psf:margin-zone($config, $type, 'true')/top/@height">
-                      <xsl:value-of select="psf:margin-zone($config, $type, 'true')/top/@height" />
+                    <xsl:when test="psf:margin-zone($context, $type, 'true')/top/@height">
+                      <xsl:value-of select="psf:margin-zone($context, $type, 'true')/top/@height" />
                     </xsl:when>
                     <xsl:otherwise>33%</xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
-                <xsl:when test="psf:margin-zone($config, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/top/@height">
-                  <xsl:value-of select="psf:margin-zone($config, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/top/@height" />
+                <xsl:when test="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/top/@height">
+                  <xsl:value-of select="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/top/@height" />
                 </xsl:when>
                 <xsl:otherwise>33%</xsl:otherwise>
               </xsl:choose>
@@ -376,14 +379,14 @@
               <xsl:choose>
                 <xsl:when test="$odd-or-even = 'first'">
                   <xsl:choose>
-                    <xsl:when test="psf:margin-zone($config, $type, 'true')/middle/@height">
-                      <xsl:value-of select="psf:margin-zone($config, $type, 'true')/middle/@height" />
+                    <xsl:when test="psf:margin-zone($context, $type, 'true')/middle/@height">
+                      <xsl:value-of select="psf:margin-zone($context, $type, 'true')/middle/@height" />
                     </xsl:when>
                     <xsl:otherwise>33%</xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
-                <xsl:when test="psf:margin-zone($config, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/middle/@height">
-                  <xsl:value-of select="psf:margin-zone($config, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/middle/@height" />
+                <xsl:when test="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/middle/@height">
+                  <xsl:value-of select="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/middle/@height" />
                 </xsl:when>
                 <xsl:otherwise>33%</xsl:otherwise>
               </xsl:choose>
@@ -398,14 +401,14 @@
               <xsl:choose>
                 <xsl:when test="$odd-or-even = 'first'">
                   <xsl:choose>
-                    <xsl:when test="psf:margin-zone($config, $type, 'true')/bottom/@height">
-                      <xsl:value-of select="psf:margin-zone($config, $type, 'true')/bottom/@height" />
+                    <xsl:when test="psf:margin-zone($context, $type, 'true')/bottom/@height">
+                      <xsl:value-of select="psf:margin-zone($context, $type, 'true')/bottom/@height" />
                     </xsl:when>
                     <xsl:otherwise>33%</xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
-                  <xsl:when test="psf:margin-zone($config, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/bottom/@height">
-                    <xsl:value-of select="psf:margin-zone($config, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/bottom/@height" />
+                  <xsl:when test="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/bottom/@height">
+                    <xsl:value-of select="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/bottom/@height" />
                 </xsl:when>
                 <xsl:otherwise>33%</xsl:otherwise>
               </xsl:choose>

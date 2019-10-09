@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document level="portable">
+  <documentinfo>
+    <uri>
+      <displaytitle>labelled document title</displaytitle>
+      <labels>pdf1,pdf2</labels>
+    </uri>
+  </documentinfo>
+  <section id="1">
+    <fragment id="1">
+      <heading level="1">Labelled document heading</heading>
+      <para>This document has a label!</para>
+    </fragment>
+    <fragment id="2">
+      <para>This is another paragraph.</para>
+    </fragment>
+  </section>
+</document>

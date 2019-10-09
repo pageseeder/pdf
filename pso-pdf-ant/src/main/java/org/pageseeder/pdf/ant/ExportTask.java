@@ -261,18 +261,16 @@ public final class ExportTask extends Task {
     FileWriter writer = new FileWriter(config);
     writer.write("<foconfigs>\n");
     // find highest priority
-    int highestPriority = this._FOConfigs.stream().mapToInt(FOConfig::getPriority).sum();
+    int highestPriority = this._FOConfigs.stream().filter(c -> c._config != null && c._config.exists()).mapToInt(FOConfig::getPriority).max().orElseGet(() -> 0);
     // write the first one found with the highest priority
-    for (FOConfig conf : this._FOConfigs) {
-      if (conf._config != null && conf._priority == highestPriority) {
-        writer.write("<foconfig config=\""+escapeAttValue(conf._name)+"\" priority=\""+conf._priority+"\">");
-        writeStream(writer, new FileInputStream(conf._config));
-        writer.write("</foconfig>\n");
-        break;
-      }
+    FOConfig conf = this._FOConfigs.stream().filter(c -> c._config != null && c._config.exists() && c.getPriority() == highestPriority).findFirst().orElse(null);
+    if (conf != null && conf._config != null && conf._config.exists()) {
+      writer.write("<foconfig config=\"custom\">");
+      writeStream(writer, new FileInputStream(conf._config));
+      writer.write("</foconfig>\n");
     }
     // write default styles, with lowest priority
-    writer.write("<foconfig config=\"default\" priority=\"0\">");
+    writer.write("<foconfig config=\"default\">");
     ClassLoader loader = ExportTask.class.getClassLoader();
     InputStream defaultFO = loader.getResourceAsStream("org/pageseeder/pdf/resource/defaultFOConfig.xml");
     if (defaultFO != null) writeStream(writer, defaultFO);
@@ -420,4 +418,5 @@ public final class ExportTask extends Task {
      */
     public int getPriority() { return _priority; }
   }
+
 }

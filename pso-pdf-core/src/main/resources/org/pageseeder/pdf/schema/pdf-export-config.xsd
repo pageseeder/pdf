@@ -1,0 +1,445 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:element name="config">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="styles" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+	<xs:element name="styles">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="page" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="body" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="header" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="footer" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="element" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+      <xs:attribute name="label" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="page">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="property" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="name" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="page-width" />
+									<xs:enumeration value="page-height" />
+									<xs:enumeration value="margin-top" />
+									<xs:enumeration value="margin-bottom" />
+									<xs:enumeration value="margin-left" />
+									<xs:enumeration value="margin-right" />
+									<xs:enumeration value="space-before" />
+									<xs:enumeration value="space-after" />
+									<xs:enumeration value="start-indent" />
+									<xs:enumeration value="end-indent" />
+									<xs:enumeration value="reference-orientation" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="value" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="property">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="value" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="region-property">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="value" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="body">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="region-property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="header">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="region-property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="left" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="center" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="property"/>
+							<xs:element name="text" type="xs:string" />
+							<xs:element name="image">
+								<xs:complexType>
+									<xs:attribute name="src" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="date">
+								<xs:complexType>
+									<xs:attribute name="pattern" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="page-number" />
+							<xs:element name="total-pages" />
+							<xs:element name="filename" />
+							<xs:element name="label">
+								<xs:complexType>
+									<xs:attribute name="name" type="label" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="right" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="first" type="xs:boolean"/>
+      <xs:attribute name="odd-or-even">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="odd" />
+            <xs:enumeration value="even" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="footer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="region-property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="left" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="center" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="right" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="first" type="xs:boolean"/>
+      <xs:attribute name="odd-or-even">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="odd" />
+            <xs:enumeration value="even" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="right">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="region-property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="top">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="middle">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+						<xs:attribute name="height" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="bottom">
+					<xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="first" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="element">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="element-name" use="required"/>
+			<xs:attribute name="role" type="xs:string"/>
+      <xs:attribute name="level" type="xs:positiveInteger"/>
+		</xs:complexType>
+	</xs:element>
+  
+  <xs:simpleType name="element-name-enum">
+    <xs:restriction base="xs:string">
+      <!-- Block elements -->
+      <xs:enumeration value="blockxref" />
+      <xs:enumeration value="preformat" />
+      <xs:enumeration value="section-title" />
+      <xs:enumeration value="section-title2" />
+      <xs:enumeration value="toc" />
+      <xs:enumeration value="toc-level1" />
+      <xs:enumeration value="toc-level2" />
+      <xs:enumeration value="toc-level3" />
+      <xs:enumeration value="toc-level4" />
+      <xs:enumeration value="toc-level5" />
+      <xs:enumeration value="toc-level6" />
+      <xs:enumeration value="toc-title" />
+      <xs:enumeration value="cell" />
+      <xs:enumeration value="hcell" />
+      <xs:enumeration value="heading" />
+      <xs:enumeration value="heading-prefix" />
+      <xs:enumeration value="heading1" />
+      <xs:enumeration value="heading2" />
+      <xs:enumeration value="heading3" />
+      <xs:enumeration value="heading4" />
+      <xs:enumeration value="heading5" />
+      <xs:enumeration value="heading6" />
+      <xs:enumeration value="title" />
+      <xs:enumeration value="para" />
+      <xs:enumeration value="para-prefix" />
+      <xs:enumeration value="list" />
+      <xs:enumeration value="nlist" />
+      <xs:enumeration value="list-item" />
+      <xs:enumeration value="block" />
+      <xs:enumeration value="blockName" />
+      <xs:enumeration value="image" />
+      <!-- Inline elements -->
+      <xs:enumeration value="bold" />
+      <xs:enumeration value="graphic" />
+      <xs:enumeration value="inline" />
+      <xs:enumeration value="inlineName" />
+      <xs:enumeration value="italic" />
+      <xs:enumeration value="link" />
+      <xs:enumeration value="monospace" />
+      <xs:enumeration value="sub" />
+      <xs:enumeration value="sup" />
+      <xs:enumeration value="underline" />
+      <xs:enumeration value="xref" />
+      <!-- Special elements -->
+      <xs:enumeration value="table-cell" />
+      <xs:enumeration value="table-hcell" />
+      <xs:enumeration value="cell" />
+      <xs:enumeration value="hcell" />
+      <!-- Table element -->
+      <xs:enumeration value="table" />
+      <!-- Property elements -->
+      <xs:enumeration value="property-title" />
+      <xs:enumeration value="property-title-cell" />
+      <xs:enumeration value="property-value" />
+      <xs:enumeration value="property-value-cell" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="element-name-pattern">
+    <xs:restriction base="xs:string">
+        <xs:pattern value="inline-[a-zA-Z0-9_\-]+|inlineName-[a-zA-Z0-9_\-]+|block-[a-zA-Z0-9_\-]+|blockName-[a-zA-Z0-9_\-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="element-name">
+    <xs:union memberTypes="element-name-enum element-name-pattern"/>
+  </xs:simpleType>
+  
+  <xs:simpleType name="label">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9_\-]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

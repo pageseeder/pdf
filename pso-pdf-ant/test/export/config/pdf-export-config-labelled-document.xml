@@ -1,0 +1,121 @@
+<config>
+
+  <styles>
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="1cm"/>
+      <property name="margin-bottom"          value="0.5cm"/>
+      <property name="margin-left"            value="2cm"/>
+      <property name="margin-right"           value="2cm"/>
+    </page>
+    <body>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="2cm"/>
+      <property name="font-family"            value="Helvetica"/>
+      <property name="font-size"              value="11pt"/>
+      <property name="line-height"            value="140%"/>
+    </body>
+    <header>
+      <region-property name="extent"          value="2cm" />
+      <property name="line-height"            value="15pt"/>
+      <property name="font-size"              value="14pt"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="0mm"/>
+      <left><date pattern="[D1o] [MNn], [Y]" /><text> - </text><filename /></left>
+      <right><text>custom styles</text></right>
+    </header>
+    <footer first="true">
+      <region-property name="extent"          value="2cm" />
+      <property name="font-size"              value="15pt"/>
+      <center><text>First page</text></center>
+    </footer>
+    <footer>
+      <region-property name="extent"          value="2cm" />
+      <property name="font-size"              value="15pt"/>
+      <center><page-number/><text>/</text><total-pages/></center>
+    </footer>
+  </styles>
+
+  <styles label="pdf1">
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="1cm"/>
+      <property name="margin-bottom"          value="0.5cm"/>
+      <property name="margin-left"            value="0.5cm"/>
+      <property name="margin-right"           value="0.5cm"/>
+    </page>
+    <body>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="2cm"/>
+      <property name="font-family"            value="Helvetica"/>
+      <property name="font-size"              value="11pt"/>
+      <property name="line-height"            value="140%"/>
+    </body>
+    <header first="true">
+      <region-property name="extent"          value="1.5cm" />
+      <property name="line-height"            value="8pt"/>
+      <property name="font-size"              value="8pt"/>
+      <property name="border-bottom-style"    value="dashed"/>
+      <property name="border-bottom-width"    value="1mm"/>
+      <property name="border-bottom-color"    value="red"/>
+      <left><date pattern="[D1o] [MNn], [Y]" /><text> - </text><filename /></left>
+      <right><text>first labelled styles pdf1</text></right>
+    </header>
+    <header>
+      <region-property name="extent"          value="2cm" />
+      <property name="line-height"            value="15pt"/>
+      <property name="font-size"              value="14pt"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="0mm"/>
+      <left><date pattern="[D1o] [MNn], [Y]" /><text> - </text><filename /></left>
+      <right><text>labelled styles pdf1</text></right>
+    </header>
+    <footer first="true">
+      <region-property name="extent"          value="2cm" />
+      <property name="font-size"              value="15pt"/>
+      <center><text>First page pdf1</text></center>
+    </footer>
+    <footer>
+      <region-property name="extent"          value="2cm" />
+      <property name="font-size"              value="15pt"/>
+      <center><page-number/><text>/</text><total-pages/></center>
+    </footer>
+  </styles>
+
+  <styles label="pdf2">
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="1cm"/>
+      <property name="margin-bottom"          value="0.5cm"/>
+      <property name="margin-left"            value="2cm"/>
+      <property name="margin-right"           value="2cm"/>
+    </page>
+    <body>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="2cm"/>
+      <property name="font-family"            value="Helvetica"/>
+      <property name="font-size"              value="11pt"/>
+      <property name="line-height"            value="140%"/>
+    </body>
+    <header first="true">
+      <region-property name="extent" value="3cm" />
+      <right><text>first labelled styles pdf2</text></right>
+    </header>
+    <header>
+      <region-property name="extent" value="2cm" />
+      <left><date pattern="[D1o] [MNn], [Y]" /><text> - </text><filename /></left>
+      <right><text>labelled styles pdf2</text></right>
+    </header>
+    <footer first="true">
+      <region-property name="extent" value="2cm" />
+      <center><text>First page pdf2</text></center>
+    </footer>
+    <footer>
+      <region-property name="extent" value="2cm" />
+      <center><page-number/><text>/</text><total-pages/></center>
+    </footer>
+  </styles>
+</config>

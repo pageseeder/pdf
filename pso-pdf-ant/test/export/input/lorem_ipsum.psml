@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document level="portable">
+<document level="portable" id="123456">
   <section id="1">
     <fragment id="1">
       <heading level="1">Lorem ipsum</heading>
@@ -51,6 +51,7 @@
           urititle="Lorem ipsum">test xlink</xref>.
         Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo
         vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+        <link href="#local-anchor">test local link</link>
       </para>
       <para>
         Lorem ipsum dolor sit amet,
@@ -286,7 +287,7 @@
       <para> </para>
     </fragment>
     <fragment id="2.1871">
-      <para>Some standard images:</para>
+      <para><anchor name="local-anchor" />Some standard images:</para>
       <para>
         GIF:
         <image src="lorem_ipsum_files/cat.gif" height="75" width="100" />

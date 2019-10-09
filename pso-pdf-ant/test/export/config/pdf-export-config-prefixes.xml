@@ -1,0 +1,52 @@
+<styles>
+
+  <element name="heading-prefix" level="1">
+    <property name="start-indent" value="-1cm"/>
+    <property name="text-indent"  value="1cm"/>
+    <property name="color"        value="green"/>
+  </element>
+
+  <element name="heading-prefix" level="2">
+    <property name="start-indent" value="-2cm"/>
+    <property name="text-indent"  value="2cm"/>
+    <property name="color"        value="blue"/>
+  </element>
+
+  <element name="heading-prefix" level="3">
+    <property name="start-indent" value="-3cm"/>
+    <property name="text-indent"  value="3cm"/>
+    <property name="color"        value="yellow"/>
+  </element>
+
+  <element name="heading-prefix" level="4">
+    <property name="start-indent" value="-4cm"/>
+    <property name="text-indent"  value="4cm"/>
+    <property name="color"        value="red"/>
+  </element>
+
+  <element name="heading-prefix" level="5">
+    <property name="start-indent" value="-5cm"/>
+    <property name="text-indent"  value="5cm"/>
+    <property name="color"        value="purple"/>
+  </element>
+
+  <element name="heading-prefix" level="6">
+    <property name="start-indent" value="-6cm"/>
+    <property name="text-indent"  value="6cm"/>
+    <property name="color"        value="orange"/>
+  </element>
+
+  <element name="para-prefix" level="1">
+    <property name="start-indent" value="-1.5cm"/>
+    <property name="text-indent"  value="1.5cm"/>
+    <property name="text-align"   value="right"/>
+    <property name="font-size"    value="10pt"/>
+  </element>
+
+  <element name="para-prefix" level="2">
+    <property name="start-indent" value="-2.5cm"/>
+    <property name="text-indent"  value="2.5cm"/>
+    <property name="text-align"   value="right"/>
+    <property name="font-size"    value="15pt"/>
+  </element>
+</styles>

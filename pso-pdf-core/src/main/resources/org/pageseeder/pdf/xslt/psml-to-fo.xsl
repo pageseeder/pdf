@@ -207,11 +207,11 @@
     <!-- if this is the first fragment of this document, add the anchor -->
     <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
     <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
-      <fo:block id="{$dad-doc/@id}" />
+      <fo:block id="psf-{$dad-doc/@id}" />
     </xsl:if>
     <!-- check for section title -->
     <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
-    <fo:block id="{@id}">
+    <fo:block id="psf-{@id}">
       <xsl:variable name="config" select="psf:load-config(.)" />
       <xsl:variable name="cust-props" select="psf:load-style-properties($config, concat(name(), '-', @type))" />
       <xsl:variable name="def-props"  select="psf:load-style-properties($config, name())" />
@@ -234,11 +234,11 @@
     <!-- if this is the first fragment of this document, add the anchor -->
     <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
     <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
-      <fo:block id="{$dad-doc/@id}" />
+      <fo:block id="psf-{$dad-doc/@id}" />
     </xsl:if>
     <!-- check for section title -->
     <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
-    <fo:block id="{@id}">
+    <fo:block id="psf-{@id}">
       <xsl:sequence select="psf:style-properties(., 'properties')"/>
       <fo:table border-collapse="collapse" table-layout="fixed" inline-progression-dimension.optimum="100%">
         <fo:table-column column-width="proportional-column-width(1)" />
@@ -355,16 +355,24 @@
     </xsl:if>
   </xsl:template>
 
-<!-- ============================== Heading ================================= -->
-<!-- Template for PageSeeder Heading
+  <!-- ============================== anchor ================================== -->
+  <xsl:template match="anchor[@name]">
+    <!-- only if first one (to avoid duplicates) -->
+    <xsl:if test="empty(preceding::anchor[@name = current()/@name])">
+      <fo:block id="psa-{@name}" />
+    </xsl:if>
+  </xsl:template>
 
-.. admonition:: xpath:heading
+  <!-- ============================== Heading ================================= -->
+  <!-- Template for PageSeeder Heading
 
-   | <fo:block id="1">
-   |   1. ...
-   | </fo:block>
+  .. admonition:: xpath:heading
 
--->
+     | <fo:block id="1">
+     |   1. ...
+     | </fo:block>
+
+  -->
   <!-- with prefix -->
   <xsl:template match="heading[string(@prefix) != '']">
     <xsl:variable name="prefix-properties"  select="psf:load-style-properties(., concat('heading-prefix-', @level))[string(@value) != '']" />
@@ -523,7 +531,7 @@
       <xsl:variable name="def-props"  select="psf:load-style-properties($config, 'block')" />
       <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
       <!-- check if we should show the name of the label -->
-      <xsl:variable name="show" select="not(psf:load-style-properties($config, 'blockName')[@name = 'ps-hide']/@value = 'true') and 
+      <xsl:variable name="show" select="not(psf:load-style-properties($config, 'blockName')[@name = 'ps-hide']/@value = 'true') and
                         not(psf:load-style-properties($config, concat('blockName', $name))[@name = 'ps-hide']/@value = 'true')"/>
       <xsl:if test="$show">
         <fo:block>
@@ -661,7 +669,7 @@
         <xsl:choose>
           <xsl:when test="starts-with(@href,'#')">
             <xsl:attribute name="internal-destination">
-              <xsl:value-of select="if (string-length(@href) = 1) then 'first-page' else substring-after(@href,'#')"/>
+              <xsl:value-of select="if (string-length(@href) = 1) then 'first-page' else concat('psa-', substring-after(@href,'#'))"/>
             </xsl:attribute>      
           </xsl:when>
           <xsl:when test="@href=''">
@@ -880,7 +888,7 @@
   <xsl:template name="xref-link">
     <xsl:choose>
       <xsl:when test="starts-with(@href,'#')">
-        <fo:basic-link internal-destination="{if (substring-after(@href,'#') = '') then @frag else substring-after(@href,'#')}">
+        <fo:basic-link internal-destination="psf-{if (substring-after(@href,'#') = '') then @frag else substring-after(@href,'#')}">
           <xsl:choose>
             <xsl:when test=".=''"><xsl:value-of select="@title" /></xsl:when>
             <xsl:otherwise><xsl:apply-templates /></xsl:otherwise>

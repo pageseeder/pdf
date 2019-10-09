@@ -7,50 +7,65 @@
 
   <xsl:param name="source-filename" />
 
-  <xsl:variable name="foconfigs"    select="document($foconfigfileurl)" />
-  <xsl:variable name="mainconfig"   select="/document/@type" />
-  <xsl:variable name="uriusertitle" select="if (/document/documentinfo/uri/displayname) then /document/documentinfo/uri/displayname else $source-filename"/>
+  <xsl:variable name="uriusertitle" select="if (/document/documentinfo/uri/displaytitle) then /document/documentinfo/uri/displaytitle else $source-filename"/>
+  <xsl:variable name="foconfigs-document" select="document($foconfigfileurl)" />
+  <xsl:variable name="foconfigs">
+    <xsl:for-each select="$foconfigs-document//foconfig//styles">
+      <xsl:variable name="config-name"     select="if (@label) then concat('label-', @label) else ancestor::foconfig/@config" />
+      <xsl:variable name="config-priority" select="if (@label) then 2 else if (ancestor::foconfig/@config = 'custom') then 1 else 0" />
+      <foconfig xmlns="" config="{$config-name}" priority="{$config-priority}">
+        <xsl:if test="@label"><xsl:attribute name="label" select="@label" /></xsl:if>
+        <xsl:copy-of select="*" />
+      </foconfig>
+    </xsl:for-each>
+  </xsl:variable>
   
   <!--
     Find the config that defines a margin zone.
     It could be the current one, the 'mainconfig' parameter or default
     
-    @param config     the current config
+    @param context     the current context
   -->
-  <xsl:function name="psf:config-with-margin-zone">
-    <xsl:param name="config" />
-    <xsl:choose>
-      <xsl:when test="exists($foconfigs//foconfig[@config = $config]//header |
-                             $foconfigs//foconfig[@config = $config]//footer |
-                             $foconfigs//foconfig[@config = $config]//left |
-                             $foconfigs//foconfig[@config = $config]//right)"><xsl:value-of select="$config" /></xsl:when>
-      <xsl:when test="$mainconfig != '' and exists($foconfigs//foconfig[@config = $mainconfig]//header |
-                             $foconfigs//foconfig[@config = $mainconfig]//footer |
-                             $foconfigs//foconfig[@config = $mainconfig]//left |
-                             $foconfigs//foconfig[@config = $mainconfig]//right)"><xsl:value-of select="$mainconfig" /></xsl:when>
-      <xsl:otherwise>default</xsl:otherwise>
-    </xsl:choose>
+  <xsl:function name="psf:config-with-region">
+    <xsl:param name="context" />
+    <xsl:variable name="labels" select="psf:load-labels($context)" />
+    <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
+
+    <!-- find all the configs with margin zones defined -->
+    <xsl:variable name="all" select="$foconfigs//foconfig[@config = $label-config/@config or @config = 'custom' or @config = 'default']
+                                                         [body | page | header | footer | left | right]" />
+
+    <!-- now only use the one with the highest priority -->
+    <xsl:variable name="max-priority" select="max($all/@priority)" />
+    <xsl:sequence select="($all[@priority = $max-priority])[1]/@config" />
 
   </xsl:function>
   
   <!--
     Method used to load the margin zone definition.
     
-    @param config     the FOConfig.xml config file
+    @param context    the current context
     @param type       the type of margin zone (supported values are 'header', 'footer', 'left' and 'right')
     @param first      if we should get the one for the first page (values are 'true', 'false' or '' which means any value)
   -->
   <xsl:function name="psf:margin-zone">
-    <xsl:param name="config" />
+    <xsl:param name="context" />
     <xsl:param name="type" />
     <xsl:param name="first" />
 
-    <!-- find all the margin zones defined -->
-    <xsl:variable name="all" select="$foconfigs//foconfig[@config = $config or @config = 'default']//*[name() = $type]
+    <xsl:variable name="config" select="psf:config-with-region($context)" />
+    <xsl:sequence select="$foconfigs//foconfig[@config = $config]/*[name() = $type]
+                          [$first = '' or ($first = 'true' and @first = 'true') or ($first = 'false' and empty(@first))]" />
+
+    <!--<xsl:variable name="labels" select="psf:load-labels($context)" />
+    <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
+
+    &lt;!&ndash; find all the margin zones defined &ndash;&gt;
+    <xsl:variable name="all" select="$foconfigs//foconfig[@config = $label-config/@config or @config = 'custom' or @config = 'default']//*[name() = $type]
                                      [$first = '' or ($first = 'true' and @first = 'true') or ($first = 'false' and empty(@first))]" />
-    <!-- now only use the one with the highest priority -->
+    &lt;!&ndash; now only use the one with the highest priority &ndash;&gt;
     <xsl:variable name="max-priority" select="max($all/ancestor::foconfig/@priority)" />
-    <xsl:sequence select="$all[ancestor::foconfig/@priority = $max-priority][1]" />
+    <xsl:sequence select="$all[ancestor::foconfig/@priority = $max-priority][1]" />-->
 
   </xsl:function>
   
@@ -70,14 +85,39 @@
     <xsl:param name="odd-or-even" />
     <xsl:param name="position" />
     <xsl:param name="labels" />
-    
+
     <!-- find which config should apply to current context -->
-    <xsl:variable name="config" select="psf:load-config($context)" />
-    <!-- find all the header/footer/left/right defined -->
+    <xsl:variable name="config" select="$foconfigs//foconfig[@config = psf:config-with-region($context)]" />
+    <xsl:variable name="element">
+      <xsl:choose>
+        <!-- if 'first' then only search for styling in the 'first' zone -->
+        <xsl:when test="$odd-or-even = 'first'">
+          <xsl:sequence select="$config/*[name() = $type][@first = 'true']/*[name(.) = $position]" />
+        </xsl:when>
+        <!-- otherwise, try to find the zone exactly matching the 'odd-or-even' flag -->
+        <xsl:when test="$config/*[name() = $type][@odd-or-even = $odd-or-even]">
+          <xsl:sequence select="$config/*[name() = $type][@odd-or-even = $odd-or-even]/*[name(.) = $position]" />
+        </xsl:when>
+        <!-- otherwise find a general zone (no 'odd-or-even' and no 'first') -->
+        <xsl:when test="$config/*[name() = $type][empty(@odd-or-even) and not(@first = 'true')]">
+          <xsl:sequence select="$config/*[name() = $type][empty(@odd-or-even) and not(@first = 'true')]/*[name(.) = $position]" />
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- and apply template to the correct element within (using position: left, right, center or top, middle, bottom) -->
+    <xsl:apply-templates select="$element" mode="style">
+      <xsl:with-param name="labels" select="$labels" tunnel="yes" />
+    </xsl:apply-templates>
+    <!--
+    &lt;!&ndash; find which config should apply to current context &ndash;&gt;
+    <xsl:variable name="labels" select="psf:load-labels($context)" />
+    <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
+    &lt;!&ndash; find all the header/footer/left/right defined &ndash;&gt;
     <xsl:variable name="all">
-      <xsl:for-each select="$foconfigs//foconfig[@config = $config or @config = 'default']">
+      <xsl:for-each select="$foconfigs//foconfig[@config = $label-config/@config or @config = 'custom' or @config = 'default']">
         <xsl:choose>
-          <!-- if 'first' then only search for styling in the 'first' zone -->
+          &lt;!&ndash; if 'first' then only search for styling in the 'first' zone &ndash;&gt;
           <xsl:when test="$odd-or-even = 'first'">
             <xsl:if test=".//*[name() = $type][@first = 'true']">
               <foconfig xmlns="" priority="{@priority}">
@@ -85,13 +125,13 @@
               </foconfig>
             </xsl:if>
           </xsl:when>
-          <!-- otherwise, try to find the zone exactly matching the 'odd-or-even' flag -->
+          &lt;!&ndash; otherwise, try to find the zone exactly matching the 'odd-or-even' flag &ndash;&gt;
           <xsl:when test=".//*[name() = $type][@odd-or-even = $odd-or-even]">
             <foconfig xmlns="" priority="{@priority}">
               <xsl:sequence select=".//*[name() = $type][@odd-or-even = $odd-or-even]" />
             </foconfig>
           </xsl:when>
-          <!-- otherwise find a general zone (no 'odd-or-even' and no 'first') -->
+          &lt;!&ndash; otherwise find a general zone (no 'odd-or-even' and no 'first') &ndash;&gt;
           <xsl:when test=".//*[name() = $type][empty(@odd-or-even) and not(@first = 'true')]">
             <foconfig xmlns="" priority="{@priority}">
               <xsl:sequence select=".//*[name() = $type][empty(@odd-or-even) and not(@first = 'true')]" />
@@ -100,12 +140,13 @@
         </xsl:choose>
       </xsl:for-each>
     </xsl:variable>
-    <!-- now only use the one with the highest priority -->
+    &lt;!&ndash; now only use the one with the highest priority &ndash;&gt;
     <xsl:variable name="max-priority" select="max($all//foconfig/@priority)" />
-    <!-- and apply template to the correct element within (using position: left, right, center or top, middle, bottom) -->
+    &lt;!&ndash; and apply template to the correct element within (using position: left, right, center or top, middle, bottom) &ndash;&gt;
     <xsl:apply-templates select="$all//foconfig[@priority = $max-priority][1]/*/*[name(.) = $position]" mode="style">
       <xsl:with-param name="labels" select="$labels" tunnel="yes" />
     </xsl:apply-templates>
+    -->
 
   </xsl:function>
 
@@ -132,8 +173,10 @@
   </xsl:template>
   <!-- Template for inserting dates -->
   <xsl:template match="date" mode="style">
-    <xsl:variable name="pat"><xsl:choose><xsl:when test="@pattern"><xsl:value-of select="@pattern" /></xsl:when>
-    <xsl:otherwise>[MNn] [D], [Y]</xsl:otherwise></xsl:choose></xsl:variable>
+    <xsl:variable name="pat">
+      <xsl:choose><xsl:when test="@pattern"><xsl:value-of select="@pattern" /></xsl:when>
+      <xsl:otherwise>[MNn] [D], [Y]</xsl:otherwise></xsl:choose>
+    </xsl:variable>
     <xsl:value-of select="format-date(current-date(), $pat)" />
   </xsl:template>
   <!-- Template for inserting filename -->
@@ -161,15 +204,30 @@
       <xsl:when test="$context/ancestor::blockxref">
         <xsl:value-of select="psf:load-config($context/ancestor::blockxref)" />
       </xsl:when>
-      <!-- if in transcluded document with a config -->
-      <xsl:when test="$context/ancestor-or-self::document[@type]">
-        <xsl:value-of select="$context/ancestor-or-self::document[@type][1]/@type" />
+      <!-- if in transcluded document with a label -->
+      <xsl:otherwise>
+        <xsl:variable name="labels" select="psf:load-labels($context)" />
+        <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
+        <xsl:value-of select="if ($label-config) then $label-config else
+                              if ($foconfigs//foconfig[@config = 'custom']) then 'custom' else 'default'" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <!--
+    Load the document labels of the config to use for the context provided
+
+    @param context       the current context (used to retrieve the FOConfig.xml config file)
+   -->
+  <xsl:function name="psf:load-labels">
+    <xsl:param name="context" />
+    <xsl:choose>
+      <xsl:when test="$context/ancestor::blockxref">
+        <xsl:value-of select="psf:load-labels($context/ancestor::blockxref)" />
       </xsl:when>
-      <!-- if there's a general style config -->
-      <xsl:when test="$mainconfig != ''">
-        <xsl:value-of select="$mainconfig" />
+      <xsl:when test="string($context/ancestor-or-self::document/documentinfo/uri/labels) != ''">
+        <xsl:sequence select="tokenize($context/ancestor-or-self::document/documentinfo/uri/labels, ',')" />
       </xsl:when>
-      <xsl:otherwise>default</xsl:otherwise>
     </xsl:choose>
   </xsl:function>
 
@@ -185,6 +243,64 @@
     <xsl:param name="context" />
     <xsl:param name="element-name" />
     <xsl:sequence select="psf:load-style-properties-more(psf:load-config($context), $element-name, 'property', '')" />
+  </xsl:function>
+
+  <!--
+  -->
+  <xsl:function name="psf:load-general-style-properties">
+    <xsl:param name="config" />
+    <xsl:param name="type" />
+    <xsl:param name="odd-or-even" />
+    <xsl:param name="position" />
+    <xsl:param name="property-tag" />
+
+    <!-- find config -->
+    <xsl:variable name="config" select="$foconfigs//foconfig[@config = $config]" />
+
+    <xsl:choose>
+      <xsl:when test="$type = 'page' or $type = 'body'">
+        <xsl:sequence select="$config/*[name() = $type]/*[name() = $property-tag]" />
+      </xsl:when>
+      <!-- For first, select properties from first if found somewhere, otherwise, use non even properties -->
+      <xsl:when test="$position = '' and $odd-or-even = 'first'">
+        <xsl:variable name="prop" select="$config/*[name() = $type][@first = 'true']/*[name() = $property-tag]" />
+        <xsl:choose>
+          <xsl:when test="$prop"><xsl:sequence select="$prop" /></xsl:when>
+          <xsl:otherwise>
+            <xsl:sequence select="$config/*[name() = $type][@odd-or-even = 'odd' or (string(@odd-or-even) = '' and string(@first) = '')]/*[name() = $property-tag]" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when test="$odd-or-even = 'first'">
+        <xsl:variable name="prop" select="$config/*[name() = $type][@first = 'true']/*[name(.) = $position]/*[name() = $property-tag]" />
+        <xsl:choose>
+          <xsl:when test="$prop"><xsl:sequence select="$prop" /></xsl:when>
+          <xsl:otherwise>
+            <xsl:sequence select="$config/*[name() = $type][@odd-or-even = 'odd' or (string(@odd-or-even) = '' and string(@first) = '')]/*[name(.) = $position]/*[name() = $property-tag]" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <!-- For odd or even, select properties with the right "scope" if found somewhere, otherwise, use normal properties -->
+      <xsl:when test="$position = ''">
+        <xsl:variable name="prop" select="$config/*[name() = $type][@odd-or-even = $odd-or-even]/*[name() = $property-tag]" />
+        <xsl:choose>
+          <xsl:when test="$prop"><xsl:sequence select="$prop" /></xsl:when>
+          <xsl:otherwise>
+            <xsl:sequence select="$config/*[name() = $type][string(@odd-or-even) = '' and string(@first) = '']/*[name() = $property-tag]" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="prop" select="$config/*[name() = $type][@odd-or-even = $odd-or-even]/*[name(.) = $position]/*[name() = $property-tag]" />
+        <xsl:choose>
+          <xsl:when test="$prop"><xsl:sequence select="$prop" /></xsl:when>
+          <xsl:otherwise>
+            <xsl:sequence select="$config/*[name() = $type][string(@odd-or-even) = '' and string(@first) = '']/*[name(.) = $position]/*[name() = $property-tag]" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+
   </xsl:function>
 
 
@@ -207,95 +323,40 @@
     <xsl:param name="role" />
 
     <!-- find what element we're looking for -->
-    <xsl:variable name="type"         select="tokenize($element-name, '-')[1]" />
-    <xsl:variable name="odd-or-even"  select="tokenize($element-name, '-')[2]" />
-    <xsl:variable name="position"     select="tokenize($element-name, '-')[3]" />
+    <xsl:variable name="first"   select="tokenize($element-name, '-')[1]" />
+    <xsl:variable name="second"  select="tokenize($element-name, '-')[2]" />
+    <xsl:variable name="third"   select="tokenize($element-name, '-')[3]" />
 
     <!--  then load all the properties wanted -->
     <xsl:variable name="all-properties">
-      <xsl:for-each select="$foconfigs//foconfig[@config = $config or @config = 'default']">
+      <xsl:for-each select="$foconfigs//foconfig[@config = $config or @config = 'custom' or @config = 'default']">
         <foconfig xmlns="" priority="{@priority}">
           <xsl:choose>
-            <xsl:when test="($type = 'header' or $type = 'footer' or $type = 'right' or $type = 'left') and
-                            ($position = 'left' or $position = 'center' or $position = 'right')">
-              <xsl:choose>
-                <!-- For first, select properties from first if found somewhere, otherwise, use non even properties -->
-                <xsl:when test="$odd-or-even = 'first'">
-                  <xsl:choose>
-                    <xsl:when test=".//*[name() = $type][@first = 'true']/*[name(.) = $position]/*[name() = $property-tag]">
-                      <xsl:sequence select=".//*[name() = $type][@first = 'true']/*[name(.) = $position]/*[name() = $property-tag]" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:sequence select=".//*[name() = $type][@odd-or-even = 'odd' or (string(@odd-or-even) = '' and string(@first) = '')]
-                                              /*[name(.) = $position]/*[name() = $property-tag]" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <!-- For odd or even, select properties with the right "scope" if found somewhere, otherwise, use normal properties -->
-                <xsl:when test="$odd-or-even = 'odd' or $odd-or-even = 'even'">
-                  <xsl:choose>
-                    <xsl:when test=".//*[name() = $type][@odd-or-even = $odd-or-even]/*[name(.) = $position]/*[name() = $property-tag]">
-                      <xsl:sequence select=".//*[name() = $type][@odd-or-even = $odd-or-even]/*[name(.) = $position]/*[name() = $property-tag]" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:sequence select=".//*[name() = $type][string(@odd-or-even) = '' and string(@first) = '']
-                                              /*[name(.) = $position]/*[name() = $property-tag]" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:when test="$type = 'header' or $type = 'footer' or $type = 'right' or $type = 'left'">
-              <xsl:choose>
-                <!-- For first, select properties from first if found somewhere, otherwise, use non even properties -->
-                <xsl:when test="$odd-or-even = 'first'">
-                  <xsl:choose>
-                    <xsl:when test=".//*[name() = $type][@first = 'true']/*[name() = $property-tag]">
-                      <xsl:sequence select=".//*[name() = $type][@first = 'true']/*[name() = $property-tag]" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:sequence select=".//*[name() = $type][@odd-or-even = 'odd' or (string(@odd-or-even) = '' and string(@first) = '')]
-                                              /*[name() = $property-tag]" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-                <!-- For odd or even, select properties with the right "scope" if found somewhere, otherwise, use normal properties -->
-                <xsl:when test="$odd-or-even = 'odd' or $odd-or-even = 'even'">
-                  <xsl:choose>
-                    <xsl:when test=".//*[name() = $type][@odd-or-even = $odd-or-even]/*[name() = $property-tag]">
-                      <xsl:sequence select=".//*[name() = $type][@odd-or-even = $odd-or-even]/*[name() = $property-tag]" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:sequence select=".//*[name() = $type][string(@odd-or-even) = '' and string(@first) = '']/*[name() = $property-tag]" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:when>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:when test="$type = 'page' or $type = 'body'">
-              <xsl:sequence select=".//*[name() = $type][string(@role) = $role]/*[name() = $property-tag]" />
-            </xsl:when>
             <!-- heading/para prefix: heading-prefix-2 ==> <element name="heading-prefix" level="2"> -->
-            <xsl:when test="($type = 'heading' or $type = 'para') and $odd-or-even = 'prefix' and .//element[string(@name) = concat($type, '-prefix') and @level = $position]">
-              <xsl:sequence select=".//element[string(@name) = concat($type, '-prefix') and @level = $position][string(@role) = $role]/*[name() = $property-tag]" />
+            <xsl:when test="($first = 'heading' or $first = 'para') and $second = 'prefix' and .//element[string(@name) = concat($first, '-prefix') and @level = $third]">
+              <xsl:sequence select="element[string(@name) = concat($first, '-prefix') and @level = $third][string(@role) = $role]/*[name() = $property-tag]" />
             </xsl:when>
             <!-- heading/para: heading-2 ==> <element name="heading" level="2"> -->
-            <xsl:when test="($type = 'heading' or $type = 'para') and .//element[string(@name) = $type and @level = $odd-or-even]">
-              <xsl:sequence select=".//element[string(@name) = $type and @level = $odd-or-even][string(@role) = $role]/*[name() = $property-tag]" />
+            <xsl:when test="($first = 'heading' or $first = 'para') and .//element[string(@name) = $first and @level = $second]">
+              <xsl:sequence select="element[string(@name) = $first and @level = $second][string(@role) = $role]/*[name() = $property-tag]" />
+            </xsl:when>
+            <!-- fallback heading: heading-2 ==> <element name="heading2"> -->
+            <xsl:when test="$first = 'heading' and $second and .//element[string(@name) = concat($first, $second)]">
+              <xsl:sequence select="element[string(@name) = concat($first, $second)][string(@role) = $role]/*[name() = $property-tag]" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:sequence select=".//element[string(@name) = $element-name][string(@role) = $role]/*[name() = $property-tag]" />
+              <xsl:sequence select="element[string(@name) = $element-name][string(@role) = $role]/*[name() = $property-tag]" />
             </xsl:otherwise>
           </xsl:choose>
         </foconfig>
       </xsl:for-each>
     </xsl:variable>
-    
+
     <!-- finally filter the duplicates by removing the lower priorities -->
     <!-- and make sure that all properties are present -->
-    <xsl:for-each select="$all-properties//*[name() = $property-tag]">
-      <xsl:variable name="max-priority" select="max($all-properties//foconfig[.//*[name() = $property-tag][@name=current()/@name]][@priority]/@priority)" />
-      <xsl:if test="ancestor::foconfig/@priority = $max-priority">
+    <xsl:for-each select="$all-properties//foconfig/*">
+      <xsl:variable name="max-priority" select="max($all-properties//foconfig[*[@name = current()/@name]][@priority]/@priority)" />
+      <xsl:if test="../@priority = $max-priority">
         <xsl:sequence select="." />
       </xsl:if>
     </xsl:for-each>
@@ -350,10 +411,32 @@
     @param config        the current FOConfig.xml config file to use
     @param element-name  the name of the element which region properties should be loaded
    -->
-  <xsl:function name="psf:style-region-properties">
+  <xsl:function name="psf:general-style-region-properties">
     <xsl:param name="config" />
-    <xsl:param name="element-name" />
-    <xsl:sequence select="psf:style-properties-all($config, $element-name, 'region-property', '')" />
+    <xsl:param name="type" />
+    <xsl:param name="odd-or-even" />
+    <xsl:variable name="properties" select="psf:load-general-style-properties($config, $type, $odd-or-even, '', 'region-property')"/>
+    <xsl:for-each select="$properties[not(starts-with(@name, 'ps-'))][string(@value) != '']">
+      <xsl:attribute name="{@name}" select="@value" />
+    </xsl:for-each>
+  </xsl:function>
+
+  <!--
+    Load the style region properties for the given element AS ATTRIBUTES.
+    This function should only be called immediately after an element as been created.
+
+    @param config        the current FOConfig.xml config file to use
+    @param element-name  the name of the element which region properties should be loaded
+   -->
+  <xsl:function name="psf:general-style-properties">
+    <xsl:param name="config" />
+    <xsl:param name="type" />
+    <xsl:param name="odd-or-even" />
+    <xsl:param name="position" />
+    <xsl:variable name="properties" select="psf:load-general-style-properties($config, $type, $odd-or-even, $position, 'property')"/>
+    <xsl:for-each select="$properties[not(starts-with(@name, 'ps-'))][string(@value) != '']">
+      <xsl:attribute name="{@name}" select="@value" />
+    </xsl:for-each>
   </xsl:function>
   
   <!--
