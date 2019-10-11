@@ -21,6 +21,7 @@ public class ExportTaskTest {
   private static File SOURCE      = new File("test/export/input");
   private static File DESTINATION = new File("test/export/output");
   private static File EXPECTED    = new File("test/export/expected");
+  private static File CONFIGS     = new File("test/export/config");
 
   @BeforeClass
   public static void init() {
@@ -37,12 +38,16 @@ public class ExportTaskTest {
     File fo = new File(WORKING, "fo.xml");
     File expectedFo = new File(EXPECTED, "fo.xml");
     File output = new File(DESTINATION, "lorem_ipsum.pdf");
+    File config = loadConfig("pdf-export-config-lorem-ipsum.xml");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);
     task.setWorking(WORKING);
     task.setSrc(lorem);
     task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
     task.execute();
 
     Assert.assertTrue(output.exists());
@@ -59,7 +64,7 @@ public class ExportTaskTest {
     File lorem = new File(SOURCE, "lorem_ipsum.psml");
     File fo = new File(WORKING, "fo.xml");
     File output = new File(DESTINATION, "lorem_ipsum.pdf");
-    File config = loadConfig("test/export/config/pdf-export-config-prefixes.xml");
+    File config = loadConfig("pdf-export-config-prefixes.xml");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);
@@ -109,7 +114,7 @@ public class ExportTaskTest {
     File lorem = new File(SOURCE, "labelled-document.psml");
     File fo = new File(WORKING, "fo.xml");
     File output = new File(DESTINATION, "labelled-document.pdf");
-    File config = loadConfig("test/export/config/pdf-export-config-labelled-document.xml");
+    File config = loadConfig("pdf-export-config-labelled-document.xml");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);
@@ -136,7 +141,7 @@ public class ExportTaskTest {
   }
 
   private File loadConfig(String path) {
-    File config = new File(path);
+    File config = new File(CONFIGS, path);
     Assert.assertTrue(config.exists());
     // validate using schema
     MatcherAssert.assertThat(config, XML.validates("pdf-export-config.xsd"));

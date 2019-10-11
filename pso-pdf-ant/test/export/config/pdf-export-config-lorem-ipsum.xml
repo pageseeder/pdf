@@ -1,0 +1,39 @@
+<config>
+  <!-- Date is removed form header to be able to compare output fo.xml -->
+  <styles>
+    <!-- =======================GENERAL PROPERTIES======================= -->
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="1cm"/>
+      <property name="margin-bottom"          value="0.5cm"/>
+      <property name="margin-left"            value="2cm"/>
+      <property name="margin-right"           value="2cm"/>
+    </page>
+    <body>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="2cm"/>
+      <property name="font-family"            value="Helvetica"/>
+      <property name="font-size"              value="11pt"/>
+      <property name="line-height"            value="140%"/>
+    </body>
+    <header>
+      <region-property name="extent"          value="1cm" />
+      <property name="line-height"            value="12pt"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="0mm"/>
+      <left><filename /></left>
+    </header>
+    <footer first="true">
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
+    </footer>
+    <footer>
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
+    </footer>
+  </styles>
+</config>

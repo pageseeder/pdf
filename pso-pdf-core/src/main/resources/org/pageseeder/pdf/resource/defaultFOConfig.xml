@@ -107,12 +107,12 @@
   <footer first="true">
     <region-property name="extent"          value="1cm" />
     <property name="font-size"              value="10pt"/>
-    <center><text>Page <page-number/> of <total-pages/></text></center>
+    <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
   </footer>
   <footer>
     <region-property name="extent"          value="1cm" />
     <property name="font-size"              value="10pt"/>
-    <center><text>Page <page-number/> of <total-pages/></text></center>
+    <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
   </footer>
      
   <!-- =======================ELEMENTS PROPERTIES======================= -->
