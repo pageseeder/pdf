@@ -16,3 +16,5 @@ hs_err_pid*
 /classes/
 /.classpath
 /.idea/
+/pso-pdf-ant/test/export/working/
+/pso-pdf-ant/test/export/output/

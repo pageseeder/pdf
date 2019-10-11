@@ -333,19 +333,20 @@
         <foconfig xmlns="" priority="{@priority}">
           <xsl:choose>
             <!-- heading/para prefix: heading-prefix-2 ==> <element name="heading-prefix" level="2"> -->
-            <xsl:when test="($first = 'heading' or $first = 'para') and $second = 'prefix' and .//element[string(@name) = concat($first, '-prefix') and @level = $third]">
-              <xsl:sequence select="element[string(@name) = concat($first, '-prefix') and @level = $third][string(@role) = $role]/*[name() = $property-tag]" />
+            <xsl:when test="($first = 'heading' or $first = 'para') and $second = 'prefix'">
+              <xsl:sequence select="element[string(@name) = concat($first, '-prefix') and @level = $third]/*[name() = $property-tag]" />
             </xsl:when>
             <!-- heading/para: heading-2 ==> <element name="heading" level="2"> -->
-            <xsl:when test="($first = 'heading' or $first = 'para') and .//element[string(@name) = $first and @level = $second]">
-              <xsl:sequence select="element[string(@name) = $first and @level = $second][string(@role) = $role]/*[name() = $property-tag]" />
+            <xsl:when test="($first = 'heading' or $first = 'para') and element[string(@name) = $first and @level = $second]">
+              <xsl:sequence select="element[string(@name) = $first and @level = $second]/*[name() = $property-tag]" />
             </xsl:when>
             <!-- fallback heading: heading-2 ==> <element name="heading2"> -->
-            <xsl:when test="$first = 'heading' and $second and .//element[string(@name) = concat($first, $second)]">
-              <xsl:sequence select="element[string(@name) = concat($first, $second)][string(@role) = $role]/*[name() = $property-tag]" />
+            <xsl:when test="$first = 'heading' and $second">
+              <xsl:sequence select="element[string(@name) = concat($first, $second)]/*[name() = $property-tag]" />
             </xsl:when>
+            <xsl:when test="$first = 'para' and $second" /> <!-- don't get para[@level] properties for all paras -->
             <xsl:otherwise>
-              <xsl:sequence select="element[string(@name) = $element-name][string(@role) = $role]/*[name() = $property-tag]" />
+              <xsl:sequence select="element[string(@name) = $element-name and string(@level) = ''][string(@role) = $role]/*[name() = $property-tag]" />
             </xsl:otherwise>
           </xsl:choose>
         </foconfig>

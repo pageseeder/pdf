@@ -464,7 +464,7 @@
                 <xsl:attribute name="{@name}" select="@value" />
               </xsl:for-each>
               <!-- inherit properties from para indented -->
-              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent']">
+              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
                 <xsl:if test="empty($prefix-properties[@name = current()/@name])">
                   <xsl:attribute name="{@name}" select="@value" />
                 </xsl:if>
@@ -480,7 +480,9 @@
           </fo:table-cell>
           <fo:table-cell>
             <fo:block>
-              <xsl:for-each select="$indent-properties"><xsl:attribute name="{@name}" select="@value" /></xsl:for-each>
+              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
+                <xsl:attribute name="{@name}" select="@value" />
+              </xsl:for-each>
               <xsl:for-each select="$para-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
                 <xsl:if test="empty($indent-properties[@name = current()/@name])">
                   <xsl:attribute name="{@name}" select="@value" />
@@ -496,14 +498,30 @@
 
   <!-- without prefix -->
   <xsl:template match="para[string(@prefix) = '']" name="para-noprefix">
-    <xsl:variable name="properties" select="psf:load-style-properties(., 'para')" />
+    <xsl:variable name="indent-properties"  select="psf:load-style-properties(., concat('para-', @indent))[string(@value) != '']" />
+    <xsl:variable name="para-properties"    select="psf:load-style-properties(., 'para')[string(@value) != '']" />
+    <xsl:variable name="is-indented" select="string(@indent) != ''" />
     <fo:block>
-      <xsl:if test="@indent">
-        <xsl:variable name="ps-indent-px" select="$properties[@name = 'ps-indent-px']/@value" />
-        <xsl:attribute name="start-indent"><xsl:value-of select="number(@indent) * number($ps-indent-px)" />px</xsl:attribute>
+      <xsl:if test="$is-indented">
+        <!-- start indent, fallback on legacy ps-indent-px property -->
+        <xsl:variable name="indent">
+          <xsl:choose>
+            <xsl:when test="$indent-properties[@name = 'start-indent']"><xsl:value-of select="$indent-properties[@name = 'start-indent']/@value" /></xsl:when>
+            <xsl:when test="$para-properties[@name = 'start-indent']"><xsl:value-of select="$para-properties[@name = 'start-indent']/@value" /></xsl:when>
+            <xsl:when test="$para-properties[@name = 'ps-indent-px']"><xsl:value-of select="number(@indent) * number($para-properties[@name = 'ps-indent-px']/@value)" />px</xsl:when>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:if test="$indent"><xsl:attribute name="start-indent" select="$indent" /></xsl:if>
+        <!-- all other properties for this level -->
+        <xsl:for-each select="$indent-properties[@name != 'start-indent']">
+          <xsl:attribute name="{@name}"><xsl:value-of select="@value" /></xsl:attribute>
+        </xsl:for-each>
       </xsl:if>
-      <xsl:for-each select="$properties[@name != 'ps-indent-px'][string(current()/@indent) = '' or @name != 'start-indent']">
-        <xsl:attribute name="{@name}"><xsl:value-of select="@value" /></xsl:attribute>
+      <!-- all para properties, ignore the ones already set for this level -->
+      <xsl:for-each select="$para-properties[@name != 'ps-indent-px' and (not($is-indented) or @name != 'start-indent')]">
+        <xsl:if test="not($is-indented) or empty($indent-properties[@name = current()/@name])">
+          <xsl:attribute name="{@name}"><xsl:value-of select="@value" /></xsl:attribute>
+        </xsl:if>
       </xsl:for-each>
       <xsl:apply-templates select="* | text()" />
     </fo:block>

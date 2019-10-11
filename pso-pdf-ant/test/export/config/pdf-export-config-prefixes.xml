@@ -49,4 +49,15 @@
     <property name="text-align"   value="right"/>
     <property name="font-size"    value="15pt"/>
   </element>
+
+  <element name="para" level="1">
+    <property name="start-indent" value="5cm"/>
+    <property name="text-indent"  value="-5cm"/>
+  </element>
+
+  <element name="para" level="2">
+    <property name="start-indent" value="6cm"/>
+    <property name="text-indent"  value="-6cm"/>
+  </element>
+
 </styles>

@@ -61,9 +61,9 @@ public class ExportTaskTest {
   @Test
   public void testPrefixes() throws IOException {
 
-    File lorem = new File(SOURCE, "lorem_ipsum.psml");
+    File lorem = new File(SOURCE, "prefixes.psml");
     File fo = new File(WORKING, "fo.xml");
-    File output = new File(DESTINATION, "lorem_ipsum.pdf");
+    File output = new File(DESTINATION, "prefixes.pdf");
     File config = loadConfig("pdf-export-config-prefixes.xml");
 
     ExportTask task = new ExportTask();
@@ -81,31 +81,38 @@ public class ExportTaskTest {
 
     Map<String, String> ns = Collections.singletonMap("fo", "http://www.w3.org/1999/XSL/Format");
     String xml = new String(Files.readAllBytes(fo.toPath()), StandardCharsets.UTF_8);
-    String frag = "//fo:block[@id='psf-2.1251']";
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[1]/@start-indent", equalTo("-1cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[2]/@start-indent", equalTo("-2cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[3]/@start-indent", equalTo("-3cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[4]/@start-indent", equalTo("-4cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[5]/@start-indent", equalTo("-5cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[6]/@start-indent", equalTo("-6cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[7]/@start-indent", equalTo("-1.5cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[8]/@start-indent", equalTo("-2.5cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[1]/fo:table-column[1]/@column-width", equalTo("1cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[2]/fo:table-column[1]/@column-width", equalTo("2cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[3]/fo:table-column[1]/@column-width", equalTo("3cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[4]/fo:table-column[1]/@column-width", equalTo("4cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[5]/fo:table-column[1]/@column-width", equalTo("5cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[6]/fo:table-column[1]/@column-width", equalTo("6cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[7]/fo:table-column[1]/@column-width", equalTo("1.5cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[8]/fo:table-column[1]/@column-width", equalTo("2.5cm")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[1]//fo:table-cell[1]/fo:block/@color", equalTo("green")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[2]//fo:table-cell[1]/fo:block/@color", equalTo("blue")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[3]//fo:table-cell[1]/fo:block/@color", equalTo("yellow")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[4]//fo:table-cell[1]/fo:block/@color", equalTo("red")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[5]//fo:table-cell[1]/fo:block/@color", equalTo("purple")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[6]//fo:table-cell[1]/fo:block/@color", equalTo("orange")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[7]//fo:table-cell[1]/fo:block/@font-size", equalTo("10pt")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath(frag+"/fo:table[8]//fo:table-cell[1]/fo:block/@font-size", equalTo("15pt")).withNamespaceContext(ns));
+
+    String headingsFrag = "//fo:block[@id='psf-headings']";
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]/@start-indent", equalTo("-1cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[2]/@start-indent", equalTo("-2cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[3]/@start-indent", equalTo("-3cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[4]/@start-indent", equalTo("-4cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[5]/@start-indent", equalTo("-5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[6]/@start-indent", equalTo("-6cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]/fo:table-column[1]/@column-width", equalTo("1cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[2]/fo:table-column[1]/@column-width", equalTo("2cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[3]/fo:table-column[1]/@column-width", equalTo("3cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[4]/fo:table-column[1]/@column-width", equalTo("4cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[5]/fo:table-column[1]/@column-width", equalTo("5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[6]/fo:table-column[1]/@column-width", equalTo("6cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]//fo:table-cell[1]/fo:block/@color", equalTo("green")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[2]//fo:table-cell[1]/fo:block/@color", equalTo("blue")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[3]//fo:table-cell[1]/fo:block/@color", equalTo("yellow")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[4]//fo:table-cell[1]/fo:block/@color", equalTo("red")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[5]//fo:table-cell[1]/fo:block/@color", equalTo("purple")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[6]//fo:table-cell[1]/fo:block/@color", equalTo("orange")).withNamespaceContext(ns));
+
+    String parasFrag = "//fo:block[@id='psf-paras']";
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[1]//fo:table-cell[1]/fo:block/@font-size", equalTo("10pt")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[2]//fo:table-cell[1]/fo:block/@font-size", equalTo("15pt")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[1]/fo:table-column[1]/@column-width", equalTo("1.5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[2]/fo:table-column[1]/@column-width", equalTo("2.5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[1]/@start-indent", equalTo("-1.5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[2]/@start-indent", equalTo("-2.5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:block[1]/@start-indent", equalTo("5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:block[2]/@start-indent", equalTo("6cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:block[1]/@text-indent", equalTo("-5cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:block[2]/@text-indent", equalTo("-6cm")).withNamespaceContext(ns));
   }
 
   @Test
