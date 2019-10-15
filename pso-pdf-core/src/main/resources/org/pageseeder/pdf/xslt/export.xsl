@@ -129,19 +129,19 @@
          - a new label in a root that defines a margin zone with such a label
        -->
       <xsl:variable name="fragment-ids">
+        <xsl:variable name="fragments" select="document//section//*[psf:is-fragment(.)][*]" />
         <!-- load all fragments -->
         <xsl:variable name="all-fragment-ids">
           <ids>
-            <!-- First body is always there -->
-            <id><xsl:value-of select="(document/section/*[not(self::title)])[1]/@id" /></id>
             <!-- go through each element and compare its config with the previous one -->
-            <xsl:for-each select="document//section/*[psf:is-fragment(.)][*]">
+            <xsl:for-each select="$fragments">
               <!-- check for new config -->
-              <xsl:variable name="previous-config"   select="psf:config-with-region((preceding::*[psf:is-fragment(.)][*])[last()])" />
-              <xsl:variable name="this-valid-config" select="psf:config-with-region(.)" />
+              <xsl:variable name="previous"               select="(preceding::*[psf:is-fragment(.)][*])[last()]" />
+              <xsl:variable name="previous-margin-config" select="psf:config-with-region($previous)" />
+              <xsl:variable name="this-margin-config"     select="psf:config-with-region(.)" />
               <xsl:choose>
                 <!-- if new config that defines new margin zone, then restart flow -->
-                <xsl:when test="string($previous-config) != string($this-valid-config)">
+                <xsl:when test="empty($previous) or string($previous-margin-config) != string($this-margin-config)">
                   <id><xsl:value-of select="@id" /></id>
                 </xsl:when>
                 <xsl:when test="$label-mapping//config/label"> <!-- speed up -->
@@ -164,11 +164,12 @@
         </xsl:variable>
         <!-- ok filter duplicates -->
         <ids>
-          <xsl:for-each select="$all-fragment-ids//id">
-            <xsl:if test="not(preceding-sibling::id = current())"><xsl:sequence select="." /></xsl:if>
+          <xsl:for-each select="distinct-values($all-fragment-ids//id)">
+            <id><xsl:value-of select="." /></id>
           </xsl:for-each>
         </ids>
       </xsl:variable>
+
       <!-- ok now loop through all fragment children (and toc if first one) -->
       <xsl:for-each select="document/section//*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1] |
                             document/toc[empty(preceding::*[psf:is-fragment(.)])]">
@@ -178,19 +179,20 @@
         <!-- compute all unique labels used in headers/footers -->
         <!-- and their label values -->
         <xsl:variable name="label-map"><labels>
-          <xsl:for-each select="$label-mapping//config[@name = $this-config]/label/@name"><label name="{.}">
-            <xsl:choose>
-              <xsl:when test="$this-elem//inline[@label = current()]">
-                <xsl:value-of select="($this-elem//inline[@label = current()])[1]"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="(($this-elem/preceding::*[psf:is-fragment(.)][.//inline[@label = current()]])[last()]//inline[@label= current()])[1]"/>
-              </xsl:otherwise>
-            </xsl:choose>
+          <xsl:for-each select="$label-mapping//config[@name = $this-config]/label/@name">
+            <label name="{.}">
+              <xsl:choose>
+                <xsl:when test="$this-elem//inline[@label = current()]">
+                  <xsl:value-of select="($this-elem//inline[@label = current()])[1]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="(($this-elem/preceding::*[psf:is-fragment(.)][.//inline[@label = current()]])[last()]//inline[@label= current()])[1]"/>
+                </xsl:otherwise>
+              </xsl:choose>
           </label></xsl:for-each>
         </labels></xsl:variable>
         <!-- ok create page sequence -->
-        <fo:page-sequence master-reference="{$this-config}-go{if ($is-first) then '-first' else ''}">
+        <fo:page-sequence master-reference="{$this-config}-go{if (position() = 1) then '-first' else ''}">
           <!-- the first page if there is any -->
           <xsl:if test="$is-first">
             <xsl:variable name="config" select="$foconfigs//foconfig[@config = $this-config]" />
@@ -219,16 +221,14 @@
             <fo:block>
               <xsl:sequence select="psf:general-style-properties($this-config, 'body', '', '')"/>
               <!-- first page ID -->
-              <xsl:if test="$is-first">
-                <fo:block id="first-page" />
-              </xsl:if>
-              <!-- apply templates to this fragment and all the following until we reach then next one (if there's one) -->
-              <xsl:apply-templates select="." />
+              <xsl:if test="$is-first"><fo:block id="first-page" /></xsl:if>
               <!-- find next one so we know when to stop -->
               <xsl:variable name="nextone" select="(following::*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1])[1]/generate-id()" />
-              <xsl:for-each select="(following::*[psf:is-fragment(.)] | following::toc)[string($nextone) = '' or following::*[generate-id() = $nextone]]">
-                <xsl:apply-templates select="." />
-              </xsl:for-each>
+              <!-- apply templates to this fragment's children and all the following until we reach then next one (if there's one) -->
+              <xsl:apply-templates select="." />
+              <xsl:variable name="next" select="following-sibling::*[psf:is-fragment(.)][string(@id) != ''][*] | following-sibling::toc |
+                                                ../following-sibling::section/*[psf:is-fragment(.)][string(@id) != ''][*]" />
+              <xsl:apply-templates select="$next[string($nextone) = '' or following::*[generate-id() = $nextone]]" />
               <!-- last page ID -->
               <xsl:if test="string($nextone) = ''"><fo:block id="last-page" /></xsl:if>
             </fo:block>

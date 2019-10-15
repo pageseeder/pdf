@@ -199,29 +199,37 @@
   <xsl:function name="psf:load-config">
     <xsl:param name="context" />
     <!-- find which config should apply to current context -->
-    <xsl:choose>
-    <!-- if in a transclusion, then use the parent's config -->
-      <xsl:when test="$context/ancestor::blockxref">
-        <xsl:value-of select="psf:load-config($context/ancestor::blockxref)" />
-      </xsl:when>
-      <!-- if in transcluded document with a label -->
-      <xsl:otherwise>
-        <xsl:variable name="labels" select="psf:load-labels($context)" />
-        <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
-        <xsl:value-of select="if ($label-config) then $label-config else
-                              if ($foconfigs//foconfig[@config = 'custom']) then 'custom' else 'default'" />
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="labels" select="psf:load-labels($context)" />
+    <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
+    <!-- find all the configs -->
+    <xsl:variable name="all" select="$foconfigs//foconfig[@config = $label-config/@config or @config = 'custom' or @config = 'default']" />
+
+    <!-- now only use the one with the highest priority -->
+    <xsl:variable name="max-priority" select="max($all/@priority)" />
+    <xsl:sequence select="($all[@priority = $max-priority])[1]/@config" />
   </xsl:function>
 
   <!--
     Load the document labels of the config to use for the context provided
 
-    @param context the current context (used to retrieve the FOConfig.xml config file)
+    @param context       the current context (used to retrieve the FOConfig.xml config file)
    -->
   <xsl:function name="psf:load-labels">
     <xsl:param name="context" />
-    <xsl:sequence select="tokenize(($context/ancestor-or-self::document)[last()]/documentinfo/uri/labels, ',')" />
+    <!-- only support transcluded docs in xref-fragment -->
+    <xsl:variable name="transcluded" select="($context/ancestor::blockxref)[last()][empty(parent::xref-fragment)]" />
+    <xsl:sequence select="if ($transcluded) then psf:load-labels($transcluded) else
+                          tokenize(($context/ancestor-or-self::document)[last()]/documentinfo/uri/labels, ',')" />
+<!--
+    <xsl:choose>
+      <xsl:when test="$transcluded">
+        <xsl:value-of select="psf:load-labels($transcluded)" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="tokenize($context/ancestor-or-self::document/documentinfo/uri/labels, ',')" />
+      </xsl:otherwise>
+    </xsl:choose>
+-->
   </xsl:function>
 
   <!--

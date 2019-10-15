@@ -148,12 +148,12 @@ public class ExportTaskTest {
   }
 
   @Test
-  public void testLabelledDocumentTransclude() throws IOException {
+  public void testTranscludedDocument() throws IOException {
 
-    File lorem = new File(SOURCE, "labelled-document-transclude.psml");
+    File lorem = new File(SOURCE, "transcluded-document.psml");
     File fo = new File(WORKING, "fo.xml");
-    File output = new File(DESTINATION, "labelled-document-transclude.pdf");
-    File config = loadConfig("pdf-export-config-labelled-document-transclude.xml");
+    File output = new File(DESTINATION, "transcluded-document.pdf");
+    File config = loadConfig("pdf-export-config-transcluded-document.xml");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);
@@ -171,13 +171,19 @@ public class ExportTaskTest {
     Map<String, String> ns = Collections.singletonMap("fo", "http://www.w3.org/1999/XSL/Format");
     String xml = new String(Files.readAllBytes(fo.toPath()), StandardCharsets.UTF_8);
     MatcherAssert.assertThat(xml, XML.hasXPath("count(//fo:simple-page-master[@master-name = 'custom-first'])", equalTo("1")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("count(//fo:page-sequence)",                                     equalTo("2")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("count(//fo:page-sequence)",                                     equalTo("5")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]/@master-reference",                       equalTo("custom-go-first")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]//fo:block[1]/@id",                        equalTo("first-page")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]//fo:block[2]/@id",                        equalTo("psf-100")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]/@master-reference",                       equalTo("label-pdf2-go")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]//fo:block[1]/@id",                        equalTo("psf-200")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]//fo:block[last()]/@id",                   equalTo("last-page")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[3]/@master-reference",                       equalTo("custom-go")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[3]//fo:block[1]/@id",                        equalTo("psf-400")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[4]/@master-reference",                       equalTo("label-pdf2-go")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[4]//fo:block[1]/@id",                        equalTo("psf-200-4")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[5]/@master-reference",                       equalTo("custom-go")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[5]//fo:block[1]/@id",                        equalTo("psf-4")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[5]//fo:block[last()]/@id",                   equalTo("last-page")).withNamespaceContext(ns));
 
   }
 
