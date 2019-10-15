@@ -135,25 +135,30 @@
             <!-- First body is always there -->
             <id><xsl:value-of select="(document/section/*[not(self::title)])[1]/@id" /></id>
             <!-- go through each element and compare its config with the previous one -->
-            <xsl:for-each select="document/section/*[psf:is-fragment(.)][*]">
-              <xsl:variable name="this-elem"       select="." />
-              <xsl:variable name="this-config"     select="psf:load-config(.)" />
-              <!-- check for new config only if not transcluded -->
-              <xsl:if test="empty(ancestor::blockxref)">
-                <xsl:variable name="previous-config"   select="psf:config-with-region((preceding::*[psf:is-fragment(.)][*])[last()])" />
-                <xsl:variable name="this-valid-config" select="psf:config-with-region(.)" />
+            <xsl:for-each select="document//section/*[psf:is-fragment(.)][*]">
+              <!-- check for new config -->
+              <xsl:variable name="previous-config"   select="psf:config-with-region((preceding::*[psf:is-fragment(.)][*])[last()])" />
+              <xsl:variable name="this-valid-config" select="psf:config-with-region(.)" />
+              <xsl:choose>
                 <!-- if new config that defines new margin zone, then restart flow -->
-                <xsl:if test="string($previous-config) != string($this-valid-config)">
+                <xsl:when test="string($previous-config) != string($this-valid-config)">
                   <id><xsl:value-of select="@id" /></id>
-                </xsl:if>
-              </xsl:if>
-              <!-- if new label value used -->
-              <xsl:for-each select=".//inline[@label]">
-                <xsl:if test="$label-mapping//config[@name = $this-config]/label[@name = current()/@label]">
-                  <!-- if new label, restart at the parent root or blockxref -->
-                  <id><xsl:value-of select="$this-elem/@id" /></id>
-                </xsl:if>
-              </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="$label-mapping//config/label"> <!-- speed up -->
+                  <xsl:variable name="this-elem"   select="." />
+                  <xsl:variable name="this-config" select="psf:load-config(.)" />
+                  <!-- if label values used for this config -->
+                  <xsl:if test="$label-mapping//config[@name = $this-config]/label">
+                    <xsl:for-each select=".//inline[@label]">
+                      <!-- if new label value used -->
+                      <xsl:if test="$label-mapping//config[@name = $this-config]/label[@name = current()/@label]">
+                        <!-- if new label, restart at the parent root or blockxref -->
+                        <id><xsl:value-of select="$this-elem/@id" /></id>
+                      </xsl:if>
+                    </xsl:for-each>
+                  </xsl:if>
+                </xsl:when>
+              </xsl:choose>
             </xsl:for-each>
           </ids>
         </xsl:variable>
@@ -165,7 +170,7 @@
         </ids>
       </xsl:variable>
       <!-- ok now loop through all fragment children (and toc if first one) -->
-      <xsl:for-each select="document/section/*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1] |
+      <xsl:for-each select="document/section//*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1] |
                             document/toc[empty(preceding::*[psf:is-fragment(.)])]">
         <xsl:variable name="this-config" select="psf:config-with-region(.)" />
         <xsl:variable name="this-elem"   select="." />
@@ -221,8 +226,7 @@
               <xsl:apply-templates select="." />
               <!-- find next one so we know when to stop -->
               <xsl:variable name="nextone" select="(following::*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1])[1]/generate-id()" />
-              <xsl:for-each select="(following::*[psf:is-fragment(.)] |
-                                     following::toc)[empty(ancestor::blockxref)][string($nextone) = '' or following::*[generate-id() = $nextone]]">
+              <xsl:for-each select="(following::*[psf:is-fragment(.)] | following::toc)[string($nextone) = '' or following::*[generate-id() = $nextone]]">
                 <xsl:apply-templates select="." />
               </xsl:for-each>
               <!-- last page ID -->

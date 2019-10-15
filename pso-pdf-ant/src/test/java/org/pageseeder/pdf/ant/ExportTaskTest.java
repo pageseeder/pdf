@@ -147,6 +147,40 @@ public class ExportTaskTest {
 
   }
 
+  @Test
+  public void testLabelledDocumentTransclude() throws IOException {
+
+    File lorem = new File(SOURCE, "labelled-document-transclude.psml");
+    File fo = new File(WORKING, "fo.xml");
+    File output = new File(DESTINATION, "labelled-document-transclude.pdf");
+    File config = loadConfig("pdf-export-config-labelled-document-transclude.xml");
+
+    ExportTask task = new ExportTask();
+    task.setDebug(true);
+    task.setWorking(WORKING);
+    task.setSrc(lorem);
+    task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
+    task.execute();
+
+    Assert.assertTrue(output.exists());
+    Assert.assertTrue(fo.exists());
+
+    Map<String, String> ns = Collections.singletonMap("fo", "http://www.w3.org/1999/XSL/Format");
+    String xml = new String(Files.readAllBytes(fo.toPath()), StandardCharsets.UTF_8);
+    MatcherAssert.assertThat(xml, XML.hasXPath("count(//fo:simple-page-master[@master-name = 'custom-first'])", equalTo("1")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("count(//fo:page-sequence)",                                     equalTo("2")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]/@master-reference",                       equalTo("custom-go-first")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]//fo:block[1]/@id",                        equalTo("first-page")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]//fo:block[2]/@id",                        equalTo("psf-100")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]/@master-reference",                       equalTo("label-pdf2-go")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]//fo:block[1]/@id",                        equalTo("psf-200")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]//fo:block[last()]/@id",                   equalTo("last-page")).withNamespaceContext(ns));
+
+  }
+
   private File loadConfig(String path) {
     File config = new File(CONFIGS, path);
     Assert.assertTrue(config.exists());

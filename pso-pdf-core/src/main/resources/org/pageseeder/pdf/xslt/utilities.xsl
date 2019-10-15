@@ -217,18 +217,11 @@
   <!--
     Load the document labels of the config to use for the context provided
 
-    @param context       the current context (used to retrieve the FOConfig.xml config file)
+    @param context the current context (used to retrieve the FOConfig.xml config file)
    -->
   <xsl:function name="psf:load-labels">
     <xsl:param name="context" />
-    <xsl:choose>
-      <xsl:when test="$context/ancestor::blockxref">
-        <xsl:value-of select="psf:load-labels($context/ancestor::blockxref)" />
-      </xsl:when>
-      <xsl:when test="string($context/ancestor-or-self::document/documentinfo/uri/labels) != ''">
-        <xsl:sequence select="tokenize($context/ancestor-or-self::document/documentinfo/uri/labels, ',')" />
-      </xsl:when>
-    </xsl:choose>
+    <xsl:sequence select="tokenize(($context/ancestor-or-self::document)[last()]/documentinfo/uri/labels, ',')" />
   </xsl:function>
 
   <!--

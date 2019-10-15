@@ -1,0 +1,68 @@
+<config>
+  <styles label="pdf2">
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="0.5cm"/>
+      <property name="margin-bottom"          value="0.5cm"/>
+      <property name="margin-left"            value="1.2cm"/>
+      <property name="margin-right"           value="1.2cm"/>
+    </page>
+    <body>
+      <region-property name="column-count"    value="2"/>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="2.5cm"/>
+      <property name="font-family"            value="Calibri,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="150%"/>
+      <property name="color"                  value="red"/>
+    </body>
+    <header>
+      <region-property name="extent"          value="2cm" />
+      <property name="line-height"            value="10pt"/>
+      <property name="font-size"              value="6pt"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="1mm"/>
+      <property name="border-bottom-color"    value="black"/>
+      <left><date pattern="[D1o] [MNn], [Y]" /><text> - </text><filename /></left>
+      <right><text>pdf 2 styles</text></right>
+    </header>
+    <footer>
+      <region-property name="extent"          value="2cm" />
+      <property name="font-size"              value="6pt"/>
+      <center><page-number/><text>/</text><total-pages/></center>
+    </footer>
+  </styles>
+  <styles>
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="0.5cm"/>
+      <property name="margin-bottom"          value="1.5cm"/>
+      <property name="margin-left"            value="1.2cm"/>
+      <property name="margin-right"           value="1.2cm"/>
+    </page>
+    <body>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="0.5cm"/>
+      <property name="font-family"            value="Calibri,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="150%"/>
+      <property name="color"                  value="#000000"/>
+    </body>
+    <header first="true">
+      <region-property name="extent"          value="2cm" />
+      <property name="line-height"            value="10pt"/>
+      <property name="font-size"              value="10pt"/>
+      <left><date pattern="[D1o] [MNn], [Y]" /><text> - </text><filename /></left>
+      <right><text>custom styles</text></right>
+    </header>
+    <footer first="true">
+      <region-property name="extent"          value="2cm" />
+      <property name="font-size"              value="10pt"/>
+      <center><text>First page</text></center>
+    </footer>
+  </styles>
+</config>

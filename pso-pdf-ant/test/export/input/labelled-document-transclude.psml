@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document level="portable" id="100">
+  <documentinfo>
+    <uri>
+      <displaytitle>labelled document transclude title</displaytitle>
+    </uri>
+  </documentinfo>
+  <section id="1">
+    <fragment id="1">
+      <heading level="1">Labelled document transclude heading</heading>
+      <para>This is a paragraph.</para>
+    </fragment>
+    <fragment id="2">
+      <para>This is another paragraph.</para>
+    </fragment>
+    <fragment id="3">
+      <blockxref frag="default" display="document" type="embed" href="subdocument.psml">
+        <document id="200" level="processed">
+          <documentinfo>
+            <uri title="subdocument">
+              <labels>pdf2</labels>
+            </uri>
+          </documentinfo>
+          <section id="200-1">
+            <fragment id="200-1">
+              <heading level="1">Transcluded heading</heading>
+              <para>This is a paragraph.</para>
+              <para>This document has a label!</para>
+            </fragment>
+            <fragment id="200-2">
+              <para>
+                Lorem ipsum dolor sit amet, <link href="http://pageseeder.com">test link</link>
+                 adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui.
+                Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis,
+                massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor.
+                Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo
+                vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <bold>bold</bold>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <italic>italic</italic>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <bold>bold</bold>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <italic>italic</italic>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <bold>bold</bold>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <italic>italic</italic>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <bold>bold</bold>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <italic>italic</italic>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <bold>bold</bold>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+              <para>
+                Lorem ipsum dolor sit amet,
+                <italic>italic</italic>
+                consectetuer adipiscing elit. Nullam dignissim convallis est. Quisque aliquam. Donec faucibus. Nunc iaculis
+                suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem,
+                consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+              </para>
+            </fragment>
+          </section>
+        </document>
+      </blockxref>
+    </fragment>
+  </section>
+</document>
