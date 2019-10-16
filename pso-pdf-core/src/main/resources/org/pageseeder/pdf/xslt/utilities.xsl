@@ -57,16 +57,6 @@
     <xsl:sequence select="$foconfigs//foconfig[@config = $config]/*[name() = $type]
                           [$first = '' or ($first = 'true' and @first = 'true') or ($first = 'false' and empty(@first))]" />
 
-    <!--<xsl:variable name="labels" select="psf:load-labels($context)" />
-    <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
-
-    &lt;!&ndash; find all the margin zones defined &ndash;&gt;
-    <xsl:variable name="all" select="$foconfigs//foconfig[@config = $label-config/@config or @config = 'custom' or @config = 'default']//*[name() = $type]
-                                     [$first = '' or ($first = 'true' and @first = 'true') or ($first = 'false' and empty(@first))]" />
-    &lt;!&ndash; now only use the one with the highest priority &ndash;&gt;
-    <xsl:variable name="max-priority" select="max($all/ancestor::foconfig/@priority)" />
-    <xsl:sequence select="$all[ancestor::foconfig/@priority = $max-priority][1]" />-->
-
   </xsl:function>
   
   <!--
@@ -109,44 +99,6 @@
     <xsl:apply-templates select="$element" mode="style">
       <xsl:with-param name="labels" select="$labels" tunnel="yes" />
     </xsl:apply-templates>
-    <!--
-    &lt;!&ndash; find which config should apply to current context &ndash;&gt;
-    <xsl:variable name="labels" select="psf:load-labels($context)" />
-    <xsl:variable name="label-config" select="if (not(empty($labels))) then ($foconfigs//foconfig[@label and not(empty(index-of($labels, @label)))])[1] else ()" />
-    &lt;!&ndash; find all the header/footer/left/right defined &ndash;&gt;
-    <xsl:variable name="all">
-      <xsl:for-each select="$foconfigs//foconfig[@config = $label-config/@config or @config = 'custom' or @config = 'default']">
-        <xsl:choose>
-          &lt;!&ndash; if 'first' then only search for styling in the 'first' zone &ndash;&gt;
-          <xsl:when test="$odd-or-even = 'first'">
-            <xsl:if test=".//*[name() = $type][@first = 'true']">
-              <foconfig xmlns="" priority="{@priority}">
-                <xsl:sequence select=".//*[name() = $type][@first = 'true']" />
-              </foconfig>
-            </xsl:if>
-          </xsl:when>
-          &lt;!&ndash; otherwise, try to find the zone exactly matching the 'odd-or-even' flag &ndash;&gt;
-          <xsl:when test=".//*[name() = $type][@odd-or-even = $odd-or-even]">
-            <foconfig xmlns="" priority="{@priority}">
-              <xsl:sequence select=".//*[name() = $type][@odd-or-even = $odd-or-even]" />
-            </foconfig>
-          </xsl:when>
-          &lt;!&ndash; otherwise find a general zone (no 'odd-or-even' and no 'first') &ndash;&gt;
-          <xsl:when test=".//*[name() = $type][empty(@odd-or-even) and not(@first = 'true')]">
-            <foconfig xmlns="" priority="{@priority}">
-              <xsl:sequence select=".//*[name() = $type][empty(@odd-or-even) and not(@first = 'true')]" />
-            </foconfig>
-          </xsl:when>
-        </xsl:choose>
-      </xsl:for-each>
-    </xsl:variable>
-    &lt;!&ndash; now only use the one with the highest priority &ndash;&gt;
-    <xsl:variable name="max-priority" select="max($all//foconfig/@priority)" />
-    &lt;!&ndash; and apply template to the correct element within (using position: left, right, center or top, middle, bottom) &ndash;&gt;
-    <xsl:apply-templates select="$all//foconfig[@priority = $max-priority][1]/*/*[name(.) = $position]" mode="style">
-      <xsl:with-param name="labels" select="$labels" tunnel="yes" />
-    </xsl:apply-templates>
-    -->
 
   </xsl:function>
 
@@ -220,16 +172,6 @@
     <xsl:variable name="transcluded" select="($context/ancestor::blockxref)[last()][empty(parent::xref-fragment)]" />
     <xsl:sequence select="if ($transcluded) then psf:load-labels($transcluded) else
                           tokenize(($context/ancestor-or-self::document)[last()]/documentinfo/uri/labels, ',')" />
-<!--
-    <xsl:choose>
-      <xsl:when test="$transcluded">
-        <xsl:value-of select="psf:load-labels($transcluded)" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:sequence select="tokenize($context/ancestor-or-self::document/documentinfo/uri/labels, ',')" />
-      </xsl:otherwise>
-    </xsl:choose>
--->
   </xsl:function>
 
   <!--

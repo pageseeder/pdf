@@ -41,7 +41,7 @@
     <fo:block>
       <xsl:variable name="config"      select="psf:load-config(.)" />
       <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, 'table', 'property', string(@role))" />
-      <xsl:variable name="table-props" select="psf:load-style-properties($config, 'table')" />
+      <xsl:variable name="table-props" select="psf:load-style-properties-more($config, 'table', 'property', '')" />
       <xsl:sequence select="psf:style-properties-overwrite($role-props, $table-props)"/>
       <!--  currently, fop 0.95 does not support caption -->
       <!-- 
@@ -64,7 +64,7 @@
                 <xsl:for-each select="$columns">
                   <fo:table-column>
                     <xsl:variable name="crole-props"  select="psf:load-style-properties-more($config, 'table-col', 'property', string(@role))" />
-                    <xsl:variable name="col-props"    select="psf:load-style-properties($config, 'table-col')" />
+                    <xsl:variable name="col-props"    select="psf:load-style-properties-more($config, 'table-col', 'property', '')" />
                     <xsl:sequence select="psf:style-properties-overwrite($crole-props, $col-props)"/>
                     <xsl:choose>
                       <!-- % or px, if nothing then default to px -->
@@ -137,14 +137,14 @@
       <xsl:variable name="part" select="@part"/>
       <xsl:variable name="config"      select="psf:load-config(.)" />
       <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, 'table-row', 'property', string(@role))" />
-      <xsl:variable name="def-props"   select="psf:load-style-properties($config, 'table-row')" />
+      <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, 'table-row', 'property', '')" />
       <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
       <xsl:for-each select="cell | hcell">
         <xsl:variable name="name" select="if ($part = 'header') then 'hcell' else name()"/>
         <!-- adding in for colspan support -->
         <fo:table-cell space-before.optimum="5pt" space-after.optimum="5pt">
           <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, concat('table-',$name), 'property', string(@role))" />
-          <xsl:variable name="def-props"   select="psf:load-style-properties($config, concat('table-',$name))" />
+          <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, concat('table-',$name), 'property', '')" />
           <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
           <xsl:if test="@colspan">
             <xsl:attribute name="number-columns-spanned"><xsl:value-of select="@colspan"/></xsl:attribute>
@@ -172,8 +172,8 @@
           </xsl:if>
           <fo:block margin-left="0.08cm" space-before="0.08cm" margin-right="0.08cm">
             <xsl:attribute name="font-weight">bold</xsl:attribute>
-            <xsl:variable name="role-props"  select="psf:load-style-properties($config, concat($name, '-role-', @role))" />
-            <xsl:variable name="def-props"   select="psf:load-style-properties($config, $name)" />
+            <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, concat($name, '-role-', @role), 'property', '')" />
+            <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, $name, 'property', '')" />
             <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
             <xsl:variable name="align" select="if (@align) then @align else ../../col[count(preceding-sibling::*)+1 = count(current()/preceding-sibling::*)+1]/@align" />
             <xsl:if test="$align">
@@ -212,9 +212,8 @@
     <!-- check for section title -->
     <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
     <fo:block id="psf-{@id}">
-      <xsl:variable name="config" select="psf:load-config(.)" />
-      <xsl:variable name="cust-props" select="psf:load-style-properties($config, concat(name(), '-', @type))" />
-      <xsl:variable name="def-props"  select="psf:load-style-properties($config, name())" />
+      <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(name(), '-', @type)) else ()" />
+      <xsl:variable name="def-props"  select="psf:load-style-properties(., name())" />
       <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
       <xsl:apply-templates/>
     </fo:block>
@@ -544,17 +543,16 @@
   <xsl:template match="block">
     <xsl:variable name="name" select="concat('-', @label)"/>
     <fo:block>
-      <xsl:variable name="config" select="psf:load-config(.)" />
-      <xsl:variable name="cust-props" select="psf:load-style-properties($config, concat('block', $name))" />
-      <xsl:variable name="def-props"  select="psf:load-style-properties($config, 'block')" />
+      <xsl:variable name="cust-props" select="psf:load-style-properties(., concat('block', $name))" />
+      <xsl:variable name="def-props"  select="psf:load-style-properties(., 'block')" />
       <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
       <!-- check if we should show the name of the label -->
-      <xsl:variable name="show" select="not(psf:load-style-properties($config, 'blockName')[@name = 'ps-hide']/@value = 'true') and
-                        not(psf:load-style-properties($config, concat('blockName', $name))[@name = 'ps-hide']/@value = 'true')"/>
+      <xsl:variable name="show" select="not(psf:load-style-properties(., 'blockName')[@name = 'ps-hide']/@value = 'true') and
+                                        not(psf:load-style-properties(., concat('blockName', $name))[@name = 'ps-hide']/@value = 'true')"/>
       <xsl:if test="$show">
         <fo:block>
-          <xsl:variable name="cust-props" select="psf:load-style-properties($config, concat('blockName', $name))" />
-          <xsl:variable name="def-props"  select="psf:load-style-properties($config, 'blockName')" />
+          <xsl:variable name="cust-props" select="psf:load-style-properties(., concat('blockName', $name))" />
+          <xsl:variable name="def-props"  select="psf:load-style-properties(., 'blockName')" />
           <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
           <xsl:value-of select="@label"/>
         </fo:block>
@@ -581,16 +579,15 @@
                         not(psf:load-style-properties(., concat('inline',$name))[@name = 'ps-hide']/@value = 'true')"/>
     <xsl:if test="$show">
       <fo:inline>
-        <xsl:variable name="config" select="psf:load-config(.)" />
-        <xsl:variable name="cust-props" select="psf:load-style-properties($config, concat('inline', $name))" />
-        <xsl:variable name="def-props"  select="psf:load-style-properties($config, 'inline')" />
+        <xsl:variable name="cust-props" select="psf:load-style-properties(., concat('inline', $name))" />
+        <xsl:variable name="def-props"  select="psf:load-style-properties(., 'inline')" />
         <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
         <xsl:variable name="showName" select="not(psf:load-style-properties(., 'inlineName')[@name = 'ps-hide']/@value = 'true') and 
                                 not(psf:load-style-properties(., concat('inlineName',$name))[@name = 'ps-hide']/@value = 'true')"/>
         <xsl:if test="$showName">
   	      <fo:inline>
-            <xsl:variable name="cust-props" select="psf:load-style-properties($config, concat('inlineName', $name))" />
-            <xsl:variable name="def-props"  select="psf:load-style-properties($config, 'inlineName')" />
+            <xsl:variable name="cust-props" select="psf:load-style-properties(., concat('inlineName', $name))" />
+            <xsl:variable name="def-props"  select="psf:load-style-properties(., 'inlineName')" />
             <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
   	        <xsl:value-of select="@label"/>
   	      </fo:inline>
@@ -714,9 +711,8 @@
 -->
   <xsl:template match="list | nlist">
 	  <fo:list-block>
-      <xsl:variable name="config" select="psf:load-config(.)" />
-      <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties($config, concat(local-name(), @type)) else ()" />
-      <xsl:variable name="def-props"  select="psf:load-style-properties($config, local-name())" />
+      <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(local-name(), @type)) else ()" />
+      <xsl:variable name="def-props"  select="psf:load-style-properties(., local-name())" />
       <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
 		  <xsl:apply-templates/>
 	  </fo:list-block>
