@@ -136,13 +136,13 @@
             <!-- go through each element and compare its config with the previous one -->
             <xsl:for-each select="$fragments">
               <!-- check for new config -->
-              <xsl:variable name="previous"               select="(preceding::*[psf:is-fragment(.)][*])[last()]" />
+              <xsl:variable name="previous"               select="(preceding::*[psf:is-fragment(.)][*])[last()] | (ancestor::*[psf:is-fragment(.)][*])[last()]" />
               <xsl:variable name="previous-margin-config" select="psf:config-with-region($previous)" />
               <xsl:variable name="this-margin-config"     select="psf:config-with-region(.)" />
               <xsl:choose>
                 <!-- if new config that defines new margin zone, then restart flow -->
                 <xsl:when test="empty($previous) or string($previous-margin-config) != string($this-margin-config)">
-                  <id><xsl:value-of select="@id" /></id>
+                  <id config="{$this-margin-config}"><xsl:value-of select="@id" /></id>
                 </xsl:when>
                 <xsl:when test="$label-mapping//config/label"> <!-- speed up -->
                   <xsl:variable name="this-elem"   select="." />
@@ -165,7 +165,7 @@
         <!-- ok filter duplicates -->
         <ids>
           <xsl:for-each select="distinct-values($all-fragment-ids//id)">
-            <id><xsl:value-of select="." /></id>
+            <id config="{$all-fragment-ids//id[. = current()][1]/@config}"><xsl:value-of select="." /></id>
           </xsl:for-each>
         </ids>
       </xsl:variable>
@@ -226,7 +226,7 @@
               <xsl:variable name="nextone" select="(following::*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1])[1]/generate-id()" />
               <!-- apply templates to this fragment's children and all the following until we reach then next one (if there's one) -->
               <xsl:apply-templates select="." />
-              <xsl:variable name="next" select="following-sibling::*[psf:is-fragment(.)][string(@id) != ''][*] | following-sibling::toc |
+              <xsl:variable name="next" select="following-sibling::*[psf:is-fragment(.)][string(@id) != ''][*] | ../following-sibling::toc |
                                                 ../following-sibling::section/*[psf:is-fragment(.)][string(@id) != ''][*]" />
               <xsl:apply-templates select="$next[string($nextone) = '' or following::*[generate-id() = $nextone]]" />
               <!-- last page ID -->

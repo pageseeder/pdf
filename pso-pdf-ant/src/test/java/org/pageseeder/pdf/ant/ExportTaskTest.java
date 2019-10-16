@@ -187,6 +187,57 @@ public class ExportTaskTest {
 
   }
 
+  @Test
+  public void testTOC() throws IOException {
+
+    File lorem = new File(SOURCE, "toc.psml");
+    File fo = new File(WORKING, "fo.xml");
+    File output = new File(DESTINATION, "toc.pdf");
+
+    ExportTask task = new ExportTask();
+    task.setDebug(true);
+    task.setWorking(WORKING);
+    task.setSrc(lorem);
+    task.setDest(output);
+    task.execute();
+
+    Assert.assertTrue(output.exists());
+    Assert.assertTrue(fo.exists());
+
+    Map<String, String> ns = Collections.singletonMap("fo", "http://www.w3.org/1999/XSL/Format");
+    String xml = new String(Files.readAllBytes(fo.toPath()), StandardCharsets.UTF_8);
+    String tocBlock = "//fo:flow//fo:block[@id='toc-123456']";
+    MatcherAssert.assertThat(xml, XML.hasXPath("count("+tocBlock+")",                equalTo("1")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("count("+tocBlock+"//fo:basic-link)", equalTo("11")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[1]",   equalTo("1. heading 1")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[2]",   equalTo("1.1. heading 2")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[3]",   equalTo("1.1.1. heading 3")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[4]",   equalTo("1.1.1.1. heading 4")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[5]",   equalTo("1.1.1.1.1. heading 5")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[6]",   equalTo("1.1.1.1.1.1. heading 6")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[7]",   equalTo("2. heading 1")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[8]",   equalTo("2.1. heading 2")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[9]",   equalTo("2.2. heading 2")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[10]",  equalTo("2.3.1. heading 3")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("("+tocBlock+"//fo:basic-link)[11]",  equalTo("2.3. heading 2")).withNamespaceContext(ns));
+
+  }
+
+  @Test
+  public void testABC() throws IOException {
+
+    File lorem = new File(SOURCE, "abc.psml");
+    File fo = new File(WORKING, "fo.xml");
+    File output = new File(DESTINATION, "abc.pdf");
+
+    ExportTask task = new ExportTask();
+    task.setDebug(true);
+    task.setWorking(WORKING);
+    task.setSrc(lorem);
+    task.setDest(output);
+    task.execute();
+  }
+
   private File loadConfig(String path) {
     File config = new File(CONFIGS, path);
     Assert.assertTrue(config.exists());
