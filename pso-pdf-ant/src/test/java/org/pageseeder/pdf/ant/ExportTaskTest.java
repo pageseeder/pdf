@@ -187,25 +187,6 @@ public class ExportTaskTest {
 
   }
 
-  //@Test
-  public void testABC() throws IOException {
-
-    File lorem = new File(SOURCE, "abc.psml");
-    File fo = new File(WORKING, "fo.xml");
-    File output = new File(DESTINATION, "abc.pdf");
-    File config = loadConfig("pdf-export-config-2-cols.xml");
-
-    ExportTask task = new ExportTask();
-    task.setDebug(true);
-    task.setWorking(WORKING);
-    task.setSrc(lorem);
-    task.setDest(output);
-    ExportTask.FOConfig cfg = task.createConfig();
-    cfg.setFile(config);
-    cfg.setPriority(1);
-    task.execute();
-  }
-
   private File loadConfig(String path) {
     File config = new File(CONFIGS, path);
     Assert.assertTrue(config.exists());
