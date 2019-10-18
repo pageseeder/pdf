@@ -223,12 +223,14 @@
               <!-- first page ID -->
               <xsl:if test="$is-first"><fo:block id="first-page" /></xsl:if>
               <!-- find next one so we know when to stop -->
-              <xsl:variable name="nextone" select="(following::*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1])[1]/generate-id()" />
+              <xsl:variable name="next-stop" select="(following::*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1])[1]/generate-id()" />
               <!-- apply templates to this fragment's children and all the following until we reach then next one (if there's one) -->
               <xsl:apply-templates select="." />
-              <xsl:variable name="next" select="following-sibling::*[psf:is-fragment(.)][string(@id) != ''][*] | ../following-sibling::toc |
-                                                ../following-sibling::section/*[psf:is-fragment(.)][string(@id) != ''][*]" />
-              <xsl:apply-templates select="$next[string($nextone) = '' or following::*[generate-id() = $nextone]]" />
+              <!-- find all fragments between this one and the next stop -->
+              <xsl:variable name="next" select="(following::*[psf:is-fragment(.)][string(@id) != ''][*] | ../following::toc)[string($next-stop) = '' or following::*[generate-id() = $next-stop]]" />
+              <!-- avoid fragments already included in another fragment in the list (transcluded) -->
+              <xsl:variable name="next-ids" select="for $i in $next return generate-id($i)" />
+              <xsl:apply-templates select="$next[empty(ancestor::*[exists(index-of($next-ids, generate-id()))])]" />
               <!-- last page ID -->
               <xsl:if test="string($nextone) = ''"><fo:block id="last-page" /></xsl:if>
             </fo:block>
