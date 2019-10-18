@@ -232,7 +232,7 @@
               <xsl:variable name="next-ids" select="for $i in $next return generate-id($i)" />
               <xsl:apply-templates select="$next[empty(ancestor::*[exists(index-of($next-ids, generate-id()))])]" />
               <!-- last page ID -->
-              <xsl:if test="string($nextone) = ''"><fo:block id="last-page" /></xsl:if>
+              <xsl:if test="string($next-stop) = ''"><fo:block id="last-page" /></xsl:if>
             </fo:block>
           </fo:flow>
         </fo:page-sequence>
