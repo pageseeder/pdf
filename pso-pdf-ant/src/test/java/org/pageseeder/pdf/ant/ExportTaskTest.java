@@ -54,8 +54,15 @@ public class ExportTaskTest {
     Assert.assertTrue(fo.exists());
 
     // compare FO
-    Assert.assertEquals(new String(Files.readAllBytes(expectedFo.toPath()), StandardCharsets.UTF_8),
-                        new String(Files.readAllBytes(fo.toPath()),         StandardCharsets.UTF_8));
+    String expected_cont = new String(Files.readAllBytes(expectedFo.toPath()), StandardCharsets.UTF_8);
+    String actual_cont = new String(Files.readAllBytes(fo.toPath()),         StandardCharsets.UTF_8);
+    // normalize EOL chars
+    expected_cont = expected_cont.replaceAll("\\r\\n", "\n");
+    actual_cont = actual_cont.replaceAll("\\r\\n", "\n");
+    // normalize file locations
+    expected_cont = expected_cont.replaceAll("file:/.*/pso-pdf-ant/", "");
+    actual_cont = actual_cont.replaceAll("file:/.*/pso-pdf-ant/", "");
+    Assert.assertEquals(expected_cont, actual_cont);
   }
 
   @Test
@@ -224,11 +231,11 @@ public class ExportTaskTest {
   }
 
   @Test
-  public void testABC() throws IOException {
+  public void testMathML() throws IOException {
 
-    File lorem = new File(SOURCE, "abc.psml");
+    File lorem = new File(SOURCE, "mathml.psml");
     File fo = new File(WORKING, "fo.xml");
-    File output = new File(DESTINATION, "abc.pdf");
+    File output = new File(DESTINATION, "mathml.pdf");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);

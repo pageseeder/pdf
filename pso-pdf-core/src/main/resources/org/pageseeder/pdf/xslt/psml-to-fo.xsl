@@ -109,8 +109,18 @@
 		        </xsl:choose>
           </xsl:if>
         </xsl:for-each>
+        <xsl:if test="row[@part='header']">
+          <fo:table-header>
+            <xsl:apply-templates select="row[@part='header']" />
+          </fo:table-header>
+        </xsl:if>
+        <xsl:if test="row[@part='footer']">
+          <fo:table-header>
+            <xsl:apply-templates select="row[@part='footer']" />
+          </fo:table-header>
+        </xsl:if>
         <fo:table-body>
-          <xsl:apply-templates />
+          <xsl:apply-templates select="row[not(@part) or @part = 'body']" />
         </fo:table-body>
       </fo:table>
       <!-- </fo:table-and-caption> -->
