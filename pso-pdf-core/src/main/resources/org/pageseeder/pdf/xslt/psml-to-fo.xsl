@@ -976,10 +976,10 @@
 	    <xsl:text>)</xsl:text>
 	    </xsl:attribute>
 	      <xsl:if test="@width">
-	        <xsl:attribute name="content-width" select="concat(@width,'px')" />
+	        <xsl:attribute name="content-width" select="concat(@width * 2,'px')" />
 	      </xsl:if>
 	      <xsl:if test="@height">
-	        <xsl:attribute name="content-height" select="concat(@height,'px')" />
+	        <xsl:attribute name="content-height" select="concat(@height * 2,'px')" />
 	      </xsl:if>
 	    </fo:external-graphic>
 	  </fo:inline>
