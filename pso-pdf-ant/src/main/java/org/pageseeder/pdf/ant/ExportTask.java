@@ -72,6 +72,11 @@ public final class ExportTask extends Task {
    */
   private List<FOConfig> _FOConfigs = new ArrayList<>();
 
+  /**
+   * The FOConfig folders to use.
+   */
+  private List<FOConfigs> _FOConfigFolders = new ArrayList<FOConfigs>();
+
   // Set properties
   // ----------------------------------------------------------------------------------------------
 
@@ -122,6 +127,16 @@ public final class ExportTask extends Task {
   }
 
   /**
+   * Create a config folder object and stores it in the list To be used by Ant
+   * Task to get all nested element of <configs ../>
+   */
+  public FOConfigs createConfigs() {
+    FOConfigs cfg = new FOConfigs();
+    this._FOConfigFolders.add(cfg);
+    return cfg;
+  }
+
+  /**
    * Create a config object and stores it in the list To be used by Ant
    * Task to get all nested element of <config ../>
    */
@@ -145,6 +160,10 @@ public final class ExportTask extends Task {
 
   @Override
   public void execute() throws BuildException {
+    if (!this._FOConfigFolders.isEmpty()) {
+      log("The 'configs' element under 'export-pdf' is deprecated, please remove it", Project.MSG_WARN);
+    }
+
     if (this._source == null)
       throw new BuildException("Source presentation must be specified using 'src' attribute");
     // Defaulting working directory
@@ -417,6 +436,39 @@ public final class ExportTask extends Task {
      * @return the priority
      */
     public int getPriority() { return _priority; }
+  }
+
+  // FOConfigs object
+  /**
+   * Holder for FO configs definition.
+   *
+   * @deprectated this object is no longer supported
+   */
+  public static final class FOConfigs {
+    /** The priority */
+    private int _priority = 1;
+    /** The folder containing the config files */
+    private File _folder;
+
+    /**
+     * Set the FO configuration file.
+     *
+     * @param file The configuration file.
+     */
+    public void setFolder(File folder) {
+      if (folder.exists() && folder.isDirectory()) {
+        this._folder = folder;
+      }
+    }
+
+    /**
+     * Set the priority
+     *
+     * @param priority The priority
+     */
+    public void setPriority(int priority) {
+      this._priority = priority;
+    }
   }
 
 }
