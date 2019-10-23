@@ -10,7 +10,7 @@ apply from: "$rootDir/gradle/publishing.gradle"
 dependencies {
 
   // DOCX module dependencies
-  compile project(':pso-pdf-core')
+  compile project (':pso-pdf-core')
 
   compileOnly (
     'org.apache.ant:ant:1.8.1'

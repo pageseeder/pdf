@@ -213,7 +213,7 @@
    | </fo:block>
 
 -->
-  <xsl:template match="*[psf:is-fragment(.)][not(self::properties-fragment)]">
+  <xsl:template match="*[psf:is-fragment(.)][not(self::properties-fragment or self::media-fragment)]">
     <!-- if this is the first fragment of this document, add the anchor -->
     <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
     <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
@@ -221,12 +221,39 @@
     </xsl:if>
     <!-- check for section title -->
     <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
-    <fo:block id="psf-{@id}">
+    <fo:block>
+      <!-- don't put an ID for generated MathML fragment -->
+      <xsl:if test="@id != 'media'">
+        <xsl:attribute name="id" select="concat('psf-', @id)" />
+      </xsl:if>
       <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(name(), '-', @type)) else ()" />
       <xsl:variable name="def-props"  select="psf:load-style-properties(., name())" />
       <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
       <xsl:apply-templates/>
     </fo:block>
+  </xsl:template>
+
+  <!-- ============================== media-fragment ================================== -->
+  <!-- Template for PageSeeder media fragment
+
+  .. admonition:: xpath:media-fragment
+
+     | <fo:instream-foreign-object>
+     |   ...
+     | </fo:instream-foreign-object>
+
+  -->
+  <xsl:template match="media-fragment">
+    <!-- if this is the first fragment of this document, add the anchor -->
+    <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
+    <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
+      <fo:block id="psf-{$dad-doc/@id}" />
+    </xsl:if>
+    <!-- check for section title -->
+    <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
+    <fo:instream-foreign-object>
+      <xsl:copy-of select="node()" />
+    </fo:instream-foreign-object>
   </xsl:template>
   
 <!-- ============================== properties-fragment ================================== -->

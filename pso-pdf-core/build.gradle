@@ -11,17 +11,19 @@ dependencies {
 
   // List public coordinates of runtime dependencies of internal projects (ps-ant-pdf)
   runtime (
-    'commons-io:commons-io:1.4',
-    'org.apache.pdfbox:pdfbox:2.0.17',
-    'org.apache.pdfbox:fontbox:2.0.17',
-    'org.apache.pdfbox:pdfbox-tools:2.0.17',
-    'org.apache.xmlgraphics:fop:2.3',
-    'net.sf.saxon:Saxon-HE:9.7.0-2'
+          'commons-io:commons-io:1.4',
+          'org.apache.pdfbox:pdfbox:2.0.17',
+          'org.apache.pdfbox:fontbox:2.0.17',
+          'org.apache.pdfbox:pdfbox-tools:2.0.17',
+          'org.apache.xmlgraphics:fop:2.3',
+          //'net.sourceforge.jeuclid:jeuclid-fop:3.1.9',
+          // may need to build our own version due to CustomEvent bug or use FOP 2.2 which doesn't support SVG images
+          'net.sf.saxon:Saxon-HE:9.7.0-2'
   )
 
   testCompile (
-    'xmlunit:xmlunit:1.6',
-    'junit:junit:4+'
+          'xmlunit:xmlunit:1.6',
+          'junit:junit:4+'
   )
 
 }

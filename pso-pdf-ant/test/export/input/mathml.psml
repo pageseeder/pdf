@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><document id="19564" schemaversion="1.1" type="component" date="2019-10-23T09:23:33+11:00" version="current" level="processed"><documentinfo><uri id="19564" scheme="http" host="localhost" port="80" path="/ps/report/local2/documents/mathml.psml" decodedpath="/ps/report/local2/documents/mathml.psml" external="false" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" created="2019-10-22T14:50:35+11:00" modified="2019-10-23T09:23:33+11:00" title="MathML"><displaytitle>MathML</displaytitle></uri></documentinfo><fragmentinfo><locator id="18383" fragment="19564-1" editid="44644" modified="2019-10-22T14:51:36+11:00"/><locator id="18387" fragment="19564-11" editid="44663" modified="2019-10-22T14:52:05+11:00"/><locator id="18386" fragment="19564-6" editid="44657" modified="2019-10-22T14:51:57+11:00"/><locator id="18389" fragment="19564-7" editid="44693" modified="2019-10-23T09:23:33+11:00"/><locator id="18385" fragment="19564-4" editid="44653" modified="2019-10-22T14:51:47+11:00"/><locator id="18381" fragment="19564-title" editid="44638" modified="2019-10-22T14:51:26+11:00"/><locator id="18376" fragment="19564-3" editid="44650" modified="2019-10-22T14:51:44+11:00"/><locator id="18379" fragment="19564-10" editid="44678" modified="2019-10-23T09:10:33+11:00"/><locator id="18373" fragment="19564-5" editid="44655" modified="2019-10-22T14:51:51+11:00"/><locator id="18377" fragment="19564-8" editid="44677" modified="2019-10-23T09:10:23+11:00"/><locator id="18378" fragment="19564-9" editid="44691" modified="2019-10-23T09:18:05+11:00"/><locator id="18375" fragment="19564-1-1" editid="44636" modified="2019-10-22T14:51:14+11:00"/><locator id="18384" fragment="19564-2" editid="44647" modified="2019-10-22T14:51:39+11:00"/><locator id="18374" fragment="19564-14" editid="44660" modified="2019-10-22T14:52:02+11:00"/><locator id="18382" fragment="19564-1-2" editid="44641" modified="2019-10-22T14:51:32+11:00"/><locator fragment="19564-12" modified="2018-05-23T13:01:27+10:00"/><locator fragment="19564-13" modified="2018-06-06T09:50:23+10:00"/></fragmentinfo><metadata/><section id="19564-title"><fragment id="19564-title"><heading level="1">MathML</heading></fragment></section><section id="19564-body"><fragment id="19564-6"><heading level="1">Equations</heading></fragment><fragment id="19564-7"><para>Equations using inline labels should be supported, for example <xref frag="media" type="math"><media-fragment id="media" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true">
+    <mi>a</mi>
+    <mo>=</mo>
+    <msup>
+      <mi>b</mi>
+      <mn>2</mn>
+    </msup>
+    <mo>+</mo>
+    <mi>c</mi>
+  </mstyle>
+</math>
+</media-fragment></xref> or <xref frag="media" type="math"><media-fragment id="media" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true">
+    <mi>x</mi>
+    <mo>=</mo>
+    <mfrac>
+      <mi>b</mi>
+      <mn>2</mn>
+    </mfrac>
+    <mo>+</mo>
+    <mfrac>
+      <mi>c</mi>
+      <mn>3</mn>
+    </mfrac>
+  </mstyle>
+</math>
+</media-fragment></xref>.</para></fragment><fragment id="19564-8"><para>Equations from an AsciiMath library, for example <xref id="44628" frag="1" reversefrag="8" reversetitle="" reverselink="true" reversetype="none" display="document" config="asciimath" type="math" uriid="295" href="asciimath/asciimath-001.psml" urititle="Exponential 1" urilabels="simple,exponential" mediatype="application/vnd.pageseeder.psml+xml" documenttype="asciimath"><locator id="350" fragment="295-1" editid="44668" modified="2019-10-22T15:01:06+11:00"><reversexrefs><reversexref uriid="242" href="../system_report/components/system_report-10.psml" frag="8" urititle="Functionality" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="888" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/><reversexref uriid="19564" href="mathml.psml" frag="8" urititle="MathML" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="44628" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/></reversexrefs></locator><media-fragment id="295-1" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true">
+    <mi>y</mi>
+    <mo>=</mo>
+    <msup>
+      <mi>x</mi>
+      <mn>2</mn>
+    </msup>
+  </mstyle>
+</math>
+</media-fragment></xref> or <xref id="44629" frag="1" reversefrag="8" reversetitle="" reverselink="true" reversetype="none" display="document" config="asciimath" type="math" uriid="288" href="asciimath/asciimath-004.psml" urititle="Exponential 4" urilabels="complex,exponential" mediatype="application/vnd.pageseeder.psml+xml" documenttype="asciimath"><locator id="351" fragment="288-1" modified="2019-09-10T12:18:39+10:00"><reversexrefs><reversexref uriid="242" href="../system_report/components/system_report-10.psml" frag="8" urititle="Functionality" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="889" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/><reversexref uriid="19564" href="mathml.psml" frag="8" urititle="MathML" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="44629" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/></reversexrefs></locator><media-fragment id="288-1" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true">
+    <mi>y</mi>
+    <mo>=</mo>
+    <msup>
+      <mi>x</mi>
+      <mn>2</mn>
+    </msup>
+    <mo>+</mo>
+    <mi>z</mi>
+  </mstyle>
+</math>
+</media-fragment></xref>.</para></fragment><fragment id="19564-10"><para>Equations from a MathML library, for example <xref id="44632" frag="1" reversefrag="10" reversetitle="" reverselink="true" reversetype="none" display="document" config="mathml" type="math" uriid="276" href="mathml/mathml-002.psml" urititle="Exponential 2" mediatype="application/vnd.pageseeder.psml+xml" documenttype="mathml"><locator id="356" fragment="276-1" modified="2018-09-07T11:37:15+10:00"><reversexrefs><reversexref uriid="242" href="../system_report/components/system_report-10.psml" frag="10" urititle="Functionality" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="892" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/><reversexref uriid="19564" href="mathml.psml" frag="10" urititle="MathML" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="44632" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/></reversexrefs></locator><media-fragment id="276-1" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1</mn></math></media-fragment></xref>.</para></fragment><fragment id="19564-9"><para>Search equations from a library <xref id="44630" frag="1" reversefrag="9" reversetitle="" reverselink="true" reversetype="none" display="document" config="mathml" type="math" uriid="285" href="mathml/mathml-001.psml" urititle="Exponential 1" mediatype="application/vnd.pageseeder.psml+xml" documenttype="mathml"><locator id="353" fragment="285-1" modified="2018-09-07T11:35:55+10:00"><reversexrefs><reversexref uriid="242" href="../system_report/components/system_report-10.psml" frag="9" urititle="Functionality" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="890" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/><reversexref uriid="19564" href="mathml.psml" frag="9" urititle="MathML" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="44630" title="" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/></reversexrefs></locator><media-fragment id="285-1" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi><mo>=</mo><mfrac><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mo> </mo><mn>3</mn></mrow><mn>2</mn></mfrac></math></media-fragment></xref>.</para><para>A complex MathML equation with display="block" <xref id="44687" frag="1" reversefrag="9" reversetitle="Equations" reverselink="true" reversetype="none" display="document" config="mathml" type="math" uriid="19565" href="mathml/mathml-003.psml" urititle="Complex 1" mediatype="application/vnd.pageseeder.psml+xml" documenttype="mathml"><locator id="18391" fragment="19565-1" editid="44686" modified="2019-10-23T09:15:15+11:00"><reversexrefs><reversexref uriid="19564" href="mathml.psml" frag="9" urititle="MathML" mediatype="application/vnd.pageseeder.psml+xml" documenttype="component" id="44687" title="Equations" type="none" forwardtype="math" forwarddisplay="document" forwardfrag="1"/></reversexrefs></locator><media-fragment id="19565-1" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>f</mi>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mrow>
+      <mn>2</mn>
+      <mi>π</mi>
+      <mi>i</mi>
+    </mrow>
+  </mfrac>
+  <mo>∮</mo>
+  <mfrac>
+    <mrow>
+      <mi>f</mi>
+      <mo stretchy="false">(</mo>
+      <mi>z</mi>
+      <mo stretchy="false">)</mo>
+    </mrow>
+    <mrow>
+      <mi>z</mi>
+      <mo>−</mo>
+      <mi>a</mi>
+    </mrow>
+  </mfrac>
+  <mi>d</mi>
+  <mi>z</mi>
+</math></media-fragment></xref>.</para></fragment></section></document>
