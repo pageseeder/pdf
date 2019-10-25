@@ -16,8 +16,6 @@ dependencies {
           'org.apache.pdfbox:fontbox:2.0.17',
           'org.apache.pdfbox:pdfbox-tools:2.0.17',
           'org.apache.xmlgraphics:fop:2.3',
-          //'net.sourceforge.jeuclid:jeuclid-fop:3.1.9',
-          // may need to build our own version due to CustomEvent bug or use FOP 2.2 which doesn't support SVG images
           'net.sf.saxon:Saxon-HE:9.7.0-2'
   )
 

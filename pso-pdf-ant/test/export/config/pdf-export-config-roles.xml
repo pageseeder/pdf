@@ -1,0 +1,59 @@
+<styles>
+
+  <element name="preformat" role="mypreformat">
+    <property name="color"        value="#007700"/>
+  </element>
+
+  <element name="nlist" role="mynlist">
+    <property name="color"        value="#007777"/>
+  </element>
+
+  <element name="list" role="mylist">
+    <property name="color"        value="#00ffff"/>
+  </element>
+
+  <element name="link" role="mylink">
+    <property name="color"        value="#777700"/>
+  </element>
+
+  <element name="xref" role="myxref">
+    <property name="color"        value="#aaaa00"/>
+  </element>
+
+  <element name="blockxref" role="myblockxref">
+    <property name="color"        value="#dddd00"/>
+  </element>
+
+  <element name="table" role="mytable">
+    <property name="background-color"        value="#770077"/>
+  </element>
+
+  <element name="table-col" role="mycol">
+    <property name="background-color"        value="#990099"/>
+  </element>
+
+  <element name="table-row" role="myrow">
+    <property name="background-color"        value="#bb00bb"/>
+  </element>
+
+  <element name="table-hcell" role="myhcell">
+    <property name="height"        value="1cm"/>
+  </element>
+
+  <element name="table-cell" role="mycell">
+    <property name="height"        value="2cm"/>
+  </element>
+
+  <element name="table-cell">
+    <property name="background-color"        value=""/>
+  </element>
+
+  <element name="hcell" role="myhcell">
+    <property name="color"        value="#dd00dd"/>
+  </element>
+
+  <element name="cell" role="mycell">
+    <property name="color"        value="#ff00ff"/>
+  </element>
+
+</styles>

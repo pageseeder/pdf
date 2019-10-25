@@ -123,6 +123,55 @@ public class ExportTaskTest {
   }
 
   @Test
+  public void testRoles() throws IOException {
+
+    File lorem = new File(SOURCE, "roles.psml");
+    File fo = new File(WORKING, "fo.xml");
+    File output = new File(DESTINATION, "roles.pdf");
+    File config = loadConfig("pdf-export-config-roles.xml");
+
+    ExportTask task = new ExportTask();
+    task.setDebug(true);
+    task.setWorking(WORKING);
+    task.setSrc(lorem);
+    task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
+    task.execute();
+
+    Assert.assertTrue(output.exists());
+    Assert.assertTrue(fo.exists());
+
+    Map<String, String> ns = Collections.singletonMap("fo", "http://www.w3.org/1999/XSL/Format");
+    String xml = new String(Files.readAllBytes(fo.toPath()), StandardCharsets.UTF_8);
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:inline)[1]/fo:basic-link/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:inline)[2]/fo:basic-link/@color", equalTo("#777700")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:inline)[3]/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:inline)[4]/@color", equalTo("#aaaa00")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[8]/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[9]/@color", equalTo("#dddd00")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[1]/@color", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[2]/@color", equalTo("#007777")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[3]/@color", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[4]/@color", equalTo("#00ffff")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table)[1]/parent::fo:block/@background-color", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table)[2]/parent::fo:block/@background-color", equalTo("#770077")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-column)[1]/@background-color", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-column)[3]/@background-color", equalTo("#990099")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-row)[3]/@background-color", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-row)[6]/@background-color", equalTo("#bb00bb")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[1]/@height", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[3]/@height", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[7]/@height", equalTo("1cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[9]/@height", equalTo("2cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[1]/fo:block/@color", equalTo("white")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[3]/fo:block/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[7]/fo:block/@color", equalTo("#dd00dd")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-cell)[9]/fo:block/@color", equalTo("#ff00ff")).withNamespaceContext(ns));
+  }
+
+  @Test
   public void testLabelledDocument() throws IOException {
 
     File lorem = new File(SOURCE, "labelled-document.psml");
@@ -236,12 +285,16 @@ public class ExportTaskTest {
     File lorem = new File(SOURCE, "mathml.psml");
     File fo = new File(WORKING, "fo.xml");
     File output = new File(DESTINATION, "mathml.pdf");
+    File config = loadConfig("pdf-export-config-mathml.xml");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);
     task.setWorking(WORKING);
     task.setSrc(lorem);
     task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
     task.execute();
   }
 

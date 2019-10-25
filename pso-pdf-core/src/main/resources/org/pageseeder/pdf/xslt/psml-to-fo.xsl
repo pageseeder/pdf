@@ -43,8 +43,8 @@
       <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, 'table', 'property', string(@role))" />
       <xsl:variable name="table-props" select="psf:load-style-properties-more($config, 'table', 'property', '')" />
       <xsl:sequence select="psf:style-properties-overwrite($role-props, $table-props)"/>
-      <!--  currently, fop 0.95 does not support caption -->
-      <!-- 
+      <!--  currently, fop 2.3 does not support caption -->
+      <!--
       <fo:table-and-caption>
       <xsl:if test="caption">
 	      <fo:table-caption>
@@ -182,7 +182,7 @@
           </xsl:if>
           <fo:block margin-left="0.08cm" space-before="0.08cm" margin-right="0.08cm">
             <xsl:attribute name="font-weight">bold</xsl:attribute>
-            <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, concat($name, '-role-', @role), 'property', '')" />
+            <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, $name, 'property', string(@role))" />
             <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, $name, 'property', '')" />
             <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
             <xsl:variable name="align" select="if (@align) then @align else ../../col[count(preceding-sibling::*)+1 = count(current()/preceding-sibling::*)+1]/@align" />
@@ -563,7 +563,7 @@
     </fo:block>
   </xsl:template>
 
-<!-- ============================== ParaLabel ================================== -->
+<!-- ============================== block label ================================== -->
 
 <!-- Template for PageSeeder block
 
@@ -646,7 +646,10 @@
 -->
   <xsl:template match="preformat">
   	<fo:block>
-      <xsl:sequence select="psf:style-properties(., local-name(.))"/>
+      <xsl:variable name="config"      select="psf:load-config(.)" />
+      <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, local-name(.), 'property', string(@role))" />
+      <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, local-name(.), 'property', '')" />
+      <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
   	  <xsl:apply-templates select="* | text()" />
   	</fo:block>
   </xsl:template>
@@ -717,7 +720,10 @@
   <xsl:template match="link[@href]">
     <fo:inline>
       <fo:basic-link>
-        <xsl:sequence select="psf:style-properties(., local-name(.))"/>
+        <xsl:variable name="config"      select="psf:load-config(.)" />
+        <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, local-name(.), 'property', string(@role))" />
+        <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, local-name(.), 'property', '')" />
+        <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
         <xsl:choose>
           <xsl:when test="starts-with(@href,'#')">
             <xsl:attribute name="internal-destination">
@@ -748,9 +754,10 @@
 -->
   <xsl:template match="list | nlist">
 	  <fo:list-block>
-      <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(local-name(), @type)) else ()" />
-      <xsl:variable name="def-props"  select="psf:load-style-properties(., local-name())" />
-      <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
+      <xsl:variable name="config"      select="psf:load-config(.)" />
+      <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, local-name(.), 'property', string(@role))" />
+      <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, local-name(.), 'property', '')" />
+      <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
 		  <xsl:apply-templates/>
 	  </fo:list-block>
   </xsl:template>
@@ -902,7 +909,10 @@
 -->
   <xsl:template match="xref">
     <fo:inline>
-      <xsl:sequence select="psf:style-properties(., local-name(.))"/>
+      <xsl:variable name="config"      select="psf:load-config(.)" />
+      <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, local-name(.), 'property', string(@config))" />
+      <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, local-name(.), 'property', '')" />
+      <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
       <xsl:call-template name="xref-link"/>
     </fo:inline>
   </xsl:template>
@@ -928,7 +938,10 @@
       </xsl:when>
       <xsl:otherwise><!-- output like a normal XRef? -->
         <fo:block>
-          <xsl:sequence select="psf:style-properties(., local-name(.))"/>
+          <xsl:variable name="config"      select="psf:load-config(.)" />
+          <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, local-name(.), 'property', string(@config))" />
+          <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, local-name(.), 'property', '')" />
+          <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
           <xsl:call-template name="xref-link"/>
         </fo:block>
       </xsl:otherwise>

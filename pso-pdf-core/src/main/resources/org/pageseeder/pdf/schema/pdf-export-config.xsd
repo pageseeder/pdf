@@ -412,6 +412,8 @@
       <xs:enumeration value="underline" />
       <xs:enumeration value="xref" />
       <!-- Special elements -->
+      <xs:enumeration value="table-col" />
+      <xs:enumeration value="table-row" />
       <xs:enumeration value="table-cell" />
       <xs:enumeration value="table-hcell" />
       <xs:enumeration value="cell" />

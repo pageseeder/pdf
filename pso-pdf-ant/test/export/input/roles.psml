@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document level="portable" id="123456">
+  <section id="1">
+    <fragment id="1">
+      <heading level="1">Roles</heading>
+    </fragment>
+  </section>
+  <toc/>
+  <section id="2">
+    <fragment id="2.1441">
+      <para>
+        Lorem ipsum dolor sit amet, 
+        <link href="http://pageseeder.com">test link</link>
+         adipiscing elit. Nullam dignissim convallis est
+        <link href="http://pageseeder.com" role="mylink">test link with role</link>
+        Quisque aliquam. Donec faucibus. Nunc iaculis suscipit dui.
+        Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. Praesent mattis,
+        massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus. Maecenas ornare tortor
+        <xref title="test xlink" frag="1" display="manual" type="none" reverselink="false" href="#"
+          urititle="Lorem ipsum">test xref</xref>.
+        Donec sed tellus eget sapien fringilla nonummy
+        <xref title="test xlink" frag="1" display="manual" type="none" reverselink="false" href="#"
+              urititle="Lorem ipsum" config="myxref">test xref with config</xref>.
+        Mauris a ante. Suspendisse quam sem, consequat at, commodo
+        vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+      </para>
+      <blockxref title="test xlink" frag="1" display="manual" type="none" reverselink="false" href="#"
+            urititle="Lorem ipsum">test blockxref</blockxref>.
+      Donec sed tellus eget sapien fringilla nonummy
+      <blockxref title="test xlink" frag="1" display="manual" type="none" reverselink="false" href="#"
+            urititle="Lorem ipsum" config="myblockxref">test blockxref with config</blockxref>.
+    </fragment>
+    <fragment id="2.1581">
+      <heading level="2">Ordered List</heading>
+      <nlist>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
+        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
+        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+          eget metus.</item>
+      </nlist>
+      <heading level="2">Ordered List with role</heading>
+      <nlist role="mynlist">
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
+        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
+        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+          eget metus.</item>
+      </nlist>
+      <heading level="2">Unordered List</heading>
+      <list>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
+        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
+        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+          eget metus.</item>
+      </list>
+      <heading level="2">Unordered List with role</heading>
+      <list role="mylist">
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
+        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
+        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+          eget metus.</item>
+      </list>
+    </fragment>
+    <fragment id="2.1691">
+      <heading level="2">Table</heading>
+      <table width="400">
+        <col />
+        <col />
+        <row>
+          <hcell>Header</hcell>
+          <hcell>Horizontal</hcell>
+        </row>
+        <row>
+          <cell>Cell1</cell>
+          <cell>Cell2</cell>
+        </row>
+        <row>
+          <cell>Cell3</cell>
+          <cell>Cell4</cell>
+        </row>
+      </table>
+      <heading level="2">Table with roles</heading>
+      <table width="400" role="mytable">
+        <col role="mycol" />
+        <col />
+        <row>
+          <hcell role="myhcell">Header</hcell>
+          <hcell>Horizontal</hcell>
+        </row>
+        <row>
+          <cell role="mycell">Cell1</cell>
+          <cell>Cell2</cell>
+        </row>
+        <row role="myrow">
+          <cell>Cell3</cell>
+          <cell>Cell4</cell>
+        </row>
+      </table>
+    </fragment>
+    <fragment id="2.1831">
+      <heading level="1">Preformatted</heading>
+      <preformat>
+        At vero eos et accusamus et
+        iusto odio dignissimos ducimus,
+        qui blanditiis praesentium
+        voluptatum deleniti atque corrupti,
+        quos dolores et quas molestias excepturi sint,
+        obcaecati cupiditate non provident,
+        similique sunt in culpa,
+        <bold>qui officia deserunt mollit</bold>
+        ia
+        <bold>anim</bold>
+        i,
+        <bold>id est laborum</bold>
+        et dolorum fuga.
+      </preformat>
+      <heading level="1">Preformatted with role</heading>
+      <preformat role="mypreformat">
+        At vero eos et accusamus et
+        iusto odio dignissimos ducimus,
+        qui blanditiis praesentium
+        voluptatum deleniti atque corrupti,
+        quos dolores et quas molestias excepturi sint,
+        obcaecati cupiditate non provident,
+        similique sunt in culpa,
+        <bold>qui officia deserunt mollit</bold>
+        ia
+        <bold>anim</bold>
+        i,
+        <bold>id est laborum</bold>
+        et dolorum fuga.
+      </preformat>
+    </fragment>
+  </section>
+</document>

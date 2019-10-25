@@ -3,6 +3,7 @@
  */
 package org.pageseeder.pdf.ant;
 
+import net.sourceforge.jeuclid.fop.plugin.JEuclidFopFactoryConfigurator;
 import org.apache.commons.io.IOUtils;
 import org.apache.fop.apps.*;
 import org.apache.tools.ant.BuildException;
@@ -209,6 +210,7 @@ public final class ExportTask extends Task {
     // set resolution
     builder.setSourceResolution(this._resolution);
     FopFactory factory = builder.build();
+    JEuclidFopFactoryConfigurator.configure(factory);
     FOUserAgent userAgent = factory.newFOUserAgent();
     userAgent.setCreationDate(new Date());
     userAgent.setProducer("PageSeeder ANT PDF Library");

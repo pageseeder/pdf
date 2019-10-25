@@ -1,0 +1,13 @@
+<styles>
+
+  <element name="xref" role="mathml">
+    <!-- override blue default color for xrefs -->
+    <property name="color"        value="#000000"/>
+  </element>
+
+  <element name="xref" role="asciimath">
+    <!-- override blue default color for xrefs -->
+    <property name="color"        value="#000000"/>
+  </element>
+
+</styles>
