@@ -121,6 +121,14 @@
         </xsl:if>
         <fo:table-body>
           <xsl:apply-templates select="row[not(@part) or @part = 'body']" />
+          <!-- table must have body which must have row, cell and block... -->
+          <xsl:if test="empty(row[not(@part) or @part = 'body'])">
+            <fo:table-row>
+              <xsl:for-each select="if (col) then col else row[1]/cell">
+                <fo:table-cell><fo:block /></fo:table-cell>
+              </xsl:for-each>
+            </fo:table-row>
+          </xsl:if>
         </fo:table-body>
       </fo:table>
       <!-- </fo:table-and-caption> -->
