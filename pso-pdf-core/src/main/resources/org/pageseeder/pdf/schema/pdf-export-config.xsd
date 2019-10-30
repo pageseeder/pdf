@@ -102,6 +102,7 @@
                 </xs:complexType>
               </xs:element>
             </xs:choice>
+            <xs:attribute name="width" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="center" minOccurs="0" maxOccurs="unbounded">
@@ -128,6 +129,7 @@
 								</xs:complexType>
 							</xs:element>
 						</xs:choice>
+            <xs:attribute name="width" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="right" minOccurs="0" maxOccurs="unbounded">
@@ -154,6 +156,7 @@
                 </xs:complexType>
               </xs:element>
             </xs:choice>
+            <xs:attribute name="width" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
@@ -198,6 +201,7 @@
                 </xs:complexType>
               </xs:element>
             </xs:choice>
+            <xs:attribute name="width" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="center" minOccurs="0" maxOccurs="unbounded">
@@ -224,6 +228,7 @@
                 </xs:complexType>
               </xs:element>
             </xs:choice>
+            <xs:attribute name="width" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="right" minOccurs="0" maxOccurs="unbounded">
@@ -250,6 +255,7 @@
                 </xs:complexType>
               </xs:element>
             </xs:choice>
+            <xs:attribute name="width" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

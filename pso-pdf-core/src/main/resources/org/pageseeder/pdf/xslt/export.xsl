@@ -271,7 +271,7 @@
                   <xsl:value-of select="replace($margin-zone-first/left/@width, '\D', '')" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:variable name="wid" select="$margin-zone[@odd-or-even = '' or @odd-or-even = $o-or-e]/left/@width" />
+                  <xsl:variable name="wid" select="$margin-zone[string(@odd-or-even) = '' or @odd-or-even = $o-or-e]/left/@width" />
                   <xsl:if test="$wid"><xsl:value-of select="replace($wid, '\D', '')" /></xsl:if>
                 </xsl:otherwise>
               </xsl:choose>
@@ -289,7 +289,7 @@
                   <xsl:value-of select="replace($margin-zone-first/center/@width, '\D', '')" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:variable name="wid" select="$margin-zone[@odd-or-even = '' or @odd-or-even = $o-or-e]/center/@width" />
+                  <xsl:variable name="wid" select="$margin-zone[string(@odd-or-even) = '' or @odd-or-even = $o-or-e]/center/@width" />
                   <xsl:if test="$wid"><xsl:value-of select="replace($wid, '\D', '')" /></xsl:if>
                 </xsl:otherwise>
               </xsl:choose>
@@ -307,7 +307,7 @@
                   <xsl:value-of select="replace($margin-zone-first/right/@width, '\D', '')" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:variable name="wid" select="$margin-zone[@odd-or-even = '' or @odd-or-even = $o-or-e]/right/@width" />
+                  <xsl:variable name="wid" select="$margin-zone[string(@odd-or-even) = '' or @odd-or-even = $o-or-e]/right/@width" />
                   <xsl:if test="$wid"><xsl:value-of select="replace($wid, '\D', '')" /></xsl:if>
                 </xsl:otherwise>
               </xsl:choose>
@@ -369,8 +369,8 @@
                     <xsl:otherwise>33%</xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
-                <xsl:when test="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/top/@height">
-                  <xsl:value-of select="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/top/@height" />
+                <xsl:when test="psf:margin-zone($context, $type, 'false')[string(@odd-or-even) = '' or @odd-or-even = $odd-or-even]/top/@height">
+                  <xsl:value-of select="psf:margin-zone($context, $type, 'false')[string(@odd-or-even) = '' or @odd-or-even = $odd-or-even]/top/@height" />
                 </xsl:when>
                 <xsl:otherwise>33%</xsl:otherwise>
               </xsl:choose>
@@ -391,8 +391,8 @@
                     <xsl:otherwise>33%</xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
-                <xsl:when test="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/middle/@height">
-                  <xsl:value-of select="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/middle/@height" />
+                <xsl:when test="psf:margin-zone($context, $type, 'false')[string(@odd-or-even) = '' or @odd-or-even = $odd-or-even]/middle/@height">
+                  <xsl:value-of select="psf:margin-zone($context, $type, 'false')[string(@odd-or-even) = '' or @odd-or-even = $odd-or-even]/middle/@height" />
                 </xsl:when>
                 <xsl:otherwise>33%</xsl:otherwise>
               </xsl:choose>
@@ -413,8 +413,8 @@
                     <xsl:otherwise>33%</xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
-                  <xsl:when test="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/bottom/@height">
-                    <xsl:value-of select="psf:margin-zone($context, $type, 'false')[@odd-or-even = '' or @odd-or-even = $odd-or-even]/bottom/@height" />
+                  <xsl:when test="psf:margin-zone($context, $type, 'false')[string(@odd-or-even) = '' or @odd-or-even = $odd-or-even]/bottom/@height">
+                    <xsl:value-of select="psf:margin-zone($context, $type, 'false')[string(@odd-or-even) = '' or @odd-or-even = $odd-or-even]/bottom/@height" />
                 </xsl:when>
                 <xsl:otherwise>33%</xsl:otherwise>
               </xsl:choose>
