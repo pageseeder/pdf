@@ -15,6 +15,8 @@
 				<xs:element ref="body" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="header" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="footer" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="left" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="right" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="element" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
       <xs:attribute name="label" type="xs:string" />
@@ -271,7 +273,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="right">
+	<xs:element name="left">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="region-property" minOccurs="0" maxOccurs="unbounded"/>
@@ -300,6 +302,7 @@
                 </xs:complexType>
               </xs:element>
             </xs:choice>
+            <xs:attribute name="height" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="middle">
@@ -353,12 +356,104 @@
                 </xs:complexType>
               </xs:element>
             </xs:choice>
+            <xs:attribute name="height" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="first" type="xs:boolean"/>
 		</xs:complexType>
 	</xs:element>
+
+  <xs:element name="right">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="region-property" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="top">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attribute name="height" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="middle">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attribute name="height" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="bottom">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="property"/>
+              <xs:element name="text" type="xs:string" />
+              <xs:element name="image">
+                <xs:complexType>
+                  <xs:attribute name="src" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="date">
+                <xs:complexType>
+                  <xs:attribute name="pattern" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="page-number" />
+              <xs:element name="total-pages" />
+              <xs:element name="filename" />
+              <xs:element name="label">
+                <xs:complexType>
+                  <xs:attribute name="name" type="label" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attribute name="height" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="first" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
 
 	<xs:element name="element">
 		<xs:complexType>
