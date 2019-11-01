@@ -149,8 +149,8 @@ public class ExportTaskTest {
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:inline)[2]/fo:basic-link/@color", equalTo("#777700")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:inline)[3]/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:inline)[4]/@color", equalTo("#aaaa00")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[8]/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[9]/@color", equalTo("#dddd00")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[7]/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[8]/@color", equalTo("#dddd00")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[1]/@color", equalTo("")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[2]/@color", equalTo("#007777")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[3]/@color", equalTo("")).withNamespaceContext(ns));
@@ -229,17 +229,16 @@ public class ExportTaskTest {
     MatcherAssert.assertThat(xml, XML.hasXPath("count(//fo:simple-page-master[@master-name = 'custom-first'])", equalTo("1")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("count(//fo:page-sequence)",                                     equalTo("5")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]/@master-reference",                       equalTo("custom-go-first")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]//fo:block[1]/@id",                        equalTo("first-page")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[1]//fo:block[2]/@id",                        equalTo("psf-100")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:page-sequence[1]/fo:flow//fo:block)[3]/@id",              equalTo("psf-100")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]/@master-reference",                       equalTo("label-pdf2-go")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[2]//fo:block[1]/@id",                        equalTo("psf-200")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:page-sequence[2]/fo:flow//fo:block)[3]/@id",              equalTo("psf-200")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[3]/@master-reference",                       equalTo("custom-go")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[3]//fo:block[1]/@id",                        equalTo("psf-400")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:page-sequence[3]/fo:flow//fo:block)[3]/@id",              equalTo("psf-400")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[4]/@master-reference",                       equalTo("label-pdf2-go")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[4]//fo:block[1]/@id",                        equalTo("psf-200-4")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:page-sequence[4]/fo:flow//fo:block)[2]/@id",              equalTo("psf-200-4")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[5]/@master-reference",                       equalTo("custom-go")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[5]//fo:block[1]/@id",                        equalTo("psf-4")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("//fo:page-sequence[5]//fo:block[last()]/@id",                   equalTo("last-page")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:page-sequence[5]/fo:flow//fo:block)[2]/@id",              equalTo("psf-100-4")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:page-sequence[5]/fo:flow//fo:block)[last()]/@id",                   equalTo("last-page")).withNamespaceContext(ns));
 
   }
 

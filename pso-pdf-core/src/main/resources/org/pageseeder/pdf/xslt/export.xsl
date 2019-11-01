@@ -218,12 +218,9 @@
           <fo:static-content flow-name="{$this-config}-even-left">  <xsl:sequence select="psf:left-right(., 'left', 'even', $label-map)" /></fo:static-content>
           <fo:static-content flow-name="{$this-config}-even-right"> <xsl:sequence select="psf:left-right(., 'right', 'even', $label-map)" /></fo:static-content>
           <fo:flow flow-name="xsl-region-body">
-            <fo:block>
-              <xsl:sequence select="psf:general-style-properties($this-config, 'body', '', '')"/>
-              <!-- first page ID -->
-              <xsl:if test="$is-first"><fo:block id="first-page" /></xsl:if>
-              <!-- find next one so we know when to stop -->
-              <xsl:variable name="next-stop" select="(following::*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1])[1]/generate-id()" />
+            <!-- find next one so we know when to stop -->
+            <xsl:variable name="next-stop" select="(following::*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1])[1]/generate-id()" />
+            <xsl:variable name="blocks">
               <!-- apply templates to this fragment's children and all the following until we reach then next one (if there's one) -->
               <xsl:apply-templates select="." />
               <!-- find all fragments between this one and the next stop -->
@@ -231,9 +228,36 @@
               <!-- avoid fragments already included in another fragment in the list (transcluded) -->
               <xsl:variable name="next-ids" select="for $i in $next return generate-id($i)" />
               <xsl:apply-templates select="$next[empty(ancestor::*[exists(index-of($next-ids, generate-id()))])]" />
-              <!-- last page ID -->
-              <xsl:if test="string($next-stop) = ''"><fo:block id="last-page" /></xsl:if>
-            </fo:block>
+            </xsl:variable>
+            <xsl:variable name="props" select="psf:general-style-properties($this-config, 'body', '', '')"/>
+            <xsl:for-each-group select="$blocks/fo:block" group-adjacent="if (@span='all') then 3
+                                                                 else if (@span='none') then 2
+                                                                 else 1">
+              <xsl:choose>
+                <xsl:when test="current-grouping-key()=3">
+                  <fo:block>
+                    <xsl:attribute name="span" select="'all'" />
+                    <xsl:sequence select="$props[local-name() != 'span']"/>
+                    <xsl:sequence select="current-group()" />
+                  </fo:block>
+                </xsl:when>
+                <xsl:when test="current-grouping-key()=2">
+                  <fo:block>
+                    <xsl:attribute name="span" select="'none'" />
+                    <xsl:sequence select="$props[local-name() != 'span']"/>
+                    <xsl:sequence select="current-group()" />
+                  </fo:block>
+                </xsl:when>
+                <xsl:otherwise>
+                  <fo:block>
+                    <xsl:sequence select="$props"/>
+                    <xsl:sequence select="current-group()" />
+                  </fo:block>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each-group>
+            <!-- last page ID -->
+            <xsl:if test="string($next-stop) = ''"><fo:block id="last-page" /></xsl:if>
           </fo:flow>
         </fo:page-sequence>
       </xsl:for-each>

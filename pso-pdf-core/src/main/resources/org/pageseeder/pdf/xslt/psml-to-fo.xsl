@@ -222,13 +222,6 @@
 
 -->
   <xsl:template match="*[psf:is-fragment(.)][not(self::properties-fragment or self::media-fragment)]">
-    <!-- if this is the first fragment of this document, add the anchor -->
-    <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
-    <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
-      <fo:block id="psf-{$dad-doc/@id}" />
-    </xsl:if>
-    <!-- check for section title -->
-    <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
     <fo:block>
       <!-- don't put an ID for generated MathML fragment -->
       <xsl:if test="@id != 'media'">
@@ -237,6 +230,13 @@
       <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(name(), '-', @type)) else ()" />
       <xsl:variable name="def-props"  select="psf:load-style-properties(., name())" />
       <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
+      <!-- if this is the first fragment of this document, add the anchor -->
+      <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
+      <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
+        <fo:block id="psf-{$dad-doc/@id}" />
+      </xsl:if>
+      <!-- check for section title -->
+      <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
       <xsl:apply-templates/>
     </fo:block>
   </xsl:template>
@@ -275,15 +275,15 @@
 
 -->
   <xsl:template match="properties-fragment[property]">
-    <!-- if this is the first fragment of this document, add the anchor -->
-    <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
-    <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
-      <fo:block id="psf-{$dad-doc/@id}" />
-    </xsl:if>
-    <!-- check for section title -->
-    <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
     <fo:block id="psf-{@id}">
       <xsl:sequence select="psf:style-properties(., 'properties')"/>
+      <!-- if this is the first fragment of this document, add the anchor -->
+      <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
+      <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
+        <fo:block id="psf-{$dad-doc/@id}" />
+      </xsl:if>
+      <!-- check for section title -->
+      <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
       <fo:table border-collapse="collapse" table-layout="fixed" inline-progression-dimension.optimum="100%">
         <fo:table-column column-width="proportional-column-width(1)" />
         <fo:table-column column-width="proportional-column-width(1)" />
@@ -732,14 +732,15 @@
         <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, local-name(.), 'property', string(@role))" />
         <xsl:variable name="def-props"   select="psf:load-style-properties-more($config, local-name(.), 'property', '')" />
         <xsl:sequence select="psf:style-properties-overwrite($role-props, $def-props)"/>
+        <xsl:variable name="current-uriid" select="(ancestor::document)[last()]/@id" />
         <xsl:choose>
           <xsl:when test="starts-with(@href,'#')">
             <xsl:attribute name="internal-destination">
-              <xsl:value-of select="if (string-length(@href) = 1) then 'first-page' else concat('psa-', substring-after(@href,'#'))"/>
+              <xsl:value-of select="if (string-length(@href) = 1) then concat('psf-', $current-uriid) else concat('psa-', substring-after(@href,'#'))"/>
             </xsl:attribute>      
           </xsl:when>
           <xsl:when test="@href=''">
-            <xsl:attribute name="internal-destination">first-page</xsl:attribute>      
+            <xsl:attribute name="internal-destination" select="concat('psf-', $current-uriid)" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="external-destination" select="@href"/>

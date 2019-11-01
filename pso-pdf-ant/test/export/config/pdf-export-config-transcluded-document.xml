@@ -33,6 +33,9 @@
       <property name="font-size"              value="6pt"/>
       <center><page-number/><text>/</text><total-pages/></center>
     </footer>
+    <element name="fragment-header">
+      <property name="span" value="all" />
+    </element>
   </styles>
   <styles>
     <page>
