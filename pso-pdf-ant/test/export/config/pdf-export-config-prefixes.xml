@@ -1,21 +1,32 @@
 <styles>
 
+  <element name="heading" level="1">
+    <property name="background-color" value="black"/>
+    <property name="color"            value="yellow"/>
+    <property name="width"            value="18cm"/>  <!-- to make prefixed para content full width -->
+  </element>
+
+  <element name="heading" level="2">
+    <property name="background-color" value="black"/>
+    <property name="color"            value="orange"/>
+    <property name="width"            value="19cm"/> <!-- to make prefixed para content full width -->
+  </element>
+
   <element name="heading-prefix" level="1">
     <property name="start-indent" value="-1cm"/>
     <property name="text-indent"  value="1cm"/>
-    <property name="color"        value="green"/>
   </element>
 
   <element name="heading-prefix" level="2">
-    <property name="start-indent" value="-2cm"/>
-    <property name="text-indent"  value="2cm"/>
-    <property name="color"        value="blue"/>
+    <property name="start-indent"     value="-2cm"/>
+    <property name="text-indent"      value="2cm"/>
+    <property name="background-color" value="white"/>
   </element>
 
   <element name="heading-prefix" level="3">
     <property name="start-indent" value="-3cm"/>
     <property name="text-indent"  value="3cm"/>
-    <property name="color"        value="yellow"/>
+    <property name="color"        value="green"/>
   </element>
 
   <element name="heading-prefix" level="4">
@@ -33,7 +44,7 @@
   <element name="heading-prefix" level="6">
     <property name="start-indent" value="-6cm"/>
     <property name="text-indent"  value="6cm"/>
-    <property name="color"        value="orange"/>
+    <property name="color"        value="blue"/>
   </element>
 
   <element name="para-prefix" level="1">
@@ -50,6 +61,19 @@
     <property name="font-size"    value="15pt"/>
   </element>
 
+  <element name="para-prefix" level="3">
+    <property name="start-indent" value="0cm"/>
+    <property name="text-indent"  value="2.5cm"/>
+    <property name="text-align"   value="right"/>
+  </element>
+
+  <element name="para-prefix" level="4">
+    <property name="start-indent"     value="2.5cm"/>
+    <property name="text-indent"      value="2.5cm"/>
+    <property name="text-align"       value="right"/>
+    <property name="background-color" value="white"/>
+  </element>
+
   <element name="para" level="1">
     <property name="start-indent" value="5cm"/>
     <property name="text-indent"  value="-5cm"/>
@@ -58,6 +82,18 @@
   <element name="para" level="2">
     <property name="start-indent" value="6cm"/>
     <property name="text-indent"  value="-6cm"/>
+  </element>
+
+  <element name="para" level="3">
+    <property name="color"            value="yellow"/>
+    <property name="background-color" value="black"/>
+  </element>
+
+  <element name="para" level="4">
+    <property name="color"            value="orange"/>
+    <property name="background-color" value="black"/>
+    <property name="start-indent"     value="5cm"/>
+    <property name="width"            value="14.5cm"/> <!-- to stop prefixed para content too wide -->
   </element>
 
 </styles>

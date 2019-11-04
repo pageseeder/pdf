@@ -425,12 +425,21 @@
     <xsl:variable name="text-indent"  select="$prefix-properties[@name = 'text-indent']/@value" />
     <xsl:choose>
       <xsl:when test="$start-indent and $text-indent">
-        <fo:table border-style="none" table-layout="fixed" width="100%" start-indent="{$start-indent}">
+        <fo:table border-style="none" table-layout="fixed" start-indent="{$start-indent}">
+          <xsl:if test="not($heading-properties[@name = 'width'])">
+            <xsl:attribute name="width" select="'100%'" />
+          </xsl:if>
+          <xsl:for-each select="$heading-properties[@name = 'background-color' or @name = 'width']">
+            <xsl:attribute name="{@name}" select="@value" />
+          </xsl:for-each>
           <fo:table-column column-width="{$text-indent}"/>
           <fo:table-column column-width="proportional-column-width(1)" />
           <fo:table-body start-indent="0">
             <fo:table-row>
               <fo:table-cell text-align="right" padding-right="5px">
+                <xsl:for-each select="$prefix-properties[@name = 'background-color']">
+                  <xsl:attribute name="{@name}" select="@value" />
+                </xsl:for-each>
                 <fo:block>
                   <!-- add heading prefix style properties -->
                   <xsl:for-each select="$prefix-properties[@name != 'start-indent' and @name != 'text-indent']">
@@ -495,13 +504,27 @@
     <xsl:variable name="start-indent" select="$prefix-properties[@name = 'start-indent']/@value" />
     <xsl:variable name="text-indent"  select="$prefix-properties[@name = 'text-indent']/@value" />
     <xsl:variable name="ps-indent-px" select="$para-properties[@name = 'ps-indent-px']/@value" />
-    <fo:table border-style="none" table-layout="fixed" width="100%">
+    <fo:table border-style="none" table-layout="fixed">
+      <xsl:if test="not($indent-properties[@name = 'width']|$para-properties[@name = 'width'])">
+        <xsl:attribute name="width" select="'100%'" />
+      </xsl:if>
+      <xsl:for-each select="$indent-properties[@name = 'background-color' or @name = 'width']">
+        <xsl:attribute name="{@name}" select="@value" />
+      </xsl:for-each>
+      <xsl:for-each select="$para-properties[@name = 'background-color' or @name = 'width']">
+        <xsl:if test="empty($indent-properties[@name = current()/@name])">
+          <xsl:attribute name="{@name}" select="@value" />
+        </xsl:if>
+      </xsl:for-each>
       <xsl:if test="$start-indent"><xsl:attribute name="start-indent" select="$start-indent" /></xsl:if>
       <fo:table-column column-width="{if ($text-indent) then $text-indent else concat(number(@indent) * number($ps-indent-px), 'px')}"/>
       <fo:table-column column-width="proportional-column-width(1)" />
       <fo:table-body start-indent="0">
         <fo:table-row>
           <fo:table-cell text-align="right" padding-right="5px">
+            <xsl:for-each select="$prefix-properties[@name = 'background-color']">
+              <xsl:attribute name="{@name}" select="@value" />
+            </xsl:for-each>
             <fo:block>
               <!-- add para prefix style properties -->
               <xsl:for-each select="$prefix-properties[@name != 'start-indent' and @name != 'text-indent']">
