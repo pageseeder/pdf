@@ -8,8 +8,49 @@
     <property name="color"        value="#007777"/>
   </element>
 
+  <element name="nlist-label" level="1" role="mynlist">
+    <property name="color"       value="red"/>
+    <property name="ps-type"     value="loweralpha"/>
+  </element>
+
+  <element name="nlist-label" level="2" role="mynlist">
+    <property name="color"       value="red"/>
+    <property name="ps-type"     value="lowerroman"/>
+  </element>
+
+  <element name="nlist-label" level="3" role="mynlist">
+    <property name="color"       value="red"/>
+    <property name="ps-type"     value="square"/>
+  </element>
+
   <element name="list" role="mylist">
     <property name="color"        value="#00ffff"/>
+  </element>
+
+  <element name="list-label" level="2">
+    <property name="ps-type"     value="circle"/>
+  </element>
+
+  <element name="list-label" level="3">
+    <property name="ps-type"     value="square"/>
+  </element>
+
+  <element name="list-label" level="1" role="mylist">
+    <property name="color"       value="red"/>
+    <property name="ps-type"     value="circle"/>
+  </element>
+
+  <element name="list-label" level="2" role="mylist">
+    <property name="color"       value="red"/>
+    <property name="ps-type"     value="square"/>
+  </element>
+
+  <element name="list-label" level="3" role="mylist">
+    <property name="color"        value="red"/>
+    <property name="margin-top"   value="-1pt" />
+    <property name="font-size"    value="12pt" />
+    <property name="font-family"  value="ZapfDingbats" />
+    <property name="ps-type"      value="&#x27A2;"/>
   </element>
 
   <element name="link" role="mylink">

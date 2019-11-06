@@ -35,5 +35,40 @@
       <property name="font-size"              value="10pt"/>
       <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
     </footer>
+
+    <element name="list-label" level="3">
+      <property name="color"     value=""/>
+    </element>
+
+    <element name="list-label" level="4">
+      <property name="color"        value="red"/>
+      <property name="margin-top"   value="-10pt" /> <!-- should be ignored -->
+      <property name="font-size"    value="12pt" /> <!-- should be ignored -->
+      <property name="font-family"  value="Symbol" /> <!-- should be ignored -->
+      <property name="ps-type"      value="circle"/>
+    </element>
+
+    <element name="list-label" level="5">
+      <property name="color"        value="red"/>
+      <property name="margin-top"   value="-1pt" />
+      <property name="font-size"    value="12pt" />
+      <property name="font-family"  value="ZapfDingbats" />
+      <property name="ps-type"      value="&#x27A2;"/>
+    </element>
+
+    <element name="nlist-label" level="3">
+      <property name="color"     value="green"/>
+      <property name="ps-type"   value="upperroman"/>
+    </element>
+
+    <element name="nlist-label" level="4">
+      <property name="color"     value="green"/>
+      <property name="ps-type"   value="upperalpha"/>
+    </element>
+
+    <element name="nlist-label" level="5">
+      <property name="color"     value="green"/>
+      <property name="ps-type"   value="lowerroman"/>
+    </element>
   </styles>
 </config>

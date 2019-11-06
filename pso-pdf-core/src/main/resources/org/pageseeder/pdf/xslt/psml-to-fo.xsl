@@ -826,38 +826,59 @@
   		  	<xsl:variable name="level" select="count(ancestor::nlist | ancestor::list)"/>
           <xsl:variable name="pos" select="count(preceding-sibling::item) + 1"/>
           <xsl:variable name="label" select="if (parent::nlist/@start) then $pos + xs:integer(parent::nlist/@start) - 1 else $pos"/>
-  		  	<xsl:choose>
+          <xsl:variable name="config"      select="psf:load-config(.)" />
+          <xsl:variable name="role-props"
+                        select="psf:load-style-properties-more($config, concat(local-name(parent::*),'-label-', $level), 'property', string((ancestor::list|ancestor::nlist)[1]/@role))" />
+          <xsl:variable name="def-props"
+                        select="psf:load-style-properties-more($config, concat(local-name(parent::*),'-label-', $level), 'property', '')" />
+          <xsl:variable name="prop-atts" select="psf:style-properties-overwrite($role-props, $def-props)" />
+          <xsl:choose>
             <xsl:when test="parent::list">
+              <xsl:variable name="type" select="if (../@type) then ../@type
+                                                else if ($role-props[@name = 'ps-type']) then ($role-props[@name = 'ps-type'])/@value
+                                                else if ($def-props[@name = 'ps-type']) then ($def-props[@name = 'ps-type'])/@value
+                                                else 'disc'" />
               <xsl:choose>
-                <xsl:when test="../@type='none'" />
-                <xsl:when test="../@type='circle'">
-                  <xsl:attribute name="margin-top">-1pt</xsl:attribute>
-                  <xsl:attribute name="font-family">ZapfDingbats</xsl:attribute>
+                <xsl:when test="$type='none'" />
+                <xsl:when test="$type='circle'">
+                  <xsl:attribute name="margin-top" select="'-2pt'" />
+                  <xsl:attribute name="font-family" select="'ZapfDingbats'" />
                   <xsl:attribute name="font-size" select="'7pt'" />
+                  <xsl:sequence select="$prop-atts[local-name() != 'margin-top' and local-name() != 'font-family' and local-name() != 'font-size']" />
                   <xsl:text>&#x274D;</xsl:text>
                 </xsl:when>
-                <xsl:when test="../@type='square'">
-                  <xsl:attribute name="margin-top">-1pt</xsl:attribute>
-                  <xsl:attribute name="font-family">ZapfDingbats</xsl:attribute>
+                <xsl:when test="$type='square'">
+                  <xsl:attribute name="margin-top" select="'-1pt'" />
+                  <xsl:attribute name="font-family" select="'ZapfDingbats'" />
                   <xsl:attribute name="font-size" select="'6pt'" />
+                  <xsl:sequence select="$prop-atts[local-name() != 'margin-top' and local-name() != 'font-family' and local-name() != 'font-size']" />
                   <xsl:text>&#x25A0;</xsl:text>
                 </xsl:when>
-                <xsl:otherwise>
-                  <xsl:attribute name="margin-top">-2pt</xsl:attribute>
-                  <xsl:attribute name="font-family">Symbol</xsl:attribute>
+                <xsl:when test="$type='disc'">
+                  <xsl:attribute name="margin-top" select="'-2pt'" />
+                  <xsl:attribute name="font-family" select="'Symbol'" />
+                  <xsl:attribute name="font-size" select="'11pt'" />
+                  <xsl:sequence select="$prop-atts[local-name() != 'margin-top' and local-name() != 'font-family' and local-name() != 'font-size']" />
                   <xsl:text>&#x2022;</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:sequence select="$prop-atts" />
+                  <xsl:value-of select="$type"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
+              <xsl:variable name="type" select="if (../@type) then ../@type
+                                                else if ($role-props[@name = 'ps-type']) then ($role-props[@name = 'ps-type'])/@value
+                                                else if ($def-props[@name = 'ps-type']) then ($def-props[@name = 'ps-type'])/@value
+                                                else 'arabic'" />
+              <xsl:sequence select="$prop-atts" />
               <xsl:choose>
-                <xsl:when test="../@type = 'arabic'"><xsl:number value="$label" format="1."/></xsl:when>
-                <xsl:when test="../@type = 'upperalpha'"><xsl:number value="$label" format="A."/></xsl:when>
-                <xsl:when test="../@type = 'loweralpha'"><xsl:number value="$label" format="a."/></xsl:when>
-                <xsl:when test="../@type = 'upperroman'"><xsl:number value="$label" format="I."/></xsl:when>
-                <xsl:when test="../@type = 'lowerroman'"><xsl:number value="$label" format="i."/></xsl:when>
-                <xsl:when test="$level=2"><xsl:number value="$label" format="a."/></xsl:when>
-                <xsl:when test="$level=3"><xsl:number value="$label" format="i."/></xsl:when>
+                <xsl:when test="$type = 'arabic'"><xsl:number value="$label" format="1."/></xsl:when>
+                <xsl:when test="$type = 'upperalpha'"><xsl:number value="$label" format="A."/></xsl:when>
+                <xsl:when test="$type = 'loweralpha'"><xsl:number value="$label" format="a."/></xsl:when>
+                <xsl:when test="$type = 'upperroman'"><xsl:number value="$label" format="I."/></xsl:when>
+                <xsl:when test="$type = 'lowerroman'"><xsl:number value="$label" format="i."/></xsl:when>
                 <xsl:otherwise><xsl:number value="$label" format="1."/></xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>

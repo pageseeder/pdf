@@ -176,9 +176,13 @@ public class ExportTaskTest {
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[7]/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:block)[8]/@color", equalTo("#dddd00")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[1]/@color", equalTo("")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[2]/@color", equalTo("#007777")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[3]/@color", equalTo("")).withNamespaceContext(ns));
-    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[4]/@color", equalTo("#00ffff")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("((//fo:list-block)[1]//fo:list-item-label)[1]/fo:block/@color", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[4]/@color", equalTo("#007777")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("((//fo:list-block)[4]//fo:list-item-label)[1]/fo:block/@color", equalTo("red")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[7]/@color", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("((//fo:list-block)[7]//fo:list-item-label)[1]/fo:block/@color", equalTo("#1f4f76")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:list-block)[10]/@color", equalTo("#00ffff")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath("((//fo:list-block)[10]//fo:list-item-label)[1]/fo:block/@color", equalTo("red")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table)[1]/parent::fo:block/@background-color", equalTo("")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table)[2]/parent::fo:block/@background-color", equalTo("#770077")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath("(//fo:flow//fo:table-column)[1]/@background-color", equalTo("")).withNamespaceContext(ns));

@@ -279,6 +279,10 @@
             <xsl:when test="($first = 'heading' or $first = 'para') and $second = 'prefix'">
               <xsl:sequence select="element[string(@name) = concat($first, '-prefix') and @level = $third]/*[name() = $property-tag]" />
             </xsl:when>
+            <!-- list/nlist label: list-label-2 ==> <element name="list-label" level="2"> -->
+            <xsl:when test="($first = 'list' or $first = 'nlist') and $second = 'label'">
+              <xsl:sequence select="element[string(@name) = concat($first, '-label') and @level = $third][string(@role) = $role]/*[name() = $property-tag]" />
+            </xsl:when>
             <!-- heading/para: heading-2 ==> <element name="heading" level="2"> -->
             <xsl:when test="($first = 'heading' or $first = 'para') and element[string(@name) = $first and @level = $second]">
               <xsl:sequence select="element[string(@name) = $first and @level = $second]/*[name() = $property-tag]" />

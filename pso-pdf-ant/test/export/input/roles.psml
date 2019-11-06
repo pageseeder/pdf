@@ -33,36 +33,57 @@
     <fragment id="2.1581">
       <heading level="2">Ordered List</heading>
       <nlist>
-        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
-        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
-        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
-          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
-          eget metus.</item>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          <nlist>
+            <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+              <nlist>
+                <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+                  vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+                  eget metus.</item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>
       </nlist>
       <heading level="2">Ordered List with role</heading>
       <nlist role="mynlist">
-        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
-        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
-        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
-          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
-          eget metus.</item>
-      </nlist>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          <nlist>
+            <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+              <nlist>
+                <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+                  vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+                  eget metus.</item>
+              </nlist>
+            </item>
+          </nlist>
+        </item>      </nlist>
       <heading level="2">Unordered List</heading>
       <list>
-        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
-        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
-        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
-          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
-          eget metus.</item>
-      </list>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          <list>
+            <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+              <list>
+                <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+                  vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+                  eget metus.</item>
+              </list>
+            </item>
+          </list>
+        </item>      </list>
       <heading level="2">Unordered List with role</heading>
       <list role="mylist">
-        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</item>
-        <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</item>
-        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
-          vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
-          eget metus.</item>
-      </list>
+        <item>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+          <list>
+            <item>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+              <list>
+                <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+                  vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
+                  eget metus.</item>
+              </list>
+            </item>
+          </list>
+        </item>      </list>
     </fragment>
     <fragment id="2.1691">
       <heading level="2">Table</heading>

@@ -495,7 +495,9 @@
       <xs:enumeration value="para" />
       <xs:enumeration value="para-prefix" />
       <xs:enumeration value="list" />
+      <xs:enumeration value="list-label" />
       <xs:enumeration value="nlist" />
+      <xs:enumeration value="nlist-label" />
       <xs:enumeration value="list-item" />
       <xs:enumeration value="block" />
       <xs:enumeration value="blockName" />

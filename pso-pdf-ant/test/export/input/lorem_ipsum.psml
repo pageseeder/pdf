@@ -112,7 +112,18 @@
               <nlist>
                 <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
                   gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
-                  volutpat enim diam eget metus.</item>
+                  volutpat enim diam eget metus.
+                  <nlist>
+                    <item>
+                      Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+                      <nlist>
+                        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                          gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
+                          volutpat enim diam eget metus.</item>
+                      </nlist>
+                    </item>
+                  </nlist>
+                </item>
               </nlist>
             </item>
           </nlist>
@@ -122,13 +133,24 @@
       <list>
         <item>
           Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-          <list>
+          <list type="circle">
             <item>
               Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
-              <list>
+              <list type="square">
                 <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
                   gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
-                  volutpat enim diam eget metus.</item>
+                  volutpat enim diam eget metus.
+                  <list>
+                    <item>
+                      Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+                      <list>
+                        <item>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                          gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
+                          volutpat enim diam eget metus.</item>
+                      </list>
+                    </item>
+                  </list>
+                </item>
               </list>
             </item>
           </list>

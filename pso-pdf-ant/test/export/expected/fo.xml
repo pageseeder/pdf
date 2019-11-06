@@ -82,9 +82,9 @@
       </fo:list-block>
       <fo:block font-weight="bold" font-size="14pt" space-before.optimum="12pt" space-after.optimum="4pt" color="#1f4f76" keep-with-next="always">Unordered List</fo:block>
       <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
-        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-3pt"><fo:inline font-family="Symbol" color="#1f4f76">•</fo:inline></fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</fo:block></fo:list-item-body></fo:list-item>
-        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-3pt"><fo:inline font-family="Symbol" color="#1f4f76">•</fo:inline></fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</fo:block></fo:list-item-body></fo:list-item>
-        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-3pt"><fo:inline font-family="Symbol" color="#1f4f76">•</fo:inline></fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
+        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-2pt" font-family="Symbol" font-size="11pt" color="#1f4f76">•</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</fo:block></fo:list-item-body></fo:list-item>
+        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-2pt" font-family="Symbol" font-size="11pt" color="#1f4f76">•</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.</fo:block></fo:list-item-body></fo:list-item>
+        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-2pt" font-family="Symbol" font-size="11pt" color="#1f4f76">•</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida
           vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam
           eget metus.</fo:block></fo:list-item-body></fo:list-item>
       </fo:list-block>
@@ -99,9 +99,20 @@
             <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block>a.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>
               Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
               <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
-                <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block>i.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block color="green">I.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
                   gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
-                  volutpat enim diam eget metus.</fo:block></fo:list-item-body></fo:list-item>
+                  volutpat enim diam eget metus.
+                  <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
+                    <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block color="green">A.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>
+                      Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+                      <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
+                        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block color="green">i.</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                          gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
+                          volutpat enim diam eget metus.</fo:block></fo:list-item-body></fo:list-item>
+                      </fo:list-block>
+                    </fo:block></fo:list-item-body></fo:list-item>
+                  </fo:list-block>
+                </fo:block></fo:list-item-body></fo:list-item>
               </fo:list-block>
             </fo:block></fo:list-item-body></fo:list-item>
           </fo:list-block>
@@ -109,15 +120,26 @@
       </fo:list-block>
       <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false"> </fo:block>
       <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
-        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-3pt"><fo:inline font-family="Symbol" color="#1f4f76">•</fo:inline></fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>
+        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-2pt" font-family="Symbol" font-size="11pt" color="#1f4f76">•</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>
           Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
           <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
-            <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-3pt"><fo:inline font-family="Symbol" color="#1f4f76">•</fo:inline></fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>
+            <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-2pt" font-family="ZapfDingbats" font-size="7pt" color="#1f4f76">❍</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>
               Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
               <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
-                <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-3pt"><fo:inline font-family="Symbol" color="#1f4f76">•</fo:inline></fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-1pt" font-family="ZapfDingbats" font-size="6pt">■</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
                   gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
-                  volutpat enim diam eget metus.</fo:block></fo:list-item-body></fo:list-item>
+                  volutpat enim diam eget metus.
+                  <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
+                    <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block margin-top="-2pt" font-family="ZapfDingbats" font-size="7pt" color="red">❍</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>
+                      Nullam dignissim convallis est. Quisque aliquam. Donec faucibus.
+                      <fo:list-block provisional-distance-between-starts="0.6cm" provisional-label-separation="0.2cm" space-before.optimum="2pt" space-after.optimum="8pt">
+                        <fo:list-item space-before.optimum="5pt"><fo:list-item-label><fo:block color="red" margin-top="-1pt" font-size="12pt" font-family="ZapfDingbats">➢</fo:block></fo:list-item-label><fo:list-item-body start-indent="body-start()"><fo:block>Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec,
+                          gravida vehicula, nisl. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu
+                          volutpat enim diam eget metus.</fo:block></fo:list-item-body></fo:list-item>
+                      </fo:list-block>
+                    </fo:block></fo:list-item-body></fo:list-item>
+                  </fo:list-block>
+                </fo:block></fo:list-item-body></fo:list-item>
               </fo:list-block>
             </fo:block></fo:list-item-body></fo:list-item>
           </fo:list-block>

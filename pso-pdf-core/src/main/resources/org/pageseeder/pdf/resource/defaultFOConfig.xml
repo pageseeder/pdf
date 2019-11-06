@@ -365,7 +365,27 @@
   <element name="list-item">
     <property name="space-before.optimum"   value="5pt"/>
   </element>
-  
+
+  <element name="list-label" level="1">
+    <property name="color"     value="#1f4f76"/>
+  </element>
+
+  <element name="list-label" level="2">
+    <property name="color"     value="#1f4f76"/>
+  </element>
+
+  <element name="list-label" level="3">
+    <property name="color"     value="#1f4f76"/>
+  </element>
+
+  <element name="nlist-label" level="2">
+    <property name="ps-type"   value="loweralpha"/>
+  </element>
+
+  <element name="nlist-label" level="3">
+    <property name="ps-type"   value="lowerroman"/>
+  </element>
+
   <element name="link">
     <property name="color"                  value="#1f4f76"/>
     <property name="text-decoration"        value="underline"/>
