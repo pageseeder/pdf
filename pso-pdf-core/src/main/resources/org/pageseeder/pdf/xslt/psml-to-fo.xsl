@@ -429,7 +429,8 @@
           <xsl:if test="not($heading-properties[@name = 'width'])">
             <xsl:attribute name="width" select="'100%'" />
           </xsl:if>
-          <xsl:for-each select="$heading-properties[@name = 'background-color' or @name = 'width']">
+          <xsl:for-each select="$heading-properties[@name = 'background-color' or @name = 'width' or
+                                starts-with(@name, 'margin-')]">
             <xsl:attribute name="{@name}" select="@value" />
           </xsl:for-each>
           <fo:table-column column-width="{$text-indent}"/>
@@ -446,7 +447,8 @@
                     <xsl:attribute name="{@name}" select="@value" />
                   </xsl:for-each>
                   <!-- inherit format properties from heading -->
-                  <xsl:for-each select="$heading-properties[@name != 'start-indent' and @name != 'text-indent']">
+                  <xsl:for-each select="$heading-properties[@name != 'start-indent' and @name != 'text-indent' and
+                                        not(starts-with(@name, 'margin-'))]">
                     <xsl:if test="empty($prefix-properties[@name = current()/@name])">
                       <xsl:attribute name="{@name}" select="@value" />
                     </xsl:if>
@@ -457,7 +459,9 @@
               <fo:table-cell>
                 <fo:block>
                   <xsl:if test="@id"><xsl:attribute name="id" select="@id" /></xsl:if>
-                  <xsl:for-each select="$heading-properties"><xsl:attribute name="{@name}" select="@value" /></xsl:for-each>
+                  <xsl:for-each select="$heading-properties[not(starts-with(@name, 'margin-'))]">
+                    <xsl:attribute name="{@name}" select="@value" />
+                  </xsl:for-each>
                   <xsl:apply-templates/>
                 </fo:block>
               </fo:table-cell>
@@ -508,10 +512,10 @@
       <xsl:if test="not($indent-properties[@name = 'width']|$para-properties[@name = 'width'])">
         <xsl:attribute name="width" select="'100%'" />
       </xsl:if>
-      <xsl:for-each select="$indent-properties[@name = 'background-color' or @name = 'width']">
+      <xsl:for-each select="$indent-properties[@name = 'background-color' or @name = 'width' or starts-with(@name, 'margin-')]">
         <xsl:attribute name="{@name}" select="@value" />
       </xsl:for-each>
-      <xsl:for-each select="$para-properties[@name = 'background-color' or @name = 'width']">
+      <xsl:for-each select="$para-properties[@name = 'background-color' or @name = 'width' or starts-with(@name, 'margin-')]">
         <xsl:if test="empty($indent-properties[@name = current()/@name])">
           <xsl:attribute name="{@name}" select="@value" />
         </xsl:if>
@@ -531,13 +535,15 @@
                 <xsl:attribute name="{@name}" select="@value" />
               </xsl:for-each>
               <!-- inherit properties from para indented -->
-              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
+              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent' and
+                                    @name != 'ps-indent-px' and not(starts-with(@name, 'margin-'))]">
                 <xsl:if test="empty($prefix-properties[@name = current()/@name])">
                   <xsl:attribute name="{@name}" select="@value" />
                 </xsl:if>
               </xsl:for-each>
               <!-- inherit properties from para -->
-              <xsl:for-each select="$para-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
+              <xsl:for-each select="$para-properties[@name != 'start-indent' and @name != 'text-indent' and
+                                    @name != 'ps-indent-px' and not(starts-with(@name, 'margin-'))]">
                 <xsl:if test="empty($prefix-properties[@name = current()/@name] | $indent-properties[@name = current()/@name])">
                   <xsl:attribute name="{@name}" select="@value" />
                 </xsl:if>
@@ -547,10 +553,12 @@
           </fo:table-cell>
           <fo:table-cell>
             <fo:block>
-              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
+              <xsl:for-each select="$indent-properties[@name != 'start-indent' and @name != 'text-indent' and
+                                    @name != 'ps-indent-px' and not(starts-with(@name, 'margin-'))]">
                 <xsl:attribute name="{@name}" select="@value" />
               </xsl:for-each>
-              <xsl:for-each select="$para-properties[@name != 'start-indent' and @name != 'text-indent' and @name != 'ps-indent-px']">
+              <xsl:for-each select="$para-properties[@name != 'start-indent' and @name != 'text-indent' and
+                                    @name != 'ps-indent-px' and not(starts-with(@name, 'margin-'))]">
                 <xsl:if test="empty($indent-properties[@name = current()/@name])">
                   <xsl:attribute name="{@name}" select="@value" />
                 </xsl:if>
@@ -813,8 +821,6 @@
   <xsl:template match="item">
     <fo:list-item>
       <xsl:sequence select="psf:style-properties(., 'list-item')"/>
-      <xsl:variable name="color-style-property" select="psf:load-style-properties(., 'list-item')[@name='color']" />
-      <xsl:variable name="color" select="if ($color-style-property) then $color-style-property/@value else '#1f4f76'" />
   		<fo:list-item-label>
   		  <fo:block>
   		  	<xsl:variable name="level" select="count(ancestor::nlist | ancestor::list)"/>
@@ -824,26 +830,37 @@
             <xsl:when test="parent::list">
               <xsl:choose>
                 <xsl:when test="../@type='none'" />
-                <xsl:when test="../@type='disc'"><fo:inline font-family="Symbol" color="{$color}">&#x2022;</fo:inline></xsl:when>
-                <xsl:when test="../@type='circle'"><fo:inline font-size="7pt" font-family="ZapfDingbats" color="{$color}">&#x274D;</fo:inline></xsl:when>
+                <xsl:when test="../@type='circle'">
+                  <xsl:attribute name="margin-top">-1pt</xsl:attribute>
+                  <xsl:attribute name="font-family">ZapfDingbats</xsl:attribute>
+                  <xsl:attribute name="font-size" select="'7pt'" />
+                  <xsl:text>&#x274D;</xsl:text>
+                </xsl:when>
                 <xsl:when test="../@type='square'">
                   <xsl:attribute name="margin-top">-1pt</xsl:attribute>
-                  <fo:inline font-size="6pt" font-family="ZapfDingbats" color="{$color}" >&#x25A0;</fo:inline>
+                  <xsl:attribute name="font-family">ZapfDingbats</xsl:attribute>
+                  <xsl:attribute name="font-size" select="'6pt'" />
+                  <xsl:text>&#x25A0;</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:attribute name="margin-top">-3pt</xsl:attribute>
-                  <fo:inline font-family="Symbol" color="{$color}">&#x2022;</fo:inline>
+                  <xsl:attribute name="margin-top">-2pt</xsl:attribute>
+                  <xsl:attribute name="font-family">Symbol</xsl:attribute>
+                  <xsl:text>&#x2022;</xsl:text>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
-            <xsl:when test="parent::nlist/@type = 'arabic'"><xsl:number value="$label" format="1."/></xsl:when>
-            <xsl:when test="parent::nlist/@type = 'upperalpha'"><xsl:number value="$label" format="A."/></xsl:when>
-            <xsl:when test="parent::nlist/@type = 'loweralpha'"><xsl:number value="$label" format="a."/></xsl:when>
-            <xsl:when test="parent::nlist/@type = 'upperroman'"><xsl:number value="$label" format="I."/></xsl:when>
-            <xsl:when test="parent::nlist/@type = 'lowerroman'"><xsl:number value="$label" format="i."/></xsl:when>
-  				  <xsl:when test="$level=2"><xsl:number value="$label" format="a."/></xsl:when>
-  				  <xsl:when test="$level=3"><xsl:number value="$label" format="i."/></xsl:when>
-  				  <xsl:otherwise><xsl:number value="$label" format="1."/></xsl:otherwise>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="../@type = 'arabic'"><xsl:number value="$label" format="1."/></xsl:when>
+                <xsl:when test="../@type = 'upperalpha'"><xsl:number value="$label" format="A."/></xsl:when>
+                <xsl:when test="../@type = 'loweralpha'"><xsl:number value="$label" format="a."/></xsl:when>
+                <xsl:when test="../@type = 'upperroman'"><xsl:number value="$label" format="I."/></xsl:when>
+                <xsl:when test="../@type = 'lowerroman'"><xsl:number value="$label" format="i."/></xsl:when>
+                <xsl:when test="$level=2"><xsl:number value="$label" format="a."/></xsl:when>
+                <xsl:when test="$level=3"><xsl:number value="$label" format="i."/></xsl:when>
+                <xsl:otherwise><xsl:number value="$label" format="1."/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
   			 </xsl:choose>
   		  </fo:block>
   		</fo:list-item-label>

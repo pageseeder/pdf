@@ -110,6 +110,11 @@ public class ExportTaskTest {
     MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[6]//fo:table-cell[1]/fo:block/@color", equalTo("blue")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]/@background-color", equalTo("black")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]/@width", equalTo("18cm")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]/@margin-top", equalTo("12pt")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]/@margin-bottom", equalTo("6pt")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]//fo:table-cell[2]/fo:block/@margin-top", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]//fo:table-cell[2]/fo:block/@margin-bottom", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[1]//fo:table-cell[2]/fo:block/@color", equalTo("yellow")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[2]/@background-color", equalTo("black")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[2]/@width", equalTo("19cm")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(headingsFrag+"/fo:table[2]//fo:table-cell[1]/@background-color", equalTo("white")).withNamespaceContext(ns));
@@ -128,9 +133,17 @@ public class ExportTaskTest {
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:block[2]/@text-indent", equalTo("-6cm")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[3]/@background-color", equalTo("black")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[3]/@width", equalTo("100%")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[3]/@margin-top", equalTo("0pt")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[3]/@margin-bottom", equalTo("18pt")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[3]//fo:table-cell[2]/fo:block/@margin-top", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[3]//fo:table-cell[2]/fo:block/@margin-bottom", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[3]//fo:table-cell[2]/fo:block/@color", equalTo("yellow")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]/@background-color", equalTo("black")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]/@width", equalTo("14.5cm")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]//fo:table-cell[1]/@background-color", equalTo("white")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]/@margin-bottom", equalTo("36pt")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]//fo:table-cell[2]/fo:block/@margin-bottom", equalTo("")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]//fo:table-cell[2]/fo:block/@color", equalTo("orange")).withNamespaceContext(ns));
   }
 
   @Test

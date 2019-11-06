@@ -4,12 +4,16 @@
     <property name="background-color" value="black"/>
     <property name="color"            value="yellow"/>
     <property name="width"            value="18cm"/>  <!-- to make prefixed para content full width -->
+    <property name="margin-top"       value="12pt"/>
+    <property name="margin-bottom"    value="6pt"/>
   </element>
 
   <element name="heading" level="2">
     <property name="background-color" value="black"/>
     <property name="color"            value="orange"/>
     <property name="width"            value="19cm"/> <!-- to make prefixed para content full width -->
+    <property name="margin-top"       value="12pt"/>
+    <property name="margin-bottom"    value="6pt"/>
   </element>
 
   <element name="heading-prefix" level="1">
@@ -74,6 +78,11 @@
     <property name="background-color" value="white"/>
   </element>
 
+  <element name="para">
+    <property name="margin-top"       value="0pt"/>
+    <property name="margin-bottom"    value="18pt"/>
+  </element>
+
   <element name="para" level="1">
     <property name="start-indent" value="5cm"/>
     <property name="text-indent"  value="-5cm"/>
@@ -94,6 +103,7 @@
     <property name="background-color" value="black"/>
     <property name="start-indent"     value="5cm"/>
     <property name="width"            value="14.5cm"/> <!-- to stop prefixed para content too wide -->
+    <property name="margin-bottom"    value="36pt"/>
   </element>
 
 </styles>
