@@ -183,10 +183,10 @@
             <label name="{.}">
               <xsl:choose>
                 <xsl:when test="$this-elem//inline[@label = current()]">
-                  <xsl:value-of select="($this-elem//inline[@label = current()])[1]"/>
+                  <xsl:copy-of select="($this-elem//inline[@label = current()])[1]/node()"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="(($this-elem/preceding::*[psf:is-fragment(.)][.//inline[@label = current()]])[last()]//inline[@label= current()])[1]"/>
+                  <xsl:copy-of select="(($this-elem/preceding::*[psf:is-fragment(.)][.//inline[@label = current()]])[last()]//inline[@label= current()])[1]/node()"/>
                 </xsl:otherwise>
               </xsl:choose>
           </label></xsl:for-each>

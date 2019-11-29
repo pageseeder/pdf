@@ -111,7 +111,7 @@
   <!-- labels -->
   <xsl:template match="label" mode="style">
     <xsl:param name="labels" tunnel="yes" />
-    <xsl:value-of select="$labels//label[@name = current()/@name]" />
+    <xsl:apply-templates select="$labels//label[@name = current()/@name]/node()" />
   </xsl:template>
   <!-- don't output properties -->
   <xsl:template match="property" mode="style"/>

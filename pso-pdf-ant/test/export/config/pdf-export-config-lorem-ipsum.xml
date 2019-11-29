@@ -24,6 +24,7 @@
       <property name="border-bottom-style"    value="solid"/>
       <property name="border-bottom-width"    value="0mm"/>
       <left><filename /></left>
+      <right><label name="myheader"/></right>
     </header>
     <footer first="true">
       <region-property name="extent"          value="1cm" />

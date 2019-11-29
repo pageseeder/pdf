@@ -8,7 +8,7 @@
   <toc/>
   <section id="2">
     <fragment id="2">
-      <para>The purpose of this document is to demonstrate the visual presentation of a typical <inline label="HeaderLabel">PageSeeder document</inline>,
+      <para>The purpose of this document is to demonstrate the visual presentation of a typical <inline label="myheader">PageSeeder document<sup>2</sup></inline>,
       in order to make it easier to adjust the font, typography, and layout.</para>
     </fragment>
     <fragment id="2.1251">
