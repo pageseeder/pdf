@@ -1097,19 +1097,16 @@
 
 <!-- ============================== PDF Bookmarks ================================== -->
 
-<!--     
-  <xsl:template match="heading"  mode="bookmark" />
-  <xsl:template match="heading[empty(ancestor::blockxref)]" mode="bookmark">
-    <fo:bookmark internal-destination="{generate-id()}">
-      <fo:bookmark-title><xsl:value-of select="."/></fo:bookmark-title>
-      <xsl:if test="number(@level) lt 6">
-        <xsl:for-each select="(following-sibling::heading)">
-          <xsl:apply-templates select="." mode="bookmark"/>
-        </xsl:for-each>
-      </xsl:if>
+  <xsl:template match="toc-part[@idref]" mode="bookmark">
+    <fo:bookmark internal-destination="{@idref}">
+      <fo:bookmark-title>
+        <xsl:value-of select="@prefix"/>
+        <xsl:if test="@prefix != ''"><xsl:text> </xsl:text></xsl:if>
+        <xsl:value-of select="@title"/>
+      </fo:bookmark-title>
+      <xsl:apply-templates select="toc-part[@idref]" mode="bookmark"/>
     </fo:bookmark>
   </xsl:template>
- -->
  	
 	<!-- Ignore metadata elements in PageSeeder document -->
 	<xsl:template match="documentinfo | fragmentinfo | locator | metadata"/>
