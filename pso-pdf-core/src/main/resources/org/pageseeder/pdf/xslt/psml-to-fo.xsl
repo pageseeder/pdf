@@ -1104,10 +1104,15 @@
         <xsl:if test="@prefix != ''"><xsl:text> </xsl:text></xsl:if>
         <xsl:value-of select="@title"/>
       </fo:bookmark-title>
-      <xsl:apply-templates select="toc-part[@idref]" mode="bookmark"/>
+      <xsl:apply-templates select="toc-part" mode="bookmark"/>
     </fo:bookmark>
   </xsl:template>
- 	
+
+  <!-- In case there are missing levels -->
+  <xsl:template match="toc-part[not(@idref)]" mode="bookmark">
+    <xsl:apply-templates select="toc-part" mode="bookmark"/>
+  </xsl:template>
+
 	<!-- Ignore metadata elements in PageSeeder document -->
 	<xsl:template match="documentinfo | fragmentinfo | locator | metadata"/>
 

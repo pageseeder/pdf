@@ -94,9 +94,9 @@
       </fo:layout-master-set>
 
       <!-- create PDF bookmarks -->
-      <xsl:if test="//toc[1]/toc-tree/toc-part[@idref]">
+      <xsl:if test="//toc[1]/toc-tree//toc-part[@idref]">
         <fo:bookmark-tree>
-          <xsl:apply-templates select="//toc[1]/toc-tree/toc-part[@idref]" mode="bookmark" />
+          <xsl:apply-templates select="//toc[1]/toc-tree/toc-part" mode="bookmark" />
         </fo:bookmark-tree>
       </xsl:if>
 
