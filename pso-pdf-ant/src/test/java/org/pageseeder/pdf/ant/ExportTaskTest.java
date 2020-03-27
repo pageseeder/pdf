@@ -307,6 +307,25 @@ public class ExportTaskTest {
   }
 
   @Test
+  public void testEmpty() throws IOException {
+
+    File lorem = new File(SOURCE, "empty.psml");
+    File fo = new File(WORKING, "fo.xml");
+    File output = new File(DESTINATION, "empty.pdf");
+    File config = loadConfig("pdf-export-config-lorem-ipsum.xml");
+
+    ExportTask task = new ExportTask();
+    task.setDebug(true);
+    task.setWorking(WORKING);
+    task.setSrc(lorem);
+    task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
+    task.execute();
+  }
+
+  @Test
   public void testMathML() throws IOException {
 
     File lorem = new File(SOURCE, "mathml.psml");

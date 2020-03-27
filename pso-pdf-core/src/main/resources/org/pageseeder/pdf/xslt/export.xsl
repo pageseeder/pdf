@@ -171,6 +171,15 @@
         </ids>
       </xsl:variable>
 
+      <!-- handle empty document -->
+      <xsl:if test="not(document/section/*/*)">
+        <fo:page-sequence master-reference="{psf:config-with-region(document/section[1])}-go-first">
+          <fo:flow flow-name="xsl-region-body">
+            <fo:block />
+          </fo:flow>
+        </fo:page-sequence>
+      </xsl:if>
+
       <!-- ok now loop through all fragment children (and toc if first one) -->
       <xsl:for-each select="document/section//*[psf:is-fragment(.)][string(@id) != ''][index-of($fragment-ids//id, @id) != -1] |
                             document/toc[empty(preceding::*[psf:is-fragment(.)])]">
