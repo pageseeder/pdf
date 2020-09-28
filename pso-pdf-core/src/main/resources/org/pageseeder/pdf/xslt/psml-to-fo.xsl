@@ -115,9 +115,9 @@
           </fo:table-header>
         </xsl:if>
         <xsl:if test="row[@part='footer']">
-          <fo:table-header>
+          <fo:table-footer>
             <xsl:apply-templates select="row[@part='footer']" />
-          </fo:table-header>
+          </fo:table-footer>
         </xsl:if>
         <fo:table-body>
           <xsl:apply-templates select="row[not(@part) or @part = 'body']" />

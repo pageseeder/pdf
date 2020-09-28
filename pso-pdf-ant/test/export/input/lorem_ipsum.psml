@@ -166,7 +166,7 @@
       <para>Horizontal Header with Caption</para>
       <table width="400">
         <caption>Caption: Lorem ipsum dolor sit amet</caption>
-        <row>
+        <row part="header">
           <hcell>Header</hcell>
           <hcell>Horizontal</hcell>
         </row>
@@ -174,7 +174,7 @@
           <cell>Cell1</cell>
           <cell>Cell2</cell>
         </row>
-        <row>
+        <row part="footer">
           <cell>Cell3</cell>
           <cell>Cell4</cell>
         </row>
