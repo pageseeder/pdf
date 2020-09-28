@@ -3,17 +3,17 @@
   <!--
     This stylesheet defines the rules to turn PS standard XML into FO XML format.
     TODO: check bookmark rules at the bottom of this stylesheet.
-    
+
     @author Jean-Baptiste Reure
     @author Philip Rutherford
     @author Willy Ekasalim
-    
+
     @version 3 May 2012
-    
+
     Copyright (C) 2012 Weborganic Systems Pty. Ltd.
   -->
-  
-<xsl:stylesheet version="2.0" 
+
+<xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:ps="http://www.pageseeder.com/editing/2.0"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -68,7 +68,7 @@
                     <xsl:sequence select="psf:style-properties-overwrite($crole-props, $col-props)"/>
                     <xsl:choose>
                       <!-- % or px, if nothing then default to px -->
-                      <xsl:when test="ends-with(@width, '%')"><xsl:attribute name="column-width" select="concat('proportional-column-width(',replace(@width, '\D', ''),')')" /></xsl:when>
+                      <xsl:when test="ends-with(@width, '%')"><xsl:attribute name="column-width" select="@width" /></xsl:when>
                       <xsl:when test="ends-with(@width, 'px')"><xsl:attribute name="column-width" select="@width" /></xsl:when>
                       <xsl:when test="@width"><xsl:attribute name="column-width" select="concat(replace(@width, '\D', ''), 'px')"/></xsl:when>
                       <xsl:otherwise><xsl:attribute name="column-width">proportional-column-width(1)</xsl:attribute></xsl:otherwise>
@@ -136,7 +136,7 @@
   </xsl:template>
 
   <xsl:template match="caption" />
-   
+
 <!-- Template for PageSeeder Row element
 
 .. admonition:: xpath:row
@@ -149,7 +149,7 @@
    |   </fo:table-cell>
    | </fo:table-row>
 
--->  
+-->
   <xsl:template match="row">
     <fo:table-row>
       <xsl:variable name="part" select="@part"/>
@@ -210,7 +210,7 @@
       </xsl:for-each>
     </fo:table-row>
   </xsl:template>
-  
+
 <!-- ============================== fragment ================================== -->
 <!-- Template for PageSeeder fragment
 
@@ -263,7 +263,7 @@
       <xsl:copy-of select="node()" />
     </fo:instream-foreign-object>
   </xsl:template>
-  
+
 <!-- ============================== properties-fragment ================================== -->
 <!-- Template for PageSeeder properties fragment
 
@@ -293,7 +293,7 @@
       </fo:table>
     </fo:block>
   </xsl:template>
-  
+
 <!-- ============================== property ================================== -->
 <!-- Template for PageSeeder property
 
@@ -347,7 +347,7 @@
    |   </fo:block>
    | </fo:block>
 
--->  
+-->
   <xsl:template match="toc">
     <xsl:variable name="toc" select="." />
     <!-- only first TOC is displayed -->
@@ -388,7 +388,7 @@
       <xsl:value-of select="$level" />
     </xsl:otherwise></xsl:choose>
   </xsl:template>
-  
+
   <xsl:template name="indent">
     <xsl:param name="title" />
     <xsl:if test="contains($title, '.')">
@@ -651,14 +651,14 @@
 -->
   <xsl:template match="inline">
     <xsl:variable name="name" select="concat('-', @label)"/>
-    <xsl:variable name="show" select="not(psf:load-style-properties(., 'inline')[@name = 'ps-hide']/@value = 'true') and 
+    <xsl:variable name="show" select="not(psf:load-style-properties(., 'inline')[@name = 'ps-hide']/@value = 'true') and
                         not(psf:load-style-properties(., concat('inline',$name))[@name = 'ps-hide']/@value = 'true')"/>
     <xsl:if test="$show">
       <fo:inline>
         <xsl:variable name="cust-props" select="psf:load-style-properties(., concat('inline', $name))" />
         <xsl:variable name="def-props"  select="psf:load-style-properties(., 'inline')" />
         <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
-        <xsl:variable name="showName" select="not(psf:load-style-properties(., 'inlineName')[@name = 'ps-hide']/@value = 'true') and 
+        <xsl:variable name="showName" select="not(psf:load-style-properties(., 'inlineName')[@name = 'ps-hide']/@value = 'true') and
                                 not(psf:load-style-properties(., concat('inlineName',$name))[@name = 'ps-hide']/@value = 'true')"/>
         <xsl:if test="$showName">
   	      <fo:inline>
@@ -673,8 +673,8 @@
     </xsl:if>
   </xsl:template>
 
-<!-- ============================== preformat ================================== -->  
-<!-- Template for PageSeeder preformat 
+<!-- ============================== preformat ================================== -->
+<!-- Template for PageSeeder preformat
 
 .. admonition:: xpath:preformat
 
@@ -693,8 +693,8 @@
   	</fo:block>
   </xsl:template>
 
-<!-- ============================== Code ================================== -->  
-<!-- Template for PageSeeder monospace 
+<!-- ============================== Code ================================== -->
+<!-- Template for PageSeeder monospace
 
 .. admonition:: xpath:monospace
 
@@ -709,7 +709,7 @@
       <xsl:apply-templates select="* | text()" />
     </fo:inline>
   </xsl:template>
-  
+
 <!-- ============================== Subscript ================================== -->
 
 <!-- Template for PageSeeder subscript (sub)
@@ -720,7 +720,7 @@
    |   ...
    | </fo:inline>
 
--->  
+-->
   <xsl:template match="sub">
     <fo:inline>
       <xsl:sequence select="psf:style-properties(., local-name(.))"/>
@@ -737,7 +737,7 @@
    |   ...
    | </fo:inline>
 
--->  
+-->
   <xsl:template match="sup">
     <fo:inline>
       <xsl:sequence select="psf:style-properties(., local-name(.))"/>
@@ -755,7 +755,7 @@
    |   <fo:base-link internal-destination=""> ... </fo:base-link>
    | </fo:inline>
 
--->  
+-->
   <xsl:template match="link[@href]">
     <fo:inline>
       <fo:basic-link>
@@ -768,7 +768,7 @@
           <xsl:when test="starts-with(@href,'#')">
             <xsl:attribute name="internal-destination">
               <xsl:value-of select="if (string-length(@href) = 1) then concat('psf-', $current-uriid) else concat('psa-', substring-after(@href,'#'))"/>
-            </xsl:attribute>      
+            </xsl:attribute>
           </xsl:when>
           <xsl:when test="@href=''">
             <xsl:attribute name="internal-destination" select="concat('psf-', $current-uriid)" />
@@ -898,11 +898,11 @@
 
 .. admonition:: xpath:title
 
-   | <fo:block> 
+   | <fo:block>
    |   ...
    | </fo:block>
 
--->  
+-->
   <xsl:template match="title">
     <xsl:if test="../*[not(self::title)]">
       <fo:block space-before.optimum="15pt">
@@ -923,7 +923,7 @@
    |   ...
    | </fo:inline>
 
--->  
+-->
   <xsl:template match="bold">
     <fo:inline>
       <xsl:sequence select="psf:style-properties(., local-name(.))"/>
@@ -940,7 +940,7 @@
    |   ...
    | </fo:inline>
 
---> 
+-->
   <xsl:template match="italic">
     <fo:inline>
       <xsl:sequence select="psf:style-properties(., local-name(.))"/>
@@ -957,7 +957,7 @@
    |   ...
    | </fo:inline>
 
---> 
+-->
   <xsl:template match="underline">
     <fo:inline>
       <xsl:sequence select="psf:style-properties(., local-name(.))"/>
@@ -1017,7 +1017,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
 <!-- Template for PageSeeder xref or blockxref link -->
   <xsl:template name="xref-link">
     <xsl:choose>
@@ -1041,7 +1041,7 @@
 
    | &#160;<fo:blocks/>
 
---> 
+-->
   <xsl:template match="br">
     &#160;<fo:block/>
   </xsl:template>
@@ -1055,7 +1055,7 @@
    |   ...
    | </fo:block>
 
---> 
+-->
   <xsl:template match="image[parent::fragment]">
   	<fo:block>
       <xsl:call-template name="inline-image"/>
@@ -1068,7 +1068,7 @@
 
   <xsl:template name="inline-image" match="image">
     <fo:inline>
-      <xsl:sequence select="psf:style-properties(., local-name(.))"/>     
+      <xsl:sequence select="psf:style-properties(., local-name(.))"/>
 	    <fo:external-graphic>
 	      <xsl:attribute name="src">
 	    <xsl:text>url(</xsl:text>

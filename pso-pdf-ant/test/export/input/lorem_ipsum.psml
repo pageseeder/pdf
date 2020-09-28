@@ -232,7 +232,7 @@
         </row>
       </table>
       <heading level="2">Complex table 1</heading>
-      <table width="100%"><col width="21%"/><col width="38%"/><col width="40%"/>
+      <table width="100%"><col width="20.123%"/><col width="400px"/><col width="40%"/>
         <row part="header">
           <hcell><bold>Medicinal products by therapeutic areas</bold></hcell>
           <hcell><bold>Interaction</bold></hcell>
