@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/pageseeder/maven/pdf/images/download.svg) ](https://bintray.com/pageseeder/maven/pdf/_latestVersion)
+[![Maven Central](https://img.shields.io/maven-central/v/org.pageseeder.pdf/pso-pdf-core.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22org.pageseeder.pdf%22%20AND%20a:%22pso-pdf-core%22)
 
 # Pageseeder PDF Export import API
 
