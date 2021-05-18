@@ -56,9 +56,9 @@ publishing {
               email 'ccabral@allette.com.au'
             }
             developer {
-              id 'aakaishi'
-              name 'Adrian Akaishi'
-              email 'aakaishi@allette.com.au'
+              id 'philipr'
+              name 'Philip Rutherford'
+              email 'philipr@weborganic.com'
             }
           }
 
