@@ -1,3 +1,9 @@
+plugins {
+  id 'java-library'
+  id 'maven-publish'
+  id 'io.codearte.nexus-staging' version '0.30.0'
+}
+
 group = 'org.pageseeder.pdf'
 
 ext {
@@ -5,27 +11,20 @@ ext {
 }
 
 subprojects {
-  group   = 'org.pageseeder.pdf'
+  group = 'org.pageseeder.pdf'
   version = "$globalVersion"
 
   apply plugin: 'java'
-  
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
+  apply from: "$rootDir/gradle/publish-mavencentral.gradle"
+
+  sourceCompatibility = JavaVersion.VERSION_1_8
+  targetCompatibility = JavaVersion.VERSION_1_8
 
   repositories {
-    maven { url 'http://dl.bintray.com/pageseeder/maven' }
-    jcenter()
-  }
-}
-
-task wrapper(type: Wrapper) {
-  gradleVersion = '3.1'
-  description 'Generates the Gradle wrapper scripts'
-}
-
-task publishAllToBintray {
-  subprojects.each {
-    dependsOn("${it.path}:bintrayUpload" )
+    mavenCentral {
+      url = uri("https://maven-central.storage.googleapis.com/maven2")
+    }
+    // Takes our libraries immediately as the maven central should take hours to get synchronized.
+    maven { url 'https://s01.oss.sonatype.org/content/groups/public/' }
   }
 }
