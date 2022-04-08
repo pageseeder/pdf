@@ -1,0 +1,619 @@
+<config>
+  <styles>
+    <!-- =======================GENERAL PROPERTIES======================= -->
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="1.5cm"/>
+      <property name="margin-bottom"          value="1.5cm"/>
+      <property name="margin-left"            value="2.5cm"/>
+      <property name="margin-right"           value="2.5cm"/>
+    </page>
+    <body>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="1cm"/>
+      <!-- <property name="font-family"            value="STIXTwoText-Regular,STIXTwoMath-Regular"/> -->
+      <!-- <property name="font-family"            value="Roboto-Regular"/> -->
+      <property name="font-family"            value="NotoSans,NotoSansMath,ZapfDingbats"/>
+      <property name="font-size"              value="11pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="150%"/>
+      <property name="color"                  value="#000000"/>
+    </body>
+    <header first="true">
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <property name="line-height"            value="12pt"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="0"/>
+      <left><filename /></left>
+      <right><date pattern="[D1o] [MNn], [Y]" /></right>
+    </header>
+    <header>
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <property name="line-height"            value="12pt"/>
+      <property name="padding-bottom"         value="0.5cm"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="0"/>
+      <left><filename /></left>
+      <right><date pattern="[D1o] [MNn], [Y]" /></right>
+    </header>
+    <footer first="true">
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <property name="padding-top"    	      value="0.5cm"/>
+      <property name="border-top-style"       value="solid"/>
+      <property name="border-top-width"       value="1pt"/>
+      <property name="border-top-color"       value="#efefef"/>
+      <center>
+        <text>Page </text><page-number/><text> of </text><total-pages/>
+      </center>
+    </footer>
+    <footer>
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <property name="padding-top"    	      value="0.5cm"/>
+      <property name="border-top-style"       value="solid"/>
+      <property name="border-top-width"       value="1pt"/>
+      <property name="border-top-color"       value="#efefef"/>
+      <center>
+        <text>Page </text><page-number/><text> of </text><total-pages/>
+      </center>
+    </footer>
+
+    <!-- =======================ELEMENTS PROPERTIES======================= -->
+
+    <element name="heading" level="1">
+      <property name="font-size"              value="20pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="130%"/>
+      <property name="color"                  value="#014d84"/>
+      <property name="margin-top"             value="21pt"/>
+      <property name="margin-bottom"          value="9pt"/>
+      <property name="page-break-after"       value="avoid"/>
+      <property name="keep-with-next"         value="always"/>
+    </element>
+
+    <element name="heading" level="2">
+      <property name="font-size"              value="16pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="130%"/>
+      <property name="color"                  value="#002c4b"/>
+      <property name="margin-top"             value="18pt"/>
+      <property name="margin-bottom"          value="9pt"/>
+      <property name="page-break-after"       value="avoid"/>
+      <property name="keep-with-next"         value="always"/>
+    </element>
+
+    <element name="heading" level="3">
+      <property name="font-size"              value="14pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="130%"/>
+      <property name="color"                  value="#434343"/>
+      <property name="margin-top"             value="15pt"/>
+      <property name="margin-bottom"          value="6pt"/>
+      <property name="page-break-after"       value="avoid"/>
+      <property name="keep-with-next"         value="always"/>
+    </element>
+
+    <element name="heading" level="4">
+      <property name="font-size"              value="12pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="130%"/>
+      <property name="color"                  value="#666666"/>
+      <property name="margin-top"   value="13pt"/>
+      <property name="margin-bottom"    value="6pt"/>
+      <property name="page-break-after"       value="avoid"/>
+      <property name="keep-with-next"         value="always"/>
+    </element>
+
+    <element name="heading" level="5">
+      <property name="font-size"              value="11pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="130%"/>
+      <property name="color"                  value="#666666"/>
+      <property name="margin-top"   value="12pt"/>
+      <property name="margin-bottom"    value="6pt"/>
+      <property name="page-break-after"       value="avoid"/>
+      <property name="keep-with-next"         value="always"/>
+    </element>
+
+    <element name="heading" level="6">
+      <property name="font-size"              value="11pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="130%"/>
+      <property name="font-style"             value="italic"/>
+      <property name="color"                  value="#666666"/>
+      <property name="margin-top"   value="12pt"/>
+      <property name="margin-bottom"    value="6pt"/>
+      <property name="page-break-after"       value="avoid"/>
+      <property name="keep-with-next"         value="always"/>
+    </element>
+
+    <element name="heading-prefix" level="1">
+      <property name="start-indent" value="-2cm"/>
+      <property name="text-indent"  value="2cm"/>
+      <property name="margin-right" value="0.1cm"/>
+      <property name="color"        value="#0077ee"/>
+    </element>
+
+    <element name="heading-prefix" level="2">
+      <property name="start-indent" value="-2cm"/>
+      <property name="text-indent"  value="2cm"/>
+      <property name="margin-right" value="0.1cm"/>
+      <property name="color"        value="#0077ee"/>
+    </element>
+
+    <element name="heading-prefix" level="3">
+      <property name="start-indent" value="-2cm"/>
+      <property name="text-indent"  value="2cm"/>
+      <property name="margin-right" value="0.1cm"/>
+      <property name="color"        value="#0077ee"/>
+    </element>
+
+    <element name="heading-prefix" level="4">
+      <property name="start-indent" value="-2cm"/>
+      <property name="text-indent"  value="2cm"/>
+      <property name="margin-right" value="0.1cm"/>
+      <property name="color"        value="#0077ee"/>
+    </element>
+
+    <element name="heading-prefix" level="5">
+      <property name="start-indent" value="-2cm"/>
+      <property name="text-indent"  value="2cm"/>
+      <property name="margin-right" value="0.1cm"/>
+      <property name="color"        value="#0077ee"/>
+    </element>
+
+    <element name="heading-prefix" level="6">
+      <property name="start-indent" value="-2cm"/>
+      <property name="text-indent"  value="2cm"/>
+      <property name="margin-right" value="0.1cm"/>
+      <property name="color"        value="#0077ee"/>
+    </element>
+
+    <element name="para">
+      <property name="margin-top"             value="0pt"/>
+      <property name="margin-bottom"          value="18pt"/>
+      <property name="text-align"             value="left"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="orphans"                value="3"/>
+      <property name="widows"                 value="2"/>
+    </element>
+
+    <element name="para" level="1">
+      <property name="start-indent"           value="1cm"/>
+    </element>
+
+    <element name="para" level="2">
+      <property name="start-indent"           value="2cm"/>
+    </element>
+
+    <element name="para" level="3">
+      <property name="start-indent"           value="3cm"/>
+    </element>
+
+    <element name="para" level="4">
+      <property name="start-indent"           value="4cm"/>
+    </element>
+
+    <element name="para" level="5">
+      <property name="start-indent"           value="5cm"/>
+    </element>
+
+    <element name="para" level="6">
+      <property name="start-indent"           value="6cm"/>
+    </element>
+
+    <element name="para-prefix" level="1">
+      <property name="start-indent"           value="-2cm"/>
+      <property name="text-indent"            value="3cm"/>
+      <property name="margin-right"           value="0.1cm"/>
+      <property name="text-align"             value="right"/>
+    </element>
+
+    <element name="para-prefix" level="2">
+      <property name="start-indent"           value="-2cm"/>
+      <property name="text-indent"            value="4cm"/>
+      <property name="margin-right"           value="0.1cm"/>
+      <property name="text-align"             value="right"/>
+    </element>
+
+    <element name="para-prefix" level="3">
+      <property name="start-indent"           value="-2cm"/>
+      <property name="text-indent"            value="5cm"/>
+      <property name="margin-right"           value="0.1cm"/>
+      <property name="text-align"             value="right"/>
+    </element>
+
+    <element name="para-prefix" level="4">
+      <property name="start-indent"           value="-2cm"/>
+      <property name="text-indent"            value="6cm"/>
+      <property name="margin-right"           value="0.1cm"/>
+      <property name="text-align"             value="right"/>
+    </element>
+
+    <element name="para-prefix" level="5">
+      <property name="start-indent"           value="-2cm"/>
+      <property name="text-indent"            value="7cm"/>
+      <property name="margin-right"           value="0.1cm"/>
+      <property name="text-align"             value="right"/>
+    </element>
+
+    <element name="para-prefix" level="6">
+      <property name="start-indent"           value="-2cm"/>
+      <property name="text-indent"            value="8cm"/>
+      <property name="margin-right"           value="0.1cm"/>
+      <property name="text-align"             value="right"/>
+    </element>
+
+    <element name="section-title">
+      <property name="font-size"              value="24pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="line-height"            value="130%"/>
+      <property name="color"                  value="#014d84"/>
+      <property name="margin-top"             value="21pt"/>
+      <property name="margin-bottom"          value="9pt"/>
+      <property name="page-break-after"       value="avoid"/>
+      <property name="keep-with-next"         value="always"/>
+    </element>
+
+    <element name="toc">
+      <property name="break-before"           value="page"/>
+      <property name="break-after"            value="page"/>
+    </element>
+
+    <element name="table">
+      <property name="margin-top"   value="5pt"/>
+      <property name="margin-bottom"    value="24pt"/>
+      <property name="margin-top"             value="5pt"/>
+      <property name="margin-bottom"          value="24pt"/>
+      <property name="border-collapse"        value="collapse"/>
+      <property name="border-top-color"       value="#efefef"/>
+      <property name="border-top-style"       value="solid"/>
+      <property name="border-top-width"       value="0pt"/>
+    </element>
+
+    <element name="table-hcell">
+      <property name="display-align"         value="center"/>
+      <property name="background-color"       value="#efefef"/>
+      <property name="padding"                value="0.1cm"/>
+
+      <property name="border-before-color"    value="transparent"/>
+      <property name="border-before-style"    value="solid"/>
+      <property name="border-before-width"    value="0"/>
+
+      <property name="border-after-color"     value="transparent"/>
+      <property name="border-after-style"     value="solid"/>
+      <property name="border-after-width"     value="0"/>
+
+      <property name="border-start-color"     value="transparent"/>
+      <property name="border-start-style"     value="solid"/>
+      <property name="border-start-width"     value="0"/>
+
+      <property name="border-end-color"       value="transparent"/>
+      <property name="border-end-style"       value="solid"/>
+      <property name="border-end-width"       value="0"/>
+
+      <property name="border-top-color"       value="#d5d5d5"/>
+      <property name="border-top-style"       value="solid"/>
+      <property name="border-top-width"       value="1pt"/>
+
+      <property name="border-bottom-color"    value="#d5d5d5"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="1pt"/>
+    </element>
+
+    <element name="table-cell">
+      <property name="display-align"          value="center"/>
+      <property name="background-color"       value="#FFFFFF"/>
+      <property name="padding"                value="0.1cm"/>
+
+      <property name="border-before-color"    value="transparent"/>
+      <property name="border-before-style"    value="solid"/>
+      <property name="border-before-width"    value="0"/>
+
+      <property name="border-after-color"     value="transparent"/>
+      <property name="border-after-style"     value="solid"/>
+      <property name="border-after-width"     value="0"/>
+
+      <property name="border-start-color"     value="transparent"/>
+      <property name="border-start-style"     value="solid"/>
+      <property name="border-start-width"     value="0"/>
+
+      <property name="border-end-color"       value="transparent"/>
+      <property name="border-end-style"       value="solid"/>
+      <property name="border-end-width"       value="0"/>
+
+      <property name="border-top-color"       value="#d5d5d5"/>
+      <property name="border-top-style"       value="solid"/>
+      <property name="border-top-width"       value="1pt"/>
+
+      <property name="border-bottom-color"    value="#d5d5d5"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="1pt"/>
+    </element>
+
+    <element name="hcell">
+      <property name="display-align"          value="center"/>
+      <property name="color"                  value="#000000"/>
+      <property name="font-weight"            value="bold"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="language"               value="en"/>
+      <property name="hyphenation-remain-character-count" value="5"/>
+    </element>
+
+    <element name="cell">
+      <property name="display-align"          value="center"/>
+      <property name="color"                  value="#000000"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="language"               value="en"/>
+      <property name="hyphenation-remain-character-count" value="5"/>
+    </element>
+
+    <element name="property-title">
+      <property name="font-weight"  value="bold"/>
+      <property name="text-align"   value="start"/>
+      <property name="margin-left"  value="0.08cm" />
+      <property name="space-before" value="0.08cm" />
+      <property name="margin-right" value="0.08cm" />
+    </element>
+
+    <element name="property-title-cell">
+      <property name="width"                  value="5cm" />
+      <property name="border-style"           value="solid"/>
+      <property name="border-color"           value="#d5d5d5"/>
+      <property name="border-width"           value="1pt 0"/>
+      <property name="background-color"       value="#efefef"/>
+      <property name="color"                  value="#000000"/>
+      <property name="font-weight"            value="bold"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="language"               value="en"/>
+      <property name="padding"                value="4pt 2pt"/>
+      <property name="hyphenation-remain-character-count" value="5"/>
+    </element>
+
+    <element name="property-value">
+      <property name="text-align"   value="start"/>
+      <property name="margin-left"  value="0.08cm" />
+      <property name="space-before" value="0.08cm" />
+      <property name="margin-right" value="0.08cm" />
+    </element>
+
+    <element name="property-value-cell">
+      <property name="border-style"           value="solid"/>
+      <property name="border-color"           value="#d5d5d5"/>
+      <property name="border-width"           value="1pt 0"/>
+      <property name="background-color"       value="#FFFFFF"/>
+      <property name="color"                  value="#000000"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="language"               value="en"/>
+      <property name="padding"                value="4pt 2pt"/>
+      <property name="hyphenation-remain-character-count" value="5"/>
+    </element>
+
+    <element name="block">
+      <property name="text-align"             value="justify"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="margin-top"   value="4pt"/>
+      <property name="margin-bottom"    value="24pt"/>
+      <property name="margin-left"            value="0"/>
+      <property name="margin-right"           value="0"/>
+      <property name="page-break-inside"      value="avoid"/>
+      <property name="border-top-style"       value="solid"/>
+      <property name="border-right-style"     value="solid"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-left-style"      value="solid"/>
+      <property name="border-width"           value="1pt 1pt 1pt 4pt"/>
+      <property name="border-color"           value="#CCCCCC"/>
+      <property name="background-color"       value="transparent"/>
+      <property name="padding"                value="0.6cm 0.5cm 0"/>
+    </element>
+
+    <!--  add custom style for specific block, change custom to suit your own style -->
+    <element name="block-custom">
+    </element>
+
+    <element name="blockName">
+      <property name="ps-hide"                value="true"/>
+      <property name="text-align"             value="justify"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="color"                  value="#777777"/>
+      <property name="font-weight"            value="bold"/>
+    </element>
+
+    <!--  add custom style for specific blockName, change custom to suit your own style -->
+    <element name="blockName-custom">
+    </element>
+
+    <element name="inline">
+      <property name="hyphenate"              value="false"/>
+      <property name="font-size"              value="11pt"/>
+      <property name="font-weight"            value="normal"/>
+      <property name="border-width"           value="0 0 2pt 0"/>
+      <property name="border-style"           value="solid"/>
+      <property name="border-color"           value="#9FB7C9"/>
+      <property name="background-color"       value="transparent"/>
+    </element>
+
+    <!--  add custom style for specific inline, change custom to suit your own style -->
+    <element name="inline-custom">
+    </element>
+
+    <element name="inlineName">
+      <property name="ps-hide"                value="true"/>
+      <property name="text-align"             value="justify"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="font-size"              value="11.25pt"/>
+      <property name="font-weight"            value="bold"/>
+      <property name="color"                  value="#FFFFFF"/>
+      <property name="border-width"           value="0 2pt"/>
+      <property name="border-style"           value="solid"/>
+      <property name="border-color"           value="#FF6699"/>
+      <property name="background-color"       value="#FF6699"/>
+    </element>
+
+    <!--  add custom style for specific inlineName, change custom to suit your own style -->
+    <element name="inlineName-custom">
+    </element>
+
+    <element name="preformat">
+      <property name="margin-top"   value="5pt"/>
+      <property name="margin-bottom"    value="20pt"/>
+      <property name="font-size"              value="9pt"/>
+      <property name="font-family"            value="Consolas,Liberation Mono,Courier,monospace,NotoSansMath,ZapfDingbats"/>
+      <property name="color"                  value="#434343"/>
+      <property name="white-space-collapse"   value="false"/>
+      <property name="white-space-treatment"  value="preserve"/>
+      <property name="linefeed-treatment"     value="preserve"/>
+      <property name="page-break-inside"      value="avoid"/>
+      <property name="border-style"           value="solid"/>
+      <property name="border-width"           value="1px 1px 1px 3pt"/>
+      <property name="border-color"           value="#CECECE"/>
+      <property name="background-color"       value="transparent"/>
+      <property name="margin-left"            value="0"/>
+      <property name="margin-right"           value="0"/>
+
+      <!--
+      <property name="wrap-option"            value="true"/>
+      <property name="text-indent"            value="3cm"/>
+      -->
+    </element>
+
+    <element name="monospace">
+      <property name="margin-top"             value="5pt"/>
+      <property name="margin-bottom"          value="20pt"/>
+      <property name="font-size"              value="9pt"/>
+      <property name="font-family"            value="Consolas,Liberation Mono,Courier,monospace,NotoSansMath,ZapfDingbats"/>
+      <property name="color"                  value="#434343"/>
+      <property name="white-space-collapse"   value="false"/>
+      <property name="white-space-treatment"  value="preserve"/>
+      <property name="linefeed-treatment"     value="preserve"/>
+      <property name="page-break-inside"      value="avoid"/>
+      <property name="border-style"           value="solid"/>
+      <property name="border-width"           value="1pt 2pt 2pt 2pt"/>
+      <property name="border-color"           value="#CECECE"/>
+      <property name="background-color"       value="transparent"/>
+      <property name="margin-left"            value="0"/>
+      <property name="margin-right"           value="0"/>
+      <property name="padding"                value="1.5pt 3.75pt"/>
+    </element>
+
+    <element name="list">
+      <property name="provisional-distance-between-starts"    value="0.4cm"/>
+      <property name="provisional-label-separation"           value="0.2cm"/>
+      <property name="margin-top"                   value="5pt"/>
+      <property name="margin-bottom"                    value="20pt"/>
+      <property name="page-break-inside"                      value="avoid"/>
+    </element>
+
+    <element name="nlist">
+      <property name="provisional-distance-between-starts"    value="0.4cm"/>
+      <property name="provisional-label-separation"           value="0.2cm"/>
+      <property name="margin-top"                   value="2pt"/>
+      <property name="margin-bottom"                    value="18pt"/>
+    </element>
+
+    <element name="list-item">
+      <property name="margin-top"                   value="5pt"/>
+      <property name="margin-bottom"                    value="8pt"/>
+    </element>
+
+    <element name="link">
+      <property name="color"                  value="#016ebc"/>
+      <property name="text-decoration"        value="underline"/>
+      <property name="font-weight"            value="normal"/>
+    </element>
+
+    <element name="xref">
+      <property name="color"                  value="#016ebc"/>
+      <property name="text-decoration"        value="underline"/>
+      <property name="font-weight"            value="normal"/>
+    </element>
+
+    <element name="xref" role="mathml">
+      <property name="color"                  value="#000000"/>
+      <property name="text-decoration"        value="none"/>
+    </element>
+
+    <element name="xref" role="asciimath">
+      <property name="color"                  value="#000000"/>
+      <property name="text-decoration"        value="none"/>
+    </element>
+
+    <element name="blockxref">
+      <property name="margin-top"   value="4pt"/>
+      <property name="margin-bottom"    value="8pt"/>
+      <property name="text-align"             value="justify"/>
+      <property name="hyphenate"              value="false"/>
+      <property name="color"                  value="#016ebc"/>
+      <property name="text-decoration"        value="underline"/>
+      <property name="font-weight"            value="bold"/>
+    </element>
+
+    <element name="image">
+      <property name="margin-bottom"    value="12pt"/>
+      <property name="text-align"             value="center"/>
+    </element>
+
+    <element name="bold">
+      <property name="font-weight"        value="bold"/>
+    </element>
+
+    <element name="italic">
+      <property name="font-style"         value="italic"/>
+    </element>
+
+    <element name="underline">
+      <property name="text-decoration"    value="underline"/>
+    </element>
+
+    <element name="sub">
+      <property name="font-size"          value="6pt"/>
+      <property name="vertical-align"     value="sub"/>
+    </element>
+
+    <element name="sup">
+      <property name="font-size"          value="6pt"/>
+      <property name="vertical-align"     value="super"/>
+    </element>
+
+    <element name="toc-level1">
+      <property name="margin-left"        value="20px"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level2">
+      <property name="margin-left"        value="40px"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level3">
+      <property name="margin-left"        value="60px"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level4">
+      <property name="margin-left"        value="80px"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level5">
+      <property name="margin-left"        value="100px"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level6">
+      <property name="margin-left"        value="120px"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+  </styles>
+</config>

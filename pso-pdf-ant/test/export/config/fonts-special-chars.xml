@@ -1,0 +1,40 @@
+<fonts>
+  <font embed-url="NotoSans-Regular.ttf">
+    <font-triplet name="NotoSans" style="normal" weight="normal"/>
+  </font>
+  <font embed-url="NotoSans-Bold.ttf">
+    <font-triplet name="NotoSans" style="normal" weight="bold"/>
+  </font>
+  <font embed-url="NotoSans-Italic.ttf">
+    <font-triplet name="NotoSans" style="italic" weight="normal"/>
+  </font>
+  <font embed-url="NotoSans-BoldItalic.ttf">
+    <font-triplet name="NotoSans" style="italic" weight="bold"/>
+  </font>
+  <font embed-url="NotoSansMath-Regular.ttf">
+    <font-triplet name="NotoSansMath" style="normal" weight="normal"/>
+    <font-triplet name="NotoSansMath" style="normal" weight="bold"/>
+    <font-triplet name="NotoSansMath" style="italic" weight="normal"/>
+    <font-triplet name="NotoSansMath" style="italic" weight="bold"/>
+  </font>
+  <!--
+  <font kerning="yes" embed-url="/System/Library/Fonts/Arial.ttf" embedding-mode="subset">
+    <font-triplet name="Roboto" style="normal" weight="normal"/>
+  </font>
+  -->
+  <!-- register all the fonts found in a directory - ->
+  <directory>E:\downloads\STIX2_13-all\static_ttf</directory>
+  <!- - <directory>E:\downloads\Roboto</directory> - ->
+  <directory recursive="true">E:\downloads\Noto_Serif</directory>
+  <directory recursive="true">E:\downloads\Noto_Sans</directory>
+  <directory recursive="true">E:\downloads\Noto_Sans_Math</directory>
+  <directory recursive="true">E:\downloads\Noto_Sans_Mono</directory>
+  <directory recursive="true">E:\downloads\Noto_Sans_Symbols</directory>
+  <directory recursive="true">E:\downloads\Noto_Sans_Symbols_2u</directory>
+
+  <!- - register all the fonts found in a directory and all of its sub directories (use with care) - ->
+  <directory recursive="true">C:\MyFonts2</directory> -->
+
+  <!-- automatically detect operating system installed fonts - ->
+  <auto-detect/> -->
+</fonts>

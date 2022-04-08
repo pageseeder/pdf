@@ -6,9 +6,14 @@ package org.pageseeder.pdf.ant;
 import net.sourceforge.jeuclid.fop.plugin.JEuclidFopFactoryConfigurator;
 import org.apache.commons.io.IOUtils;
 import org.apache.fop.apps.*;
+import org.apache.fop.configuration.Configuration;
+import org.apache.fop.configuration.ConfigurationException;
+import org.apache.fop.configuration.DefaultConfigurationBuilder;
+import org.apache.fop.fonts.FontManager;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.pageseeder.pdf.util.XML;
 import org.pageseeder.pdf.util.XSLT;
 
 import javax.xml.transform.*;
@@ -18,6 +23,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -59,9 +65,19 @@ public final class ExportTask extends Task {
   private File _destination;
 
   /**
-   * The name of the working directory
+   * The working directory
    */
   private File _working;
+
+  /**
+   * The font base directory
+   */
+  private File _fontFolder;
+
+  /**
+   * The font config file
+   */
+  private File _fontConfig;
 
   /**
    * The image resolution in DPI
@@ -128,6 +144,30 @@ public final class ExportTask extends Task {
   }
 
   /**
+   * Set the font folder (optional).
+   *
+   * @param folder The font base folder
+   */
+  public void setFontFolder(File folder) {
+    if (!folder.exists() || !folder.isDirectory()) {
+      throw new BuildException("the font folder must exists and must be a directory");
+    }
+    this._fontFolder = folder;
+  }
+
+  /**
+   * Set the font config file (optional).
+   *
+   * @param config The font config file
+   */
+  public void setFontConfig(File config) {
+    if (!config.exists() || !config.isDirectory()) {
+      throw new BuildException("the font config must exists and must be a file");
+    }
+    this._fontConfig = config;
+  }
+
+  /**
    * Create a config folder object and stores it in the list To be used by Ant
    * Task to get all nested element of <configs ../>
    */
@@ -149,7 +189,7 @@ public final class ExportTask extends Task {
 
   /**
    * Set the image resolution in DPI (optional).
-   * 
+   *
    * @param resolution the image resolution in DPI
    */
   public void setResolution(int resolution) {
@@ -166,7 +206,7 @@ public final class ExportTask extends Task {
     }
 
     if (this._source == null)
-      throw new BuildException("Source presentation must be specified using 'src' attribute");
+      throw new BuildException("Source PSML document must be specified using 'src' attribute");
     // Defaulting working directory
     if (this._working == null) {
       String tmp = "antpdf-"+System.currentTimeMillis();
@@ -204,22 +244,43 @@ public final class ExportTask extends Task {
 
     FileInputStream in = null;
     FileOutputStream out = null;
-    
-    // initiate FOP
-    FopFactoryBuilder builder = new FopFactoryBuilder(this._source.getParentFile().toURI());
-    // set resolution
-    builder.setSourceResolution(this._resolution);
-    FopFactory factory = builder.build();
-    JEuclidFopFactoryConfigurator.configure(factory);
-    FOUserAgent userAgent = factory.newFOUserAgent();
-    userAgent.setCreationDate(new Date());
-    userAgent.setProducer("PageSeeder ANT PDF Library");
-    Fop fop;
+
     try {
+      // generate FOP config
+      StringBuilder config = new StringBuilder();
+      config.append("<fop version=\"1.0\">");
+      if (this._fontFolder != null) {
+        config.append("<font-base>file:///");
+        XML.makeXMLSafe(this._fontFolder.getAbsolutePath(), config);
+        config.append("</font-base>");
+      }
+      if (this._fontConfig != null) {
+        config.append("<renderers>");
+        config.append("<renderer mime=\"application/pdf\">");
+        config.append(new String(Files.readAllBytes(this._fontConfig.toPath()),StandardCharsets.UTF_8));
+        config.append("</renderer>");
+        config.append("</renderers>");
+      }
+      config.append("</fop");
+
+      // initiate FOP
+      DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
+      Configuration cfg = cfgBuilder.build(new ByteArrayInputStream(config.toString().getBytes(StandardCharsets.UTF_8)));
+      FopFactoryBuilder builder = new FopFactoryBuilder(this._source.getParentFile().toURI()).setConfiguration(cfg);
+
+      //FopFactoryBuilder builder = new FopFactoryBuilder(this._source.getParentFile().toURI());
+      // set resolution
+      builder.setSourceResolution(this._resolution);
+      FopFactory factory = builder.build();
+      JEuclidFopFactoryConfigurator.configure(factory);
+      FOUserAgent userAgent = factory.newFOUserAgent();
+      userAgent.setCreationDate(new Date());
+      userAgent.setProducer("PageSeeder ANT PDF Library");
+
       // source
       in = new FileInputStream(this._source);
       out = new FileOutputStream(this._destination);
-      fop = factory.newFop(MimeConstants.MIME_PDF, userAgent, out);
+      Fop fop = factory.newFop(MimeConstants.MIME_PDF, userAgent, out);
       // run transform
       Source source = new StreamSource(new BufferedInputStream(in), this._source.toURI().toString());
       Result result = new SAXResult(fop.getDefaultHandler());
@@ -253,7 +314,7 @@ public final class ExportTask extends Task {
       log("PDF generation failed:", Project.MSG_ERR);
       log(ex, Project.MSG_ERR);
       throw new BuildException("Failed to build PDF file: "+ex.getMessage());
-    } catch (IOException | TransformerException ex) {
+    } catch (IOException | TransformerException | ConfigurationException ex) {
       log("PDF generation failed:", Project.MSG_ERR);
       log(ex, Project.MSG_ERR);
       throw new BuildException("Failed to build PDF file: "+ex.getMessage());
@@ -272,7 +333,7 @@ public final class ExportTask extends Task {
 
   /**
    * Build the complete config file
-   * 
+   *
    * @param config the file to write to
    *
    * @throws IOException if writing to the file failed
@@ -303,10 +364,10 @@ public final class ExportTask extends Task {
 
   /**
    * Write a stream to the writer provided
-   * 
+   *
    * @param out wher to write
    * @param in  what to write
-   * 
+   *
    * @throws IOException if reading/writing the content failed
    */
   private static void writeStream(Writer out, InputStream in) throws IOException {
@@ -326,80 +387,11 @@ public final class ExportTask extends Task {
      }
   }
 
-  /**
-   * Escapes the text to be used as an attribute value for an UTF-8 encoded XML document.
-   *
-   * <p>
-   * Replace characters which are invalid in element values, by the corresponding entity in a given <code>String</code>.
-   *
-   * <p>
-   * These characters are:<br>
-   * <ul>
-   *   <li>'&amp' by the ampersand entity "&amp;amp"</li>
-   *   <li>'&lt;' by the entity "&amp;lt;"</li>
-   *   <li>'&apos;' by the entity "&amp;apos;"</li>
-   *   <li>'&quot;' by the entity "&amp;quot;"</li>
-   * </ul>
-   * </p>
-   *
-   * <p>
-   * Empty strings or <code>null</code> return respectively "" and <code>null</code>.
-
-   * <p>
-   * This method is lenient in the sense that it will not report illegal characters that cannot be escaped such as
-   * control characters.
-   *
-   * <pre>
-   * {@code
-   *   [10]     AttValue     ::=    '"' ([^<&"] | Reference)* '"'
-   *                             |  "'" ([^<&'] | Reference)* "'"
-   * }
-   * </pre>
-   *
-   * <p>
-   * This method assumes that the given text is not XML data, that is it does not attempt to understand entities, child
-   * elements or other XML data.
-   *
-   * @param value the attribute value to escape
-   * @return the corresponding escaped text
-   */
-  private static String escapeAttValue(String value) {
-    // bypass null and empty strings
-    if (value == null || "".equals(value)) return "";
-    // do not process valid strings
-    if (value.indexOf('&') == -1 && value.indexOf('<') == -1 && value.indexOf('\'') == -1 && value.indexOf('"') == -1)
-      return value;
-    // process the rest
-    StringBuilder out = new StringBuilder(value.length() + 8);
-    for (int i = 0; i < value.length(); i++) {
-      char c = value.charAt(i);
-      switch (c) {
-        case '&':
-          out.append("&amp;");
-          break;
-        case '<':
-          out.append("&lt;");
-          break;
-        case '\'':
-          out.append("apos;");
-          break;
-        case '"':
-          out.append("&quot;");
-          break;
-        default:
-          out.append(c);
-      }
-    }
-    return out.toString();
-  }
-
   // FOConfig object
   /**
    * Holder for FO config definition.
    */
   public static final class FOConfig {
-    /** Config name (matching a psml document type) */
-    private String _name = "default";
     /** The actual config file */
     private File _config;
     /** The priority */
@@ -407,11 +399,12 @@ public final class ExportTask extends Task {
 
     /**
      * Set the config name (matching a psml document type)
-     * 
+     *
      * @param name the config name (matching a psml document type)
+     *
+     * @deprectated this method is no longer supported
      */
     public void setName(String name) {
-      this._name = name;
     }
 
     /**
@@ -422,12 +415,12 @@ public final class ExportTask extends Task {
     public void setFile(File file) {
       if (file.exists() && !file.isDirectory()) {
         this._config = file;
-      }     
+      }
     }
 
     /**
      * Set the priority
-     * 
+     *
      * @param priority The priority
      */
     public void setPriority(int priority) {
@@ -455,7 +448,7 @@ public final class ExportTask extends Task {
     /**
      * Set the FO configuration file.
      *
-     * @param file The configuration file.
+     * @param folder The configuration folder.
      */
     public void setFolder(File folder) {
       if (folder.exists() && folder.isDirectory()) {

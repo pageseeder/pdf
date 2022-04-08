@@ -22,6 +22,7 @@ public class ExportTaskTest {
   private static File DESTINATION = new File("test/export/output");
   private static File EXPECTED    = new File("test/export/expected");
   private static File CONFIGS     = new File("test/export/config");
+  private static File FONTS       = new File("test/export/fonts");
 
   @BeforeClass
   public static void init() {
@@ -329,7 +330,6 @@ public class ExportTaskTest {
   public void testMathML() throws IOException {
 
     File lorem = new File(SOURCE, "mathml.psml");
-    File fo = new File(WORKING, "fo.xml");
     File output = new File(DESTINATION, "mathml.pdf");
     File config = loadConfig("pdf-export-config-mathml.xml");
 
@@ -338,6 +338,27 @@ public class ExportTaskTest {
     task.setWorking(WORKING);
     task.setSrc(lorem);
     task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
+    task.execute();
+  }
+
+  @Test
+  public void testSpecialChars() throws IOException {
+
+    File lorem = new File(SOURCE, "special_chars.psml");
+    File output = new File(DESTINATION, "special_chars.pdf");
+    File config = loadConfig("pdf-export-config-special-chars.xml");
+    File font_config = loadConfig("fonts-special-chars.xml");
+
+    ExportTask task = new ExportTask();
+    task.setDebug(true);
+    task.setWorking(WORKING);
+    task.setSrc(lorem);
+    task.setDest(output);
+    task.setFontFolder(FONTS);
+    task.setFontConfig(font_config);
     ExportTask.FOConfig cfg = task.createConfig();
     cfg.setFile(config);
     cfg.setPriority(1);

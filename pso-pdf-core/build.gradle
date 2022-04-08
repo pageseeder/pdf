@@ -8,8 +8,7 @@ dependencies {
           'org.apache.pdfbox:pdfbox:2.0.17',
           'org.apache.pdfbox:fontbox:2.0.17',
           'org.apache.pdfbox:pdfbox-tools:2.0.17',
-          'org.apache.xmlgraphics:fop:2.3',
-          'net.sf.saxon:Saxon-HE:9.7.0-2'
+          'net.sf.saxon:Saxon-HE:10.1'
   )
 
   testImplementation (
