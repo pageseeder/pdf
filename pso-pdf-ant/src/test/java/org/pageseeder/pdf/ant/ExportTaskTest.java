@@ -350,7 +350,7 @@ public class ExportTaskTest {
     File lorem = new File(SOURCE, "special_chars.psml");
     File output = new File(DESTINATION, "special_chars.pdf");
     File config = loadConfig("pdf-export-config-special-chars.xml");
-    File font_config = loadConfig("fonts-special-chars.xml");
+    File font_config = new File(CONFIGS, "fonts-special-chars.xml");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);

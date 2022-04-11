@@ -28,6 +28,11 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.apache.fop.events.Event;
+import org.apache.fop.events.EventFormatter;
+import org.apache.fop.events.EventListener;
+import org.apache.fop.events.model.EventSeverity;
+
 /**
  * An ANT task to export a PageSeeder PSML document to a PDF document using FOP.
  *
@@ -161,7 +166,7 @@ public final class ExportTask extends Task {
    * @param config The font config file
    */
   public void setFontConfig(File config) {
-    if (!config.exists() || !config.isDirectory()) {
+    if (!config.exists() || config.isDirectory()) {
       throw new BuildException("the font config must exists and must be a file");
     }
     this._fontConfig = config;
@@ -261,7 +266,7 @@ public final class ExportTask extends Task {
         config.append("</renderer>");
         config.append("</renderers>");
       }
-      config.append("</fop");
+      config.append("</fop>");
 
       // initiate FOP
       DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
@@ -276,6 +281,8 @@ public final class ExportTask extends Task {
       FOUserAgent userAgent = factory.newFOUserAgent();
       userAgent.setCreationDate(new Date());
       userAgent.setProducer("PageSeeder ANT PDF Library");
+      // log events through ANT
+      userAgent.getEventBroadcaster().addEventListener(new AntEventListener(this));
 
       // source
       in = new FileInputStream(this._source);
@@ -466,4 +473,41 @@ public final class ExportTask extends Task {
     }
   }
 
+  private class AntEventListener implements EventListener {
+
+    /**
+     * ANT task to log to
+     */
+    private Task _task;
+
+    /**
+     * Constructor
+     *
+     * @param task the ANT task to log to
+     */
+    public AntEventListener(Task task) {
+      this._task = task;
+    }
+
+    /** {@inheritDoc} */
+    public void processEvent(Event event) {
+      String msg = EventFormatter.format(event);
+      EventSeverity severity = event.getSeverity();
+      if (severity == EventSeverity.INFO) {
+        // log to verbose to reduce chatter
+        _task.log("[INFO] " + msg, Project.MSG_VERBOSE);
+      } else if (severity == EventSeverity.WARN) {
+        // remove chatty logs about ZapfDingbats
+        if (msg.indexOf("Font \"ZapfDingbats") != -1 &&
+                msg.indexOf("Substituting with \"ZapfDingbats") != -1) return;
+        // log to verbose to reduce chatter
+        _task.log("[WARN] " + msg, Project.MSG_VERBOSE);
+      } else if (severity == EventSeverity.ERROR) {
+        // log to verbose to reduce chatter
+        _task.log("[ERROR] " + msg, Project.MSG_ERR);
+      } else if (severity == EventSeverity.FATAL) {
+        _task.log("[FATAL] " + msg, Project.MSG_ERR);
+      }
+    }
+  }
 }

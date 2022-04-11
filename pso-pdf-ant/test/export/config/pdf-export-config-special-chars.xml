@@ -14,6 +14,7 @@
       <region-property name="margin-bottom"   value="1cm"/>
       <!-- <property name="font-family"            value="STIXTwoText-Regular,STIXTwoMath-Regular"/> -->
       <!-- <property name="font-family"            value="Roboto-Regular"/> -->
+      <!-- ZapfDingbats is for tick/check mark -->
       <property name="font-family"            value="NotoSans,NotoSansMath,ZapfDingbats"/>
       <property name="font-size"              value="11pt"/>
       <property name="font-weight"            value="normal"/>
