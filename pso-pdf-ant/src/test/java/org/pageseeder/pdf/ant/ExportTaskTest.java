@@ -277,12 +277,16 @@ public class ExportTaskTest {
     File lorem = new File(SOURCE, "toc.psml");
     File fo = new File(WORKING, "fo.xml");
     File output = new File(DESTINATION, "toc.pdf");
+    File config = loadConfig("pdf-export-config-toc.xml");
 
     ExportTask task = new ExportTask();
     task.setDebug(true);
     task.setWorking(WORKING);
     task.setSrc(lorem);
     task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
     task.execute();
 
     Assert.assertTrue(output.exists());

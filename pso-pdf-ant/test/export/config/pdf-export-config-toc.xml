@@ -1,0 +1,37 @@
+<config>
+  <styles>
+    <element name="toc-level1">
+      <property name="margin-left"        value="0.5cm"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level2">
+      <property name="margin-left"        value="1cm"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level3">
+      <property name="margin-left"        value="1.5cm"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level4">
+      <property name="margin-left"        value="2cm"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level5">
+      <property name="margin-left"        value="2.5cm"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level6">
+      <property name="margin-left"        value="3cm"/>
+      <property name="text-align-last"    value="justify"/>
+    </element>
+
+    <element name="toc-level7">
+      <property name="ps-hide" value="true"/>
+    </element>
+  </styles>
+</config>

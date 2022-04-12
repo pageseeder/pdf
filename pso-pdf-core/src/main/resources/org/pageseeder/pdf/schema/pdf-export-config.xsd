@@ -58,7 +58,7 @@
 			<xs:attribute name="value" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
-	
+
 	<xs:element name="region-property">
 		<xs:complexType>
 			<xs:attribute name="name" type="xs:string" use="required"/>
@@ -465,7 +465,7 @@
       <xs:attribute name="level" type="xs:positiveInteger"/>
 		</xs:complexType>
 	</xs:element>
-  
+
   <xs:simpleType name="element-name-enum">
     <xs:restriction base="xs:string">
       <!-- Block elements -->
@@ -480,6 +480,9 @@
       <xs:enumeration value="toc-level4" />
       <xs:enumeration value="toc-level5" />
       <xs:enumeration value="toc-level6" />
+      <xs:enumeration value="toc-level7" />
+      <xs:enumeration value="toc-level8" />
+      <xs:enumeration value="toc-level9" />
       <xs:enumeration value="toc-title" />
       <xs:enumeration value="cell" />
       <xs:enumeration value="hcell" />
@@ -540,11 +543,11 @@
   <xs:simpleType name="element-name">
     <xs:union memberTypes="element-name-enum element-name-pattern"/>
   </xs:simpleType>
-  
+
   <xs:simpleType name="label">
     <xs:restriction base="xs:string">
       <xs:pattern value="[a-zA-Z0-9_\-]+"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
 </xs:schema>
