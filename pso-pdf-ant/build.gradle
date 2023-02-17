@@ -6,7 +6,7 @@ dependencies {
   implementation project (':pso-pdf-core')
 
   implementation (
-    'org.apache.xmlgraphics:fop-core:2.7',
+    'org.apache.xmlgraphics:fop-core:2.8',
     'de.rototor.jeuclid:jeuclid-core:3.1.14',
     'org.apache.pdfbox:pdfbox:2.0.24',
     'org.apache.pdfbox:pdfbox-tools:2.0.24',
