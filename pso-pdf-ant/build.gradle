@@ -18,11 +18,11 @@ dependencies {
   }
 
   compileOnly (
-    'org.apache.ant:ant:1.8.1'
+    'org.apache.ant:ant:1.10.13'
   )
 
   testImplementation (
-    'org.apache.ant:ant:1.8.1',
+    'org.apache.ant:ant:1.10.13',
     'junit:junit:4+',
     'org.xmlunit:xmlunit-core:2.3.0',
     'org.xmlunit:xmlunit-matchers:2.3.0',
