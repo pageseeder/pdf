@@ -77,4 +77,9 @@
   </mfrac>
   <mi>d</mi>
   <mi>z</mi>
-</math></media-fragment></xref>.</para></fragment></section></document>
+</math></media-fragment></xref>.</para></fragment>
+  <fragment id="19564-20"><para>Stand-alone media fragment:</para></fragment>
+  <media-fragment id="19564-21" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1235</mn></math></media-fragment>
+  <media-fragment id="19564-22" mediatype="text/plain">Text media fragment</media-fragment>
+  <media-fragment id="19564-23" mediatype="application/xml"><foo><bar/></foo></media-fragment>
+</section></document>

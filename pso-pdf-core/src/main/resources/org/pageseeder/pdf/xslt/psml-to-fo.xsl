@@ -221,12 +221,8 @@
    | </fo:block>
 
 -->
-  <xsl:template match="*[psf:is-fragment(.)][not(self::properties-fragment or self::media-fragment)]">
-    <fo:block>
-      <!-- don't put an ID for generated MathML fragment -->
-      <xsl:if test="@id != 'media'">
-        <xsl:attribute name="id" select="concat('psf-', @id)" />
-      </xsl:if>
+  <xsl:template match="fragment|xref-fragment|media-fragment[parent::section]">
+    <fo:block id="{concat('psf-', @id)}">
       <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(name(), '-', @type)) else ()" />
       <xsl:variable name="def-props"  select="psf:load-style-properties(., name())" />
       <xsl:sequence select="psf:style-properties-overwrite($cust-props, $def-props)"/>
@@ -237,7 +233,16 @@
       </xsl:if>
       <!-- check for section title -->
       <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
-      <xsl:apply-templates/>
+      <xsl:choose>
+        <xsl:when test="self::media-fragment">
+          <fo:instream-foreign-object>
+            <xsl:copy-of select="node()" />
+          </fo:instream-foreign-object>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates/>
+        </xsl:otherwise>
+      </xsl:choose>
     </fo:block>
   </xsl:template>
 
@@ -251,7 +256,7 @@
      | </fo:instream-foreign-object>
 
   -->
-  <xsl:template match="media-fragment">
+  <xsl:template match="media-fragment[not(parent::section)]">
     <!-- if this is the first fragment of this document, add the anchor -->
     <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
     <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
