@@ -51,6 +51,12 @@
     <property name="color"        value="blue"/>
   </element>
 
+  <element name="para-prefix">
+    <property name="start-indent" value="-2cm"/>
+    <property name="text-indent"  value="2cm"/>
+    <property name="text-align"   value="right"/>
+  </element>
+
   <element name="para-prefix" level="1">
     <property name="start-indent" value="-1.5cm"/>
     <property name="text-indent"  value="1.5cm"/>

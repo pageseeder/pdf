@@ -145,6 +145,25 @@ public class ExportTaskTest {
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]/@margin-bottom", equalTo("36pt")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]//fo:table-cell[2]/fo:block/@margin-bottom", equalTo("")).withNamespaceContext(ns));
     MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[4]//fo:table-cell[2]/fo:block/@color", equalTo("orange")).withNamespaceContext(ns));
+    MatcherAssert.assertThat(xml, XML.hasXPath(parasFrag+"/fo:table[5]//fo:table-column[1]/@column-width", equalTo("2cm")).withNamespaceContext(ns));
+  }
+
+  @Test
+  public void testPropertiesFragment() throws IOException {
+
+    File lorem = new File(SOURCE, "properties-fragment.psml");
+    File output = new File(DESTINATION, "properties-fragment.pdf");
+    File config = loadConfig("pdf-export-config-properties-fragment.xml");
+
+    ExportTask task = new ExportTask();
+    task.setDebug(true);
+    task.setWorking(WORKING);
+    task.setSrc(lorem);
+    task.setDest(output);
+    ExportTask.FOConfig cfg = task.createConfig();
+    cfg.setFile(config);
+    cfg.setPriority(1);
+    task.execute();
   }
 
   @Test

@@ -1,0 +1,107 @@
+<config>
+  <!-- Date is removed form header to be able to compare output fo.xml -->
+  <styles>
+    <!-- =======================GENERAL PROPERTIES======================= -->
+    <page>
+      <property name="page-height"            value="29.7cm"/>
+      <property name="page-width"             value="21cm"/>
+      <property name="margin-top"             value="1cm"/>
+      <property name="margin-bottom"          value="0.5cm"/>
+      <property name="margin-left"            value="2cm"/>
+      <property name="margin-right"           value="2cm"/>
+    </page>
+    <body>
+      <region-property name="margin-top"      value="1cm"/>
+      <region-property name="margin-bottom"   value="2cm"/>
+      <property name="font-family"            value="Helvetica"/>
+      <property name="font-size"              value="11pt"/>
+      <property name="line-height"            value="140%"/>
+    </body>
+    <header>
+      <region-property name="extent"          value="1cm" />
+      <property name="line-height"            value="12pt"/>
+      <property name="font-size"              value="10pt"/>
+      <property name="border-bottom-style"    value="solid"/>
+      <property name="border-bottom-width"    value="0mm"/>
+      <left><filename /></left>
+      <right><label name="myheader"/></right>
+    </header>
+    <footer first="true">
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
+    </footer>
+    <footer>
+      <region-property name="extent"          value="1cm" />
+      <property name="font-size"              value="10pt"/>
+      <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
+    </footer>
+
+    <element name="list-label" level="3">
+      <property name="color"     value=""/>
+    </element>
+
+    <element name="list-label" level="4">
+      <property name="color"        value="red"/>
+      <property name="margin-top"   value="-10pt" /> <!-- should be ignored -->
+      <property name="font-size"    value="12pt" /> <!-- should be ignored -->
+      <property name="font-family"  value="Symbol" /> <!-- should be ignored -->
+      <property name="ps-type"      value="circle"/>
+    </element>
+
+    <element name="list-label" level="5">
+      <property name="color"        value="red"/>
+      <property name="margin-top"   value="-1pt" />
+      <property name="font-size"    value="12pt" />
+      <property name="font-family"  value="ZapfDingbats" />
+      <property name="ps-type"      value="&#x27A2;"/>
+    </element>
+
+    <element name="nlist-label" level="3">
+      <property name="color"     value="green"/>
+      <property name="ps-type"   value="upperroman"/>
+    </element>
+
+    <element name="nlist-label" level="4">
+      <property name="color"     value="green"/>
+      <property name="ps-type"   value="upperalpha"/>
+    </element>
+
+    <element name="nlist-label" level="5">
+      <property name="color"     value="green"/>
+      <property name="ps-type"   value="lowerroman"/>
+    </element>
+
+    <element name="properties-fragment">
+      <property name="padding-bottom"   value="0.9cm"/>
+      <property name="margin-bottom"   value="1.2cm"/>
+    </element>
+    <element name="properties-fragment-mytype1">
+      <property name="background-color"   value="red"/>
+    </element>
+    <element name="properties-fragment-mytype2">
+      <property name="background-color"   value="green"/>
+    </element>
+    <!-- table-row - property
+         table-cell - property-title-cell
+         block property-title
+         table-cell property-value-cell
+         block property-value
+    -->
+    <element name="property">
+      <property name="height"   value="1.4cm"/>
+    </element>
+    <element name="property-title-cell">
+      <property name="background-color"   value="purple"/>
+    </element>
+    <element name="property-title">
+      <property name="color"   value="pink"/>
+    </element>
+    <element name="property-value-cell">
+      <property name="background-color"   value="yellow"/>
+    </element>
+    <element name="property-value">
+      <property name="color"   value="black"/>
+    </element>
+  </styles>
+</config>

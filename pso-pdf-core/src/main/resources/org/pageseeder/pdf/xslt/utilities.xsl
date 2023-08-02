@@ -19,11 +19,11 @@
       </foconfig>
     </xsl:for-each>
   </xsl:variable>
-  
+
   <!--
     Find the config that defines a margin zone.
     It could be the current one, the 'mainconfig' parameter or default
-    
+
     @param context     the current context
   -->
   <xsl:function name="psf:config-with-region">
@@ -40,10 +40,10 @@
     <xsl:sequence select="($all[@priority = $max-priority])[1]/@config" />
 
   </xsl:function>
-  
+
   <!--
     Method used to load the margin zone definition.
-    
+
     @param context    the current context
     @param type       the type of margin zone (supported values are 'header', 'footer', 'left' and 'right')
     @param first      if we should get the one for the first page (values are 'true', 'false' or '' which means any value)
@@ -58,10 +58,10 @@
                           [$first = '' or ($first = 'true' and @first = 'true') or ($first = 'false' and empty(@first))]" />
 
   </xsl:function>
-  
+
   <!--
     Method used to apply the styling of margin zones (headers, footers, lefts and rights).
-    
+
     @param context     the current context (used to retrieve the FOConfig.xml config file)
     @param type        the type of margin zone (supported values are 'header', 'footer', 'left' and 'right')
     @param odd-or-even the scope of the margin zone (supported values are 'first', 'odd', 'even')
@@ -102,10 +102,10 @@
 
   </xsl:function>
 
-  
+
   <!-- ================================= Style ============================================ -->
   <!-- These templates are generating XSL-FO elements in FOConfig.xml -->
-  
+
   <!-- Match everything with mode = 'style' -->
   <xsl:template match="*" mode="style"><xsl:apply-templates mode="style" /></xsl:template>
   <!-- labels -->
@@ -145,7 +145,7 @@
 
   <!--
     Load the name of the config to use for the context provided
-    
+
     @param context       the current context (used to retrieve the FOConfig.xml config file)
    -->
   <xsl:function name="psf:load-config">
@@ -178,7 +178,7 @@
     Load the style properties as property elements for the element specified.
     A property element has the following format:
       <property name="[name]" value="[value]" />
-    
+
     @param context       the current context (used to retrieve the FOConfig.xml config file)
     @param element-name  the name of the element which properties should be loaded
    -->
@@ -253,7 +253,7 @@
       <property name="[name]" value="[value]" />
       or
       <region-property name="[name]" value="[value]" />
-    
+
     @param config        the FOConfig.xml config file
     @param element-name  the name of the element which properties should be loaded
     @param property-tag  the tag name of the properties to load (only supported values are 'property' and 'region-property')
@@ -275,6 +275,10 @@
       <xsl:for-each select="$foconfigs//foconfig[@config = $config or @config = 'custom' or @config = 'default']">
         <foconfig xmlns="" priority="{@priority}">
           <xsl:choose>
+            <!-- para prefix ==> <element name="para-prefix"> -->
+            <xsl:when test="$element-name = 'para-prefix'">
+              <xsl:sequence select="element[string(@name) = 'para-prefix' and not(@level)]/*[name() = $property-tag]" />
+            </xsl:when>
             <!-- heading/para prefix: heading-prefix-2 ==> <element name="heading-prefix" level="2"> -->
             <xsl:when test="($first = 'heading' or $first = 'para') and $second = 'prefix'">
               <xsl:sequence select="element[string(@name) = concat($first, '-prefix') and @level = $third]/*[name() = $property-tag]" />
@@ -308,20 +312,20 @@
         <xsl:sequence select="." />
       </xsl:if>
     </xsl:for-each>
-    
+
   </xsl:function>
 
   <!--
     Output properties by combining the two sets of properties provided.
     The first properties will overwrite the second properties.
-    
+
     @param high-priority  the set of properties with the highest priority
     @param low-priority   the set of properties with the lowest priority
    -->
   <xsl:function name="psf:style-properties-overwrite">
     <xsl:param name="high-priority" />
     <xsl:param name="low-priority" />
-    
+
     <xsl:variable name="properties">
       <xsl:for-each select="$high-priority">
         <xsl:sequence select="." />
@@ -332,17 +336,17 @@
         </xsl:if>
       </xsl:for-each>
     </xsl:variable>
-    
+
     <xsl:for-each select="$properties/*[not(starts-with(@name, 'ps-'))][string(@value) != '']">
       <xsl:attribute name="{@name}" select="@value" />
     </xsl:for-each>
-    
+
   </xsl:function>
-  
+
   <!--
     Load the style properties for the given element AS ATTRIBUTES.
     This function should only be called immediately after an element as been created.
-    
+
     @param context       the current context (used to retrieve the FOConfig.xml config file)
     @param element-name  the name of the element which properties should be loaded
    -->
@@ -351,11 +355,11 @@
     <xsl:param name="element-name" />
     <xsl:sequence select="psf:style-properties-all(psf:load-config($context), $element-name, 'property', '')" />
   </xsl:function>
-  
+
   <!--
     Load the style region properties for the given element AS ATTRIBUTES.
     This function should only be called immediately after an element as been created.
-    
+
     @param config        the current FOConfig.xml config file to use
     @param element-name  the name of the element which region properties should be loaded
    -->
@@ -386,11 +390,11 @@
       <xsl:attribute name="{@name}" select="@value" />
     </xsl:for-each>
   </xsl:function>
-  
+
   <!--
     Load the style properties witha specified role for the given element AS ATTRIBUTES.
     This function should only be called immediately after an element as been created.
-    
+
     @param context       the current context (used to retrieve the FOConfig.xml config file)
     @param element-name  the name of the element which properties should be loaded
     @param role          a role that should be present on the element
@@ -401,11 +405,11 @@
     <xsl:param name="role" />
     <xsl:sequence select="psf:style-properties-all(psf:load-config($context), $element-name, 'property', $role)" />
   </xsl:function>
-  
+
   <!--
     Load the style properties for the given element AS ATTRIBUTES.
     This function should only be called immediately after an element as been created.
-    
+
     @param config        the FOConfig.xml config file to use
     @param element-name  the name of the element which properties should be loaded
     @param property-tag  the tag name of the properties to load (only supported values are 'property' and 'region-property')
@@ -417,29 +421,29 @@
     <xsl:param name="property-tag" />
     <xsl:param name="role" />
     <xsl:variable name="debug" select="false()" />
-    
+
     <xsl:variable name="properties" select="psf:load-style-properties-more($config, $element-name, $property-tag, $role)" />
-    
+
     <xsl:if test="$debug">
       <xsl:message>style-properties: element "<xsl:value-of select="$element-name" />"</xsl:message>
       <xsl:for-each select="$properties">
         <xsl:message><xsl:value-of select='@name' />="<xsl:value-of select="@value" />"</xsl:message>
       </xsl:for-each>
     </xsl:if>
-    
+
     <xsl:for-each select="$properties[not(starts-with(@name, 'ps-'))][string(@value) != '']">
       <xsl:attribute name="{@name}" select="@value" />
     </xsl:for-each>
 
   </xsl:function>
-  
-  <!-- 
+
+  <!--
     Check if an element is a fragment, one of:
       - fragment
       - xref-fragment
       - properties-fragment
       - media-fragment
-    
+
     @param elem the potential fragment element
   -->
   <xsl:function name="psf:is-fragment">

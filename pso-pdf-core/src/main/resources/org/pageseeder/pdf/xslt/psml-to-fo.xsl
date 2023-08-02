@@ -221,7 +221,7 @@
    | </fo:block>
 
 -->
-  <xsl:template match="fragment|xref-fragment|media-fragment[parent::section]">
+  <xsl:template match="(fragment|xref-fragment|media-fragment|properties-fragment[property])[parent::section]">
     <fo:block id="{concat('psf-', @id)}">
       <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(name(), '-', @type)) else ()" />
       <xsl:variable name="def-props"  select="psf:load-style-properties(., name())" />
@@ -234,6 +234,15 @@
       <!-- check for section title -->
       <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
       <xsl:choose>
+        <xsl:when test="self::properties-fragment">
+          <fo:table border-collapse="collapse" table-layout="fixed" inline-progression-dimension.optimum="100%">
+            <fo:table-column column-width="proportional-column-width(1)" />
+            <fo:table-column column-width="proportional-column-width(1)" />
+            <fo:table-body>
+              <xsl:apply-templates />
+            </fo:table-body>
+          </fo:table>
+        </xsl:when>
         <xsl:when test="self::media-fragment">
           <fo:instream-foreign-object>
             <xsl:copy-of select="node()" />
@@ -267,36 +276,6 @@
     <fo:instream-foreign-object>
       <xsl:copy-of select="node()" />
     </fo:instream-foreign-object>
-  </xsl:template>
-
-<!-- ============================== properties-fragment ================================== -->
-<!-- Template for PageSeeder properties fragment
-
-.. admonition:: xpath:properties-fragment
-
-   | <fo:table>
-   |   ...
-   | </fo:table>
-
--->
-  <xsl:template match="properties-fragment[property]">
-    <fo:block id="psf-{@id}">
-      <xsl:sequence select="psf:style-properties(., 'properties')"/>
-      <!-- if this is the first fragment of this document, add the anchor -->
-      <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
-      <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
-        <fo:block id="psf-{$dad-doc/@id}" />
-      </xsl:if>
-      <!-- check for section title -->
-      <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
-      <fo:table border-collapse="collapse" table-layout="fixed" inline-progression-dimension.optimum="100%">
-        <fo:table-column column-width="proportional-column-width(1)" />
-        <fo:table-column column-width="proportional-column-width(1)" />
-        <fo:table-body>
-          <xsl:apply-templates />
-        </fo:table-body>
-      </fo:table>
-    </fo:block>
   </xsl:template>
 
 <!-- ============================== property ================================== -->
@@ -506,9 +485,12 @@
 
 -->
   <!-- with prefix -->
-  <xsl:template match="para[string(@prefix) != '' and string(@indent) != '']">
-    <xsl:variable name="prefix-properties"  select="psf:load-style-properties(., concat('para-prefix-', @indent))[string(@value) != '']" />
-    <xsl:variable name="indent-properties"  select="psf:load-style-properties(., concat('para-',        @indent))[string(@value) != '']" />
+  <xsl:template match="para[string(@prefix) != '']">
+    <xsl:variable name="prefix-properties"  select="if (string(@indent) = '')
+        then psf:load-style-properties(., 'para-prefix')[string(@value) != '']
+        else psf:load-style-properties(., concat('para-prefix-', @indent))[string(@value) != '']" />
+    <xsl:variable name="indent-properties"  select="if (string(@indent) = '') then ()
+        else psf:load-style-properties(., concat('para-', @indent))[string(@value) != '']" />
     <xsl:variable name="para-properties"    select="psf:load-style-properties(., 'para'                         )[string(@value) != '']" />
     <xsl:variable name="start-indent" select="$prefix-properties[@name = 'start-indent']/@value" />
     <xsl:variable name="text-indent"  select="$prefix-properties[@name = 'text-indent']/@value" />

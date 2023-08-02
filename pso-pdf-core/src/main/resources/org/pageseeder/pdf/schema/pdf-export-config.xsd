@@ -468,6 +468,11 @@
 
   <xs:simpleType name="element-name-enum">
     <xs:restriction base="xs:string">
+      <!-- Fragments -->
+      <xs:enumeration value="fragment" />
+      <xs:enumeration value="xref-fragment" />
+      <xs:enumeration value="media-fragment" />
+      <xs:enumeration value="properties-fragment" />
       <!-- Block elements -->
       <xs:enumeration value="blockxref" />
       <xs:enumeration value="preformat" />
@@ -527,6 +532,7 @@
       <!-- Table element -->
       <xs:enumeration value="table" />
       <!-- Property elements -->
+      <xs:enumeration value="property" />
       <xs:enumeration value="property-title" />
       <xs:enumeration value="property-title-cell" />
       <xs:enumeration value="property-value" />
@@ -536,7 +542,7 @@
 
   <xs:simpleType name="element-name-pattern">
     <xs:restriction base="xs:string">
-        <xs:pattern value="inline-[a-zA-Z0-9_\-]+|inlineName-[a-zA-Z0-9_\-]+|block-[a-zA-Z0-9_\-]+|blockName-[a-zA-Z0-9_\-]+|fragment-[a-zA-Z0-9_\-]+"/>
+        <xs:pattern value="inline-[a-zA-Z0-9_\-]+|inlineName-[a-zA-Z0-9_\-]+|block-[a-zA-Z0-9_\-]+|blockName-[a-zA-Z0-9_\-]+|(xref\-|media\-|properties\-)?fragment-[a-zA-Z0-9_\-]+"/>
     </xs:restriction>
   </xs:simpleType>
 
