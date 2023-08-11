@@ -233,4 +233,8 @@
         SVG:
         <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/cat.svg)" content-width="200px"/></fo:inline>
       </fo:block>
+      <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false">
+        WEBP:
+        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/ps-s_r.webp)" content-width="856px" content-height="810px"/></fo:inline>
+      </fo:block>
     </fo:block></fo:block><fo:block id="last-page"/></fo:flow></fo:page-sequence></fo:root>

@@ -326,6 +326,10 @@
         SVG:
         <image src="lorem_ipsum_files/cat.svg" width="100" />
       </para>
+      <para>
+        WEBP:
+        <image src="lorem_ipsum_files/ps-s_r.webp" height="405" width="428" />
+      </para>
     </fragment>
   </section>
 </document>
