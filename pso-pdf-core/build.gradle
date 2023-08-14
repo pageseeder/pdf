@@ -5,7 +5,7 @@ dependencies {
   // List public coordinates of runtime dependencies of internal projects (ps-ant-pdf)
   runtimeOnly (
           'com.twelvemonkeys.imageio:imageio-webp:3.9.4',
-          'commons-io:commons-io:1.4',
+          'commons-io:commons-io:2.11.0',
           'org.apache.pdfbox:pdfbox:2.0.24',
           'org.apache.pdfbox:pdfbox-tools:2.0.24',
           'net.sf.saxon:Saxon-HE:10.1',
