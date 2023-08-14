@@ -409,7 +409,7 @@ public final class ExportTask extends Task {
      *
      * @param name the config name (matching a psml document type)
      *
-     * @deprectated this method is no longer supported
+     * @deprecated this method is no longer supported
      */
     public void setName(String name) {
     }
@@ -444,7 +444,7 @@ public final class ExportTask extends Task {
   /**
    * Holder for FO configs definition.
    *
-   * @deprectated this object is no longer supported
+   * @deprecated this object is no longer supported
    */
   public static final class FOConfigs {
     /** The priority */

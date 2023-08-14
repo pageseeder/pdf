@@ -26,7 +26,7 @@ public class ImageScaler {
    * using multiple passed on a bilinear interpolation.
    *
    * @param img         the original image to be scaled
-   * @param targetWidth the desired width of the scaled instance, in pixels
+   * @param width       the desired width of the scaled instance, in pixels
    *
    * @return a scaled version of the original {@code BufferedImage}
    */
