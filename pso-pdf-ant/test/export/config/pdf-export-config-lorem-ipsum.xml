@@ -37,6 +37,16 @@
       <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
     </footer>
 
+    <element name="table-caption" role="test">
+      <property name="ps-hide"                value="false"/>
+      <property name="color"                  value="green"/>
+    </element>
+
+    <element name="table-caption">
+      <!-- <property name="ps-hide"                value="true"/> -->
+      <property name="color"                  value="red"/>
+    </element>
+
     <element name="list-label" level="3">
       <property name="color"     value=""/>
     </element>

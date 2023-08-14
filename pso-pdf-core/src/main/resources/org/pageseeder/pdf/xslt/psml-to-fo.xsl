@@ -43,7 +43,7 @@
       <xsl:variable name="role-props"  select="psf:load-style-properties-more($config, 'table', 'property', string(@role))" />
       <xsl:variable name="table-props" select="psf:load-style-properties-more($config, 'table', 'property', '')" />
       <xsl:sequence select="psf:style-properties-overwrite($role-props, $table-props)"/>
-      <!--  currently, fop 2.3 does not support caption -->
+      <!--  FOP 2.8 does not support caption -->
       <!--
       <fo:table-and-caption>
       <xsl:if test="caption">
@@ -53,6 +53,20 @@
 	        </fo:block>
 	      </fo:table-caption>
       </xsl:if-->
+      <xsl:if test="caption">
+        <xsl:variable name="caption-role-props"
+                      select="psf:load-style-properties-more($config, 'table-caption', 'property', string(@role))" />
+        <xsl:variable name="caption-props"
+                      select="psf:load-style-properties-more($config, 'table-caption', 'property', '')" />
+        <xsl:if test="(not($caption-role-props[@name = 'ps-hide']/@value = 'true') and
+                      not($caption-props[@name = 'ps-hide']/@value = 'true')) or
+                      $caption-role-props[@name = 'ps-hide']/@value = 'false'">
+          <fo:block>
+            <xsl:sequence select="psf:style-properties-overwrite($caption-role-props, $caption-props)" />
+            <xsl:apply-templates select="caption/node()"/>
+          </fo:block>
+        </xsl:if>
+      </xsl:if>
       <fo:table border-collapse="collapse" table-layout="fixed" inline-progression-dimension.optimum="100%">
     		<xsl:copy-of select="@width"/>
     		<xsl:copy-of select="@height"/>

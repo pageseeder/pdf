@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
         properties allowed in elements:
             * font-family
             * font-weight
@@ -16,11 +16,11 @@
             * break-after (defines page breaks)
             * reference-orientation (defines text rotation in 90" increments)
             * ps-indent-px (on "para" only, defines the number of pixels that one indent level should be, default is 40)
-        
+
         special properties on some elements:
             ps-hide (allowed on inlineLabel, inlineLabelName, inlineLabel-custom, paraLabel-custom, and all toc-level elements)
                     If set to true, the element will be skipped (default is false)
-        
+
         attributes allowed in header and footer
             odd-or-even (values allowed are 'odd' and 'even')
             first (values allowed are 'true' and 'false')
@@ -57,8 +57,8 @@
             page-number
             total-pages
             filename
-        
-        
+
+
         Date Patterns:
             Y               year
             M               month in year
@@ -76,7 +76,7 @@
             31st December, 2002     [D1o] [MNn], [Y]
             31 DEC 2002             [D01] [MN,*-3] [Y0001]
             December 31, 2002       [MNn] [D], [Y]
-        
+
  -->
 <styles>
   <!-- =======================GENERAL PROPERTIES======================= -->
@@ -114,7 +114,7 @@
     <property name="font-size"              value="10pt"/>
     <center><text>Page </text><page-number/><text> of </text><total-pages/></center>
   </footer>
-     
+
   <!-- =======================ELEMENTS PROPERTIES======================= -->
 
   <element name="section-title">
@@ -124,17 +124,23 @@
     <property name="space-after.optimum"    value="6pt"/>
     <property name="color"                  value="#1f4f76"/>
   </element>
-  
+
   <element name="toc">
     <property name="break-before"           value="page"/>
     <property name="break-after"            value="page"/>
   </element>
-  
+
   <element name="table">
     <property name="space-before.optimum"   value="12pt"/>
     <property name="space-after.optimum"    value="12pt"/>
   </element>
-  
+
+  <element name="table-caption">
+    <property name="color"                  value="#1f4f76"/>
+    <property name="font-style"             value="italic"/>
+    <property name="font-size"              value="10pt"/>
+  </element>
+
   <element name="table-hcell">
     <property name="background-color"       value="#1f4f76"/>
   </element>
@@ -169,7 +175,7 @@
     <property name="color"                  value="#1f4f76"/>
     <property name="keep-with-next"         value="always"/>
   </element>
-  
+
   <element name="heading2">
     <property name="font-weight"            value="bold"/>
     <property name="font-size"              value="14pt"/>
@@ -178,7 +184,7 @@
     <property name="color"                  value="#1f4f76"/>
     <property name="keep-with-next"         value="always"/>
   </element>
-  
+
   <element name="heading3">
     <property name="font-weight"            value="normal"/>
     <property name="font-size"              value="13pt"/>
@@ -187,7 +193,7 @@
     <property name="color"                  value="#1f4f76"/>
     <property name="keep-with-next"         value="always"/>
   </element>
-  
+
   <element name="heading4">
     <property name="font-weight"            value="bold"/>
     <property name="font-size"              value="11pt"/>
@@ -196,7 +202,7 @@
     <property name="color"                  value="#1f4f76"/>
     <property name="keep-with-next"         value="always"/>
   </element>
-  
+
   <element name="heading5">
     <property name="font-weight"            value="normal"/>
     <property name="font-size"              value="11pt"/>
@@ -205,7 +211,7 @@
     <property name="color"                  value="#1f4f76"/>
     <property name="keep-with-next"         value="always"/>
   </element>
-  
+
   <element name="heading6">
     <property name="font-weight"            value="bold"/>
     <property name="font-size"              value="11pt"/>
@@ -222,7 +228,7 @@
     <property name="hyphenate"              value="false"/>
     <property name="ps-indent-px"           value="40"/>
   </element>
-  
+
   <element name="property-title">
     <property name="font-weight"  value="bold"/>
     <property name="text-align"   value="end"/>
@@ -244,7 +250,7 @@
     <property name="padding"                value="4pt 2pt"/>
     <property name="hyphenation-remain-character-count" value="5"/>
   </element>
-  
+
   <element name="property-value">
     <property name="text-align"   value="start"/>
     <property name="margin-left"  value="0.08cm" />
@@ -265,7 +271,7 @@
     <property name="padding"                value="4pt 2pt"/>
     <property name="hyphenation-remain-character-count" value="5"/>
   </element>
-  
+
   <element name="block">
     <property name="space-before.optimum"   value="4pt"/>
     <property name="space-after.optimum"    value="8pt"/>
@@ -277,24 +283,24 @@
     <property name="border-right-style"     value="solid"/>
     <property name="border-width"           value="0.2mm"/>
     <property name="border-color"           value="#79bbe1"/>
-    <property name="padding"                value="4px"/>         
+    <property name="padding"                value="4px"/>
   </element>
-  
+
   <!--  add custom style for specific paraLabel, change custom to suit your own style -->
   <element name="block-custom">
   </element>
-  
+
   <element name="blockName">
     <property name="text-align"             value="justify"/>
     <property name="hyphenate"              value="false"/>
     <property name="color"                  value="#79bbe1"/>
-    <property name="font-weight"            value="bold"/>        
+    <property name="font-weight"            value="bold"/>
   </element>
-  
+
   <!--  add custom style for specific paraLabelName, change custom to suit your own style -->
   <element name="blockName-custom">
   </element>
-  
+
   <element name="inline">
     <property name="hyphenate"              value="false"/>
     <!-- Removed because of FOP error when inside table cell
@@ -309,11 +315,11 @@
     <property name="padding-right"          value="2px"/>
     <property name="background-color"       value="#DD9999"/>
   </element>
-  
+
   <!--  add custom style for specific inlineLabel, change custom to suit your own style -->
   <element name="inline-custom">
   </element>
-  
+
   <element name="inlineName">
     <property name="text-align"             value="justify"/>
     <property name="hyphenate"              value="false"/>
@@ -324,11 +330,11 @@
     <property name="padding-right"          value="2px"/>
     <property name="margin-right"           value="2px"/>
   </element>
-      
+
   <!--  add custom style for specific inlineLabelName, change custom to suit your own style -->
   <element name="inlineName-custom">
   </element>
-  
+
   <element name="preformat">
     <property name="space-before.optimum"   value="2pt"/>
     <property name="space-after.optimum"    value="2pt"/>
@@ -343,11 +349,11 @@
     <property name="text-indent"            value="3cm"/>
     -->
   </element>
-  
+
   <element name="monospace">
     <property name="font-family"            value="Courier"/>
   </element>
-  
+
   <element name="list">
     <property name="provisional-distance-between-starts"    value="0.6cm"/>
     <property name="provisional-label-separation"           value="0.2cm"/>
@@ -361,7 +367,7 @@
     <property name="space-before.optimum"                   value="2pt"/>
     <property name="space-after.optimum"                    value="8pt"/>
   </element>
-  
+
   <element name="list-item">
     <property name="space-before.optimum"   value="5pt"/>
   </element>
@@ -391,7 +397,7 @@
     <property name="text-decoration"        value="underline"/>
     <property name="font-weight"            value="bold"/>
   </element>
-  
+
   <element name="xref">
     <property name="color"                  value="#1f4f76"/>
     <property name="text-decoration"        value="underline"/>
@@ -407,7 +413,7 @@
     <property name="text-decoration"        value="underline"/>
     <property name="font-weight"            value="bold"/>
   </element>
-  
+
   <element name="image">
     <property name="space-after.optimum"    value="12pt"/>
     <property name="text-align"             value="center"/>

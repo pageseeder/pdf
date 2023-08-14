@@ -165,7 +165,7 @@
       <heading level="1">Tables</heading>
       <para>Horizontal Header with Caption</para>
       <table width="400">
-        <caption>Caption: Lorem ipsum dolor sit amet</caption>
+        <caption>Caption: Lorem ipsum <bold>dolor</bold> sit amet</caption>
         <row part="header">
           <hcell>Header</hcell>
           <hcell>Horizontal</hcell>
