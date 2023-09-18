@@ -1092,6 +1092,9 @@
 	      <xsl:if test="@height">
 	        <xsl:attribute name="content-height" select="concat(@height * 2,'px')" />
 	      </xsl:if>
+        <xsl:if test="@width and @height">
+          <xsl:attribute name="scaling" select="'non-uniform'" />
+        </xsl:if>
 	    </fo:external-graphic>
 	  </fo:inline>
   </xsl:template>

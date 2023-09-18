@@ -219,15 +219,15 @@
       <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false"><fo:block id="psa-local-anchor"/>Some standard images:</fo:block>
       <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false">
         GIF:
-        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/cat.gif)" content-width="200px" content-height="150px"/></fo:inline>
+        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/cat.gif)" content-width="200px" content-height="150px" scaling="non-uniform"/></fo:inline>
       </fo:block>
       <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false">
         JPG:
-        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/cat.jpg)" content-width="200px" content-height="150px"/></fo:inline>
+        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/cat.jpg)" content-width="200px"/></fo:inline>
       </fo:block>
       <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false">
         PNG:
-        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/cat.png)" content-width="200px" content-height="150px"/></fo:inline>
+        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/cat.png)" content-width="200px" content-height="40px" scaling="non-uniform"/></fo:inline>
       </fo:block>
       <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false">
         SVG:
@@ -235,6 +235,6 @@
       </fo:block>
       <fo:block space-before.optimum="4pt" space-after.optimum="8pt" text-align="justify" hyphenate="false">
         WEBP:
-        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/ps-s_r.webp)" content-width="856px" content-height="810px"/></fo:inline>
+        <fo:inline space-after.optimum="12pt" text-align="center"><fo:external-graphic src="url(file:/C:/workspace/pso-pdf/pso-pdf-ant/test/export/input/lorem_ipsum_files/ps-s_r.webp)" content-width="856px" content-height="80px" scaling="non-uniform"/></fo:inline>
       </fo:block>
     </fo:block></fo:block><fo:block id="last-page"/></fo:flow></fo:page-sequence></fo:root>

@@ -316,11 +316,11 @@
       </para>
       <para>
         JPG:
-        <image src="lorem_ipsum_files/cat.jpg" height="75" width="100" />
+        <image src="lorem_ipsum_files/cat.jpg" width="100" />
       </para>
       <para>
         PNG:
-        <image src="lorem_ipsum_files/cat.png" height="75" width="100" />
+        <image src="lorem_ipsum_files/cat.png" height="20" width="100" />
       </para>
       <para>
         SVG:
@@ -328,7 +328,7 @@
       </para>
       <para>
         WEBP:
-        <image src="lorem_ipsum_files/ps-s_r.webp" height="405" width="428" />
+        <image src="lorem_ipsum_files/ps-s_r.webp" height="40" width="428" />
       </para>
     </fragment>
   </section>
