@@ -235,7 +235,8 @@
    | </fo:block>
 
 -->
-  <xsl:template match="(fragment|xref-fragment|media-fragment|properties-fragment[property])[parent::section]">
+  <xsl:template match="(fragment|xref-fragment|media-fragment|properties-fragment[property]
+                        )[parent::section or parent::blockxref]">
     <fo:block id="{concat('psf-', @id)}">
       <xsl:variable name="cust-props" select="if (@type) then psf:load-style-properties(., concat(name(), '-', @type)) else ()" />
       <xsl:variable name="def-props"  select="psf:load-style-properties(., name())" />
@@ -279,7 +280,7 @@
      | </fo:instream-foreign-object>
 
   -->
-  <xsl:template match="media-fragment[not(parent::section)]">
+  <xsl:template match="media-fragment[not(parent::section or parent::blockxref)]">
     <!-- if this is the first fragment of this document, add the anchor -->
     <xsl:variable name="dad-doc" select="self::*[empty(preceding-sibling::*[psf:is-fragment(.)])]/parent::section[empty(preceding-sibling::section)]/parent::document" />
     <xsl:if test="$dad-doc and empty($dad-doc/preceding::document[@id = $dad-doc/@id] | $dad-doc/ancestor::document[@id = $dad-doc/@id])">
@@ -1001,10 +1002,7 @@
 -->
   <xsl:template match="blockxref">
     <xsl:choose>
-      <xsl:when test="@type = 'transclude' and (document | fragment)">
-        <xsl:apply-templates />
-      </xsl:when>
-      <xsl:when test="@type = 'embed' and (document | fragment)">
+      <xsl:when test="@type = ('transclude','embed','math') and (document | *[psf:is-fragment(.)])">
         <xsl:apply-templates />
       </xsl:when>
       <xsl:otherwise><!-- output like a normal XRef? -->

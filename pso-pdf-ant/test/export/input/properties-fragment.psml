@@ -18,6 +18,7 @@
   <section id="title">
     <fragment id="title">
       <heading level="1">Properties fragments</heading>
+      <para><xref frag="2" href="#123-2" uriid="123">Transcluded</xref></para>
     </fragment>
   </section>
   <section id="10">
@@ -106,6 +107,17 @@
     </properties-fragment>
     <fragment id="11-2">
       <para>Some non properties-fragment text.</para>
+    </fragment>
+    <fragment id="11-3">
+      <para>Transcluded properties-fragment</para>
+      <blockxref frag="2" uriid="123" display="document" type="transclude" href="subdocument.psml">
+        <properties-fragment id="123-2">
+          <property name="manufacturers" title="Manufacturer" multiple="true">
+            <value>Manufacturer 1</value>
+            <value>Manufacturer 2</value>
+          </property>
+        </properties-fragment>
+      </blockxref>
     </fragment>
   </section>
   <section id="12">
