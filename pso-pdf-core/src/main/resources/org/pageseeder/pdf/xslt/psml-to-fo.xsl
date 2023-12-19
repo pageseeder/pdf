@@ -19,7 +19,8 @@
                 xmlns:fo="http://www.w3.org/1999/XSL/Format"
                 xmlns:psf="http://www.pageseeder.com/function"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                exclude-result-prefixes="ps psf xs">
+                xmlns:math="http://www.w3.org/1998/Math/MathML"
+                exclude-result-prefixes="ps psf xs math">
 
 <!-- ================================ Table ============================================= -->
 
@@ -259,9 +260,7 @@
           </fo:table>
         </xsl:when>
         <xsl:when test="self::media-fragment">
-          <fo:instream-foreign-object>
-            <xsl:copy-of select="node()" />
-          </fo:instream-foreign-object>
+          <xsl:call-template name="media-content" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates/>
@@ -288,9 +287,64 @@
     </xsl:if>
     <!-- check for section title -->
     <xsl:apply-templates select="preceding-sibling::*[1][self::title]" />
-    <fo:instream-foreign-object>
-      <xsl:copy-of select="node()" />
-    </fo:instream-foreign-object>
+    <xsl:call-template name="media-content" />
+  </xsl:template>
+
+  <xsl:template name="media-content">
+    <xsl:choose>
+      <xsl:when test="@mediatype='application/mathml+xml'">
+        <fo:instream-foreign-object>
+          <xsl:apply-templates mode="math"/>
+        </fo:instream-foreign-object>
+      </xsl:when>
+      <xsl:when test="@mediatype='image/svg+xml'">
+        <fo:instream-foreign-object>
+          <xsl:copy-of select="node()" />
+        </fo:instream-foreign-object>
+      </xsl:when>
+      <xsl:when test="@mediatype='application/xml'">
+        <fo:block>
+          <xsl:sequence select="psf:style-properties(., 'preformat')" />
+          <xsl:apply-templates mode="xml" />
+        </fo:block>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+<!-- ============================== MathML ================================== -->
+
+  <!-- insert spacing before left bracket -->
+  <xsl:template match="math:mo[.='(']" mode="math">
+    <math:mspace width="10%"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="math"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- copy all other MathML elements unchanged -->
+  <xsl:template match="@*|node()" mode="math">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="math"/>
+    </xsl:copy>
+  </xsl:template>
+
+<!-- ============================== Escape XML ================================== -->
+
+  <xsl:template match="*" mode="xml">
+    <xsl:value-of select="concat('&lt;', name())" />
+    <xsl:for-each select="@*">
+      <xsl:value-of select="concat(' ', name(), '=&quot;', ., '&quot;')" />
+    </xsl:for-each>
+    <xsl:choose>
+      <xsl:when test="node()">
+        <xsl:text>&gt;</xsl:text>
+        <xsl:apply-templates mode="xml" />
+        <xsl:value-of select="concat('&lt;/', name(), '&gt;')" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>/&gt;</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 <!-- ============================== property ================================== -->

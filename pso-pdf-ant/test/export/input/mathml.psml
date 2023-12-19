@@ -80,6 +80,33 @@
 </math></media-fragment></xref>.</para></fragment>
   <fragment id="19564-20"><para>Stand-alone media fragment:</para></fragment>
   <media-fragment id="19564-21" mediatype="application/mathml+xml"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>1235</mn></math></media-fragment>
+  <!-- will be ignored as fragments without markup are stripped out -->
   <media-fragment id="19564-22" mediatype="text/plain">Text media fragment</media-fragment>
-  <media-fragment id="19564-23" mediatype="application/xml"><foo><bar/></foo></media-fragment>
+  <media-fragment id="19564-23" mediatype="application/xml">
+    <foo>
+      <bar>testing</bar>
+      <bar test="xyz" test2="abc"/>
+      <bar/>
+    </foo>
+  </media-fragment>
+  <media-fragment id="19564-24" mediatype="image/svg+xml">
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="110">
+      <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+    </svg>
+  </media-fragment>
+  <fragment id="19564-27"><para>More inline equations <xref frag="media" type="math" config="mathml"><media-fragment id="media" mediatype="application/mathml+xml">
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+      <mrow>
+        <mn>10</mn>
+        <mo>=</mo>
+        <mo>−</mo>
+        <mn>2</mn>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo>+</mo>
+        <mn>6</mn>
+        <mo stretchy="false">)</mo>
+      </mrow>
+    </math>
+  </media-fragment></xref>.</para></fragment>
 </section></document>
