@@ -6,10 +6,11 @@ dependencies {
   implementation project (':pso-pdf-core')
 
   implementation (
-    'org.apache.xmlgraphics:fop-core:2.9',
+    'org.apache.xmlgraphics:fop-core:2.10',
     'de.rototor.jeuclid:jeuclid-core:3.1.14',
-    'org.apache.pdfbox:pdfbox:2.0.24',
-    'org.apache.pdfbox:pdfbox-tools:2.0.24',
+    'org.apache.pdfbox:pdfbox:2.0.32',
+    'org.apache.pdfbox:pdfbox-tools:2.0.32',
+    'commons-io:commons-io:2.18.0',
   )
 
   implementation ('de.rototor.jeuclid:jeuclid-fop:3.1.14') {
@@ -24,8 +25,8 @@ dependencies {
   testImplementation (
     'org.apache.ant:ant:1.10.13',
     'junit:junit:4+',
-    'org.xmlunit:xmlunit-core:2.3.0',
-    'org.xmlunit:xmlunit-matchers:2.3.0',
+    'org.xmlunit:xmlunit-core:2.10.0',
+    'org.xmlunit:xmlunit-matchers:2.10.0',
   )
 
 }
